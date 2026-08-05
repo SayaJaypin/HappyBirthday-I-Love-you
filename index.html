@@ -3,27 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Zahra's Universe | Perfect Edition</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,800;1,400;1,600&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <title>Zahra's Universe | The Ultimate Masterpiece</title>
     <link rel="stylesheet" href="style.css">
-    <meta name="theme-color" content="#fdfafb">
+    <meta name="theme-color" content="#fcf8fa">
 </head>
 <body class="system-locked-state">
 
-    <!-- BACKGROUND ENGINE -->
+    <!-- FITUR BARU: VIRTUAL HUG OVERLAY (PELUKAN VIRTUAL) -->
+    <div id="virtual-hug-overlay" class="hidden-element">
+        <div class="hug-warm-glow"></div>
+        <div class="hug-heart-pulse">
+            <svg viewBox="0 0 24 24"><path fill="#ff4d4f" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </div>
+        <div class="hug-message">
+            <h3>Tarik napas perlahan...</h3>
+            <p>Aku di sini, Zahra. Tepat di sebelahmu. Semuanya akan baik-baik saja.</p>
+        </div>
+    </div>
+
+    <!-- AMBIENT ENGINE -->
     <div class="ambient-fluid-container">
-        <div class="fluid-orb orb-alpha"></div>
-        <div class="fluid-orb orb-beta"></div>
-        <div class="fluid-orb orb-gamma"></div>
+        <div class="fluid-orb orb-alpha"></div><div class="fluid-orb orb-beta"></div><div class="fluid-orb orb-gamma"></div>
     </div>
     <canvas id="stellar-constellation-canvas" class="background-canvas-layer"></canvas>
     <canvas id="cosmic-dust-canvas" class="background-canvas-layer"></canvas>
 
     <!-- DYNAMIC ISLAND HUD -->
     <header class="dynamic-island-header hidden-state" id="master-hud-interface">
-        <div class="hud-glass-capsule">
+        <div class="hud-glass-capsule premium-glassmorphism">
             <div class="telemetry-time-module">
                 <div class="time-block"><span class="time-val" id="time-wib">00:00</span><span class="time-lbl">WIB</span></div>
                 <div class="time-divider"></div>
@@ -50,10 +57,10 @@
 
     <!-- AUTHENTICATION LAYER -->
     <section id="authentication-layer" class="fullscreen-absolute-overlay active-overlay-state">
-        <div class="auth-security-card">
+        <div class="auth-security-card premium-glassmorphism">
             <div class="auth-glowing-icon"><svg viewBox="0 0 24 24" class="icon-secure-lock"><path fill="currentColor" d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6zM18 20H6V10h12v10z"/></svg></div>
             <h1 class="auth-heading-title">Ruang Eksklusif Zahra</h1>
-            <p class="auth-heading-subtitle">Masukkan tanggal istimewa kita (DDMMYY) untuk membuka ruang memori ini.</p>
+            <p class="auth-heading-subtitle">Semesta mendeteksi kehadiranmu. Silakan masukkan tanggal istimewa kita (DDMMYY).</p>
             <div class="pin-encryption-matrix">
                 <div class="pin-encryption-node"></div><div class="pin-encryption-node"></div><div class="pin-encryption-node"></div>
                 <div class="pin-encryption-node"></div><div class="pin-encryption-node"></div><div class="pin-encryption-node"></div>
@@ -67,7 +74,7 @@
         </div>
     </section>
 
-    <!-- LOADING SEQUENCE -->
+    <!-- LOADING SEQUENCE (UPGRADED WITH ECG ANIMATION) -->
     <section id="loading-transition-layer" class="fullscreen-absolute-overlay hidden-state">
         <div class="loading-central-core">
             <div class="quantum-orbital-bloom">
@@ -81,6 +88,12 @@
             <div class="loading-typography-group">
                 <p class="loading-status-text" id="loading-status-msg">Menyusun memori indah kita...</p>
                 <div class="loading-progress-bar-bg"><div class="loading-progress-bar-fill" id="loading-progress-bar-fill"></div></div>
+                <!-- ANIMASI ECG JANTUNG BARU -->
+                <div class="ecg-heartbeat-loader">
+                    <svg viewBox="0 0 500 100" preserveAspectRatio="none">
+                        <polyline class="ecg-line" points="0,50 150,50 160,20 170,80 185,10 200,90 215,50 250,50 260,20 270,80 285,10 300,90 315,50 500,50" />
+                    </svg>
+                </div>
             </div>
         </div>
     </section>
@@ -88,7 +101,7 @@
     <!-- CONTINUOUS SCROLL ENGINE -->
     <main id="massive-scroll-engine" class="hidden-state">
         
-        <!-- MODULE 1: HERO & SAFE ART LAYOUT -->
+        <!-- SECTION 1: HERO -->
         <section id="module-hero-intro" class="massive-section flex-col-center">
             <div class="hero-text-container reveal-up-anim">
                 <div class="premium-date-badge">09 Agustus</div>
@@ -96,7 +109,6 @@
                 <p class="hero-mega-subtitle">Dipersembahkan oleh Jay. Walaupun layar memisahkan kita, semoga kehangatan ruang virtual ini nyata memeluk hatimu.</p>
             </div>
             
-            <!-- SAFE ART MATRIX (NO OVERLAP) -->
             <div class="hero-art-safe-matrix reveal-up-anim delay-200">
                 <div class="safe-art-item cat-art">
                     <svg viewBox="0 0 200 200">
@@ -127,12 +139,12 @@
             </div>
         </section>
 
-        <!-- MODULE 2: ROMANTIC LETTERS -->
+        <!-- SECTION 2: 60+ ROMANTIC LETTERS (6 CHAPTERS) -->
         <section id="module-letters-romance" class="massive-section">
             <div class="content-bound-massive">
                 <div class="section-title-wrap reveal-up-anim">
                     <h2 class="massive-section-title">Rekaman Jiwa</h2>
-                    <p class="massive-section-subtitle">Kumpulan kata yang kutulis perlahan, mewakili jutaan doa yang tak sempat terucap, didedikasikan sepenuhnya untukmu.</p>
+                    <p class="massive-section-subtitle">Kumpulan kata yang kutulis perlahan, mewakili 65+ doa yang tak sempat terucap, didedikasikan sepenuhnya untukmu.</p>
                 </div>
                 
                 <div class="romantic-poetry-grid-system">
@@ -140,52 +152,124 @@
                     <article class="poetry-card-module premium-glassmorphism reveal-up-anim">
                         <header class="poetry-header"><h3 class="poetry-chapter-title">Bab I: Fajar Pengejawantahan</h3></header>
                         <div class="poetry-content-body">
-                            <p>1. Selamat ulang tahun, Zahra. Hari ini adalah sebuah manifestasi keindahan, di mana semesta tersenyum merayakan keberadaanmu. Sebuah jiwa yang begitu menenangkan akhirnya terlahir untuk mewarnai dunia.</p>
-                            <p>2. Terima kasih telah hadir dan memilih untuk menetap. Meskipun kita hanya bertatap lewat deretan piksel di layar, lewat pesan suara, dan jaringan nirkabel, namun kehangatan yang kau berikan berhasil merengkuh hatiku dengan sangat nyata.</p>
-                            <p>3. Sungguh, raga kita mungkin tidak berada di koordinat bujur dan lintang yang sama, tapi percayalah bahwa setiap rasa peduli yang kuberikan adalah murni dan nyata adanya tanpa rekayasa.</p>
-                            <p>4. Jarak seringkali menjadi narasi yang menakutkan bagi kebanyakan orang. Namun bersamamu, jarak hanyalah ruang kosong yang mengajarkan kita arti dari kesabaran tingkat tinggi dan ketulusan yang tak memiliki ujung.</p>
-                            <p>5. Setiap pesan teks yang kau ketikkan memiliki sihirnya tersendiri. Kau mampu mengubah hari-hariku yang paling kelabu, paling bising, dan paling melelahkan menjadi penuh warna pastel yang sangat menenangkan pikiranku.</p>
+                            <p>1. Selamat ulang tahun, Zahra. Hari ini semesta tersenyum sangat lebar merayakan eksistensimu di bumi ini.</p>
+                            <p>2. Sebuah jiwa yang begitu menenangkan akhirnya terlahir untuk mewarnai duniaku yang sebelumnya biasa saja.</p>
+                            <p>3. Terima kasih telah hadir dan secara sadar memilih untuk menetap di kehidupanku.</p>
+                            <p>4. Meskipun kita hanya bertatap lewat deretan piksel di layar, rasanya kau begitu dekat.</p>
+                            <p>5. Jaringan nirkabel ini seolah menjadi nadi yang menyambungkan detak jantung kita berdua.</p>
+                            <p>6. Kehangatan yang kau berikan melalui teks berhasil merengkuh hatiku dengan sangat nyata.</p>
+                            <p>7. Raga kita mungkin tidak berada di koordinat bujur dan lintang yang sama saat ini.</p>
+                            <p>8. Tapi percayalah, setiap inci rasa peduli yang kuberikan adalah murni dan nyata tanpa rekayasa.</p>
+                            <p>9. Jarak seringkali menjadi narasi yang menakutkan bagi kebanyakan pasangan di luar sana.</p>
+                            <p>10. Namun bersamamu, jarak hanyalah ruang kosong yang mengajarkan kita arti kesabaran tingkat tinggi.</p>
+                            <p>11. Ia adalah guru yang mendidik kita tentang ketulusan yang tak memiliki batas akhir.</p>
                         </div>
                     </article>
 
                     <article class="poetry-card-module premium-glassmorphism reveal-up-anim">
-                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab II: Resonansi Nirkabel</h3></header>
+                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab II: Sihir Dalam Aksara</h3></header>
                         <div class="poetry-content-body">
-                            <p>6. Waktu yang kita lalui bersama, sekecil apa pun itu, baik hanya sekadar bertukar emoji atau sapaan singkat di pagi hari, adalah aset berharga yang selalu kusimpan rapi di dalam laci memori kepalaku.</p>
-                            <p>7. Cerita tentang keseharianmu, tawamu yang renyah, dan bahkan keluh kesahmu saat kau lelah, adalah harmoni melodi favorit yang selalu ingin kudengarkan sebelum aku memejamkan mata di malam hari.</p>
-                            <p>8. Suaramu di seberang telepon adalah rumah tempatku kembali pulang. Mendengarnya adalah sebuah pengobatan jiwa bagiku setelah seharian bertarung dengan realitas yang seringkali tak bersahabat.</p>
-                            <p>9. Aku bersyukur bahwa di antara miliaran manusia yang berjalan di bumi, algoritma semesta mengizinkanku untuk mengenal dan mengagumi keindahan pikiran serta kelembutan hatimu.</p>
-                            <p>10. Layar ini hanyalah selembar kaca yang dingin, namun secara magis, ia selalu sukses memantulkan senyum manismu yang menjadi alasan utamaku untuk ikut tersenyum di sudut kota yang berbeda.</p>
+                            <p>12. Setiap pesan teks yang kau ketikkan memiliki sihirnya tersendiri bagiku.</p>
+                            <p>13. Kau mampu mengubah hari-hariku yang paling kelabu menjadi secerah langit pagi.</p>
+                            <p>14. Hari yang bising dan melelahkan sirna begitu saja hanya dengan membaca kabarmu.</p>
+                            <p>15. Layarmu menyala, dan seketika pikiranku yang kalut menjadi setenang air di danau.</p>
+                            <p>16. Waktu yang kita lalui bersama, sekecil apa pun itu, adalah investasi kebahagiaan bagiku.</p>
+                            <p>17. Entah itu sekadar bertukar emoji lucu atau sapaan singkat di sela-sela kesibukan.</p>
+                            <p>18. Semuanya adalah aset berharga yang selalu kusimpan rapi di dalam laci memori kepalaku.</p>
+                            <p>19. Cerita tentang keseharianmu, sedetail apa pun, adalah hal yang paling antusias kudengarkan.</p>
+                            <p>20. Tawamu yang renyah adalah harmoni melodi favorit yang mengalahkan lagu mana pun.</p>
+                            <p>21. Bahkan keluh kesahmu saat kau lelah, adalah nyanyian yang ingin kusimak untuk kuberi ketenangan.</p>
+                            <p>22. Suaramu di seberang telepon adalah definisi sebenarnya dari kata "pulang" bagiku.</p>
                         </div>
                     </article>
 
                     <article class="poetry-card-module premium-glassmorphism reveal-up-anim">
-                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab III: Arsitektur Jarak</h3></header>
+                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab III: Arsitektur Langit</h3></header>
                         <div class="poetry-content-body">
-                            <p>11. Aku mungkin tidak bisa berdiri di depan pintumu membawa kue, menyalakan lilin, dan memberimu kejutan hari ini. Tapi doaku akan selalu melintasi langit untuk menjagamu di sana.</p>
-                            <p>12. Semoga di usiamu yang baru ini, kebahagiaan sejati, tawa yang tak terputus, dan kedamaian hati senantiasa mengelilingi setiap langkah dan keputusan yang kau ambil.</p>
-                            <p>13. Tetaplah menjadi Zahra yang bercahaya. Cahaya kebaikanmu terlalu indah, terlalu murni untuk diredupkan oleh masalah apa pun atau oleh siapa pun yang tak mengerti nilaimu.</p>
-                            <p>14. Aku sangat mengagumi ketangguhan mentalmu. Kamu selalu bisa menemukan cara yang anggun untuk bangkit dari kesedihan, menghapus air mata, dan kembali tersenyum.</p>
-                            <p>15. Jangan pernah merasa bahwa kau harus menghadapi dunia ini sendirian. Meskipun jarak membentang, dukunganku dan telingaku akan selalu *online* kapan pun kamu butuh tempat bersandar.</p>
+                            <p>23. Mendengar suaramu adalah pengobatan jiwa setelah seharian bertarung dengan realitas.</p>
+                            <p>24. Aku bersyukur bahwa di antara miliaran manusia yang berjalan di bumi, aku menemukanmu.</p>
+                            <p>25. Algoritma semesta bekerja dengan sangat baik karena telah mengizinkanku mengenalmu.</p>
+                            <p>26. Mengagumi keindahan pikiran serta kelembutan hatimu adalah hobi baruku sekarang.</p>
+                            <p>27. Layar ini hanyalah selembar kaca yang dingin secara fisik, tak ada kehangatan yang bisa disentuh.</p>
+                            <p>28. Namun secara magis, ia sukses memantulkan senyum manismu menembus ruang kamarku.</p>
+                            <p>29. Senyummu itu yang menjadi alasan utamaku untuk ikut tersenyum di sudut kota yang berbeda.</p>
+                            <p>30. Aku mungkin tidak bisa berdiri di depan pintumu membawa kue dan menyalakan lilin hari ini.</p>
+                            <p>31. Tapi doaku akan selalu melintasi langit, terbang menembus awan untuk menjagamu di sana.</p>
+                            <p>32. Semoga di usiamu yang baru ini, kebahagiaan sejati senantiasa mengelilingi langkahmu.</p>
+                            <p>33. Aku berdoa agar tawa tak terputus dan kedamaian hati selalu menjadi milikmu selamanya.</p>
                         </div>
                     </article>
 
                     <article class="poetry-card-module premium-glassmorphism reveal-up-anim">
                         <header class="poetry-header"><h3 class="poetry-chapter-title">Bab IV: Suaka Pikiran</h3></header>
                         <div class="poetry-content-body">
-                            <p>16. Kehadiran virtualmu senantiasa membawa warna pastel yang lembut ke dalam hidupku yang terkadang terasa monokrom dan membosankan.</p>
-                            <p>17. Setiap pagi, melihat notifikasi pop-up namamu di layarku adalah cara terbaik untuk meretas kesedihan. Kamu adalah pembawa kabar baik yang selalu kutunggu kehadirannya.</p>
-                            <p>18. Aku mendoakan dengan sungguh-sungguh agar semua harapan yang kau simpan dalam diam, semua mimpi yang kau ukir, satu per satu dikabulkan oleh semesta di waktu yang paling tepat.</p>
-                            <p>19. Meskipun kita hanya duduk di kamar masing-masing, bertukar kabar melalui layar genggam, rasanya tetap magis. Seperti kita sedang duduk berdampingan menatap senja yang persis sama.</p>
-                            <p>20. Selamat merayakan hari kelahiranmu ke dunia ini, Zahra cintaku. Semoga lembaran baru di usiamu yang sekarang ini ditulis sepenuhnya dengan tinta emas kebahagiaan.</p>
+                            <p>34. Tetaplah menjadi Zahra yang bercahaya. Cahaya kebaikanmu terlalu indah untuk diredupkan.</p>
+                            <p>35. Jangan biarkan masalah apa pun atau siapa pun menghancurkan kemurnian hatimu.</p>
+                            <p>36. Aku sangat mengagumi ketangguhan mentalmu yang luar biasa dalam menghadapi hari.</p>
+                            <p>37. Kamu selalu bisa menemukan cara yang anggun untuk bangkit dari kesedihan yang mendalam.</p>
+                            <p>38. Menghapus air mata, dan kembali tersenyum seolah badai tak pernah menerpamu.</p>
+                            <p>39. Jangan pernah merasa bahwa kau harus menghadapi kejinya dunia ini sendirian, Zahra.</p>
+                            <p>40. Meskipun jarak membentang luas, dukunganku akan selalu *online* kapan pun kamu butuh.</p>
+                            <p>41. Telingaku siap menjadi asbak bagi segala cerita sedih yang ingin kamu buang.</p>
+                            <p>42. Semoga kesehatan raga dan ketenangan batin selalu memelukmu erat dari hari ke hari.</p>
+                            <p>43. Sama seperti bagaimana kata-kata penenang darimu selalu memeluk pikiranku yang resah.</p>
+                            <p>44. Terima kasih tanpa batas atas segala pengertian dan kompromi yang kau berikan.</p>
+                        </div>
+                    </article>
+
+                    <article class="poetry-card-module premium-glassmorphism reveal-up-anim">
+                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab V: Fondasi Waktu</h3></header>
+                        <div class="poetry-content-body">
+                            <p>45. Kesabaranmu dalam menghadapi kekuranganku adalah sesuatu yang tak ternilai harganya.</p>
+                            <p>46. Memahami kekuranganku bukanlah hal mudah, dan kau melakukannya dengan sangat indah.</p>
+                            <p>47. Setiap pagi, melihat notifikasi pop-up namamu adalah candu yang menyehatkan bagiku.</p>
+                            <p>48. Kamu adalah pembawa kabar baik yang selalu kutunggu kehadirannya setiap membuka mata.</p>
+                            <p>49. Aku mendoakan agar semua harapan yang kau simpan dalam diam perlahan menjadi nyata.</p>
+                            <p>50. Semua mimpi yang kau ukir, satu per satu dikabulkan oleh semesta di waktu yang tepat.</p>
+                            <p>51. Meskipun kita hanya bertukar kabar melalui layar genggam, rasanya tetap magis dan intim.</p>
+                            <p>52. Seperti kita sedang duduk berdampingan menatap senja yang persis sama di atap bumi.</p>
+                            <p>53. Jarak fisik ini sesungguhnya tidak akan pernah mampu mengikis ikatan yang sedang kita bangun.</p>
+                            <p>54. Ia justru bertindak sebagai fondasi kokoh yang membuat segalanya menjadi lebih bermakna.</p>
+                            <p>55. Kamu adalah bukti hidup bahwa kedekatan emosional dapat melampaui batasan geografis.</p>
+                        </div>
+                    </article>
+
+                    <article class="poetry-card-module premium-glassmorphism reveal-up-anim">
+                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab VI: Konstelasi Kita</h3></header>
+                        <div class="poetry-content-body">
+                            <p>56. Kehadiranmu sangat terasa di sini, menyusup masuk melalui setiap pesan yang kau kirimkan.</p>
+                            <p>57. Kebahagiaanmu adalah barometer kebahagiaanku. Jika kau tersenyum, aku merasakannya.</p>
+                            <p>58. Teruslah mengejar apa pun yang membuat hatimu berdebar bahagia, kejar semua ambisimu.</p>
+                            <p>59. Aku akan selalu duduk di barisan paling depan sebagai pendukung terbesarmu dari kejauhan.</p>
+                            <p>60. Kamu pantas mendapatkan segala keistimewaan dan kebaikan yang ditawarkan oleh dunia ini.</p>
+                            <p>61. Waktu akan terus bergulir, usia akan terus bertambah seiring pergantian kalender.</p>
+                            <p>62. Namun kekagumanku pada keindahan pikiranmu tidak akan pernah mengenal kata usang.</p>
+                            <p>63. Semoga kita selalu bisa memegang janji untuk saling menjaga dan saling menguatkan.</p>
+                            <p>64. Kamu memiliki ruang eksklusif yang sangat spesial dan tak tergantikan di hatiku.</p>
+                            <p>65. Selamat merayakan hari kelahiranmu ke dunia ini, Zahra cintaku yang paling berharga.</p>
                         </div>
                     </article>
 
                     <div class="poetry-grand-highlight-card reveal-up-anim">
-                        <h3 class="highlight-neon-title">Sebuah Simpul Cerita Abadi</h3>
-                        <p class="highlight-paragraph-text">Tulisan ini mungkin panjang, namun ia tak akan pernah cukup untuk mendeskripsikan betapa berharganya dirimu. Terima kasih telah lahir ke dunia, dan terima kasih telah singgah ke dalam duniaku. Selamat merayakan eksistensimu, Zahra. Aku mencintaimu dalam bahasa yang melampaui segala kode, logika, dan batasan waktu.</p>
+                        <h3 class="highlight-neon-title">Simpul Keabadian</h3>
+                        <p class="highlight-paragraph-text">Tujuh puluh baris pun tak akan pernah cukup. Aku akan selalu ada di sini, di setiap ketukan pada layarmu, di setiap baris notifikasiku, merayakan keberadaanmu setiap hari. Terima kasih telah lahir ke dunia, dan terima kasih telah singgah ke dalam duniaku. Selamat merayakan eksistensimu, Zahra. Aku mencintaimu dalam bahasa yang melampaui segala kode, jarak, dan batasan waktu.</p>
                     </div>
 
+                </div>
+            </div>
+        </section>
+
+        <!-- FITUR BARU: VIRTUAL HUG BUTTON -->
+        <section id="module-virtual-hug" class="massive-section flex-col-center">
+            <div class="content-bound-medium">
+                <div class="virtual-hug-console premium-glassmorphism reveal-up-anim">
+                    <h2 class="massive-section-title">Kapsul Penenang</h2>
+                    <p class="massive-section-subtitle">Dunia terkadang terlalu berisik dan melelahkan. Jika kamu merasa sedih, kangen, atau butuh sandaran tapi terhalang jarak... tahan tombol di bawah ini.</p>
+                    
+                    <button id="cmd-virtual-hug" class="hug-button-engine ripple-effect mt-24">
+                        <svg viewBox="0 0 24 24" class="hug-icon"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>Tahan Untuk Pelukan Virtual</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -195,7 +279,7 @@
             <div class="content-bound-massive">
                 <div class="section-title-wrap reveal-up-anim">
                     <h2 class="massive-section-title">Direktori Visual</h2>
-                    <p class="massive-section-subtitle">Sentuh dua kali (double-tap) pada foto untuk mengirimkan getaran cinta. Ruang ini didedikasikan tanpa ada satu pun teks yang menutupi pesonamu.</p>
+                    <p class="massive-section-subtitle">Sentuh dua kali pada foto untuk mengirimkan getaran cinta. Ruang ini didedikasikan tanpa teks yang menutupi pesonamu.</p>
                 </div>
                 
                 <div class="brutal-masonry-architecture">
@@ -211,7 +295,7 @@
             </div>
         </section>
 
-        <!-- MODULE 4: GOOEY WISH CONSOLE -->
+        <!-- MODULE 4: GOOEY WISH CONSOLE DENGAN FIX TOMBOL PUTIH -->
         <section id="module-wish-console" class="massive-section flex-col-center">
             <div class="content-bound-medium">
                 <div class="wish-transmission-console premium-glassmorphism reveal-up-anim" id="wish-console-ui">
@@ -223,7 +307,8 @@
                         <textarea id="wish-textarea-node" placeholder="Ketik harapan manismu di sini..."></textarea>
                     </div>
                     
-                    <button id="cmd-transmit-wish" class="mega-execution-button mt-24">TRANSMISIKAN HARAPAN</button>
+                    <!-- TOMBOL FIX WARNA GELAP -->
+                    <button id="cmd-transmit-wish" class="mega-execution-button-dark mt-24">TRANSMISIKAN HARAPAN</button>
                 </div>
 
                 <div id="wish-meteor-execution-scene" class="hidden-state absolute-center-overlay-local">
@@ -236,7 +321,7 @@
             </div>
         </section>
 
-        <!-- MODULE 5: FINAL SECRET GIFT (Z-INDEX SUPER FIX) -->
+        <!-- MODULE 5: FINAL SECRET GIFT (Z-INDEX SUPER FIX & TOMBOL GELAP) -->
         <section id="module-gift-decryption" class="massive-section flex-col-center section-padding-bottom-extreme">
             <div class="content-bound-medium relative-stack-engine">
                 
@@ -247,7 +332,6 @@
                     </svg>
                 </div>
 
-                <!-- Confetti Canvas di layer paling bawah -->
                 <canvas id="confetti-physics-canvas" class="hidden-state"></canvas>
                 
                 <div id="gift-box-interactive-module" class="hidden-state">
@@ -263,8 +347,8 @@
                             </g>
                         </svg>
                     </div>
-                    <!-- Z-INDEX 9999 ABSOLUTE CLICKABLE -->
-                    <button id="cmd-execute-decryption" class="mega-execution-button mt-24">Buka Kotak Rahasia</button>
+                    <!-- TOMBOL FIX WARNA GELAP & Z-INDEX ABSOLUT -->
+                    <button id="cmd-execute-decryption" class="mega-execution-button-dark mt-24">Buka Kotak Rahasia</button>
                 </div>
 
                 <div id="reward-payload-container" class="premium-glassmorphism hidden-state">
