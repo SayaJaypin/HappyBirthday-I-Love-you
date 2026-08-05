@@ -40,7 +40,7 @@
     --ease-apple-spring: cubic-bezier(0.25, 1, 0.5, 1);
     --ease-bouncy: cubic-bezier(0.68, -0.6, 0.32, 1.6);
     
-    /* FLUID TYPOGRAPHY & SPACING (SOLUSI ANTI KEPOTONG DI MOBILE) */
+    /* FLUID TYPOGRAPHY (ANTI KEPOTONG) */
     --fs-xs: clamp(0.7rem, 2vw, 0.8rem);
     --fs-sm: clamp(0.85rem, 2.5vw, 0.95rem);
     --fs-base: clamp(1rem, 3vw, 1.125rem);
@@ -51,13 +51,14 @@
     --fs-3xl: clamp(2.2rem, 7vw, 3.5rem);
     --fs-4xl: clamp(2.5rem, 8vw, 4.5rem);
     
+    /* FLUID SPACING */
     --spacing-xs: clamp(4px, 1vw, 8px);
     --spacing-sm: clamp(8px, 2vw, 16px);
     --spacing-md: clamp(16px, 3vw, 24px);
     --spacing-lg: clamp(24px, 4vw, 32px);
     --spacing-xl: clamp(32px, 6vw, 48px);
     --spacing-2xl: clamp(48px, 8vw, 64px);
-    --spacing-section-y: clamp(80px, 15vh, 150px);
+    --spacing-section-y: clamp(100px, 15vh, 150px);
     
     --radius-md: 16px;
     --radius-lg: 24px;
@@ -66,7 +67,7 @@
 }
 
 /* ==========================================================================
-   [2] MASSIVE RESET & MOBILE-FIRST LAYOUT FIXES (MENCEGAH DESKTOP MODE)
+   [2] MASSIVE RESET & MOBILE-FIRST LAYOUT FIXES
    ========================================================================== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html { font-size: 16px; scroll-behavior: smooth; width: 100%; max-width: 100%; overflow-x: hidden; }
@@ -93,7 +94,7 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 /* ==========================================================================
    [3] MAGNETIC CURSOR ENGINE (HIDDEN ON MOBILE)
    ========================================================================== */
-#cursor-magnetic-core { width: 8px; height: 8px; background: var(--color-primary-500); border-radius: 50%; position: fixed; z-index: 9999; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.15s, height 0.15s; }
+#cursor-magnetic-core { width: 8px; height: 8px; background: var(--color-primary-500); border-radius: 50%; position: fixed; z-index: 9999; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.15s, height 0.15s; mix-blend-mode: multiply; }
 #cursor-magnetic-aura { width: 44px; height: 44px; border: 1.5px solid var(--color-primary-400); border-radius: 50%; position: fixed; z-index: 9998; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.25s var(--ease-bouncy), height 0.25s; box-shadow: 0 0 20px rgba(212, 139, 160, 0.2); }
 body.magnetic-hover-active #cursor-magnetic-core { width: 0; opacity: 0; }
 body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; background-color: rgba(212, 139, 160, 0.1); border-color: rgba(212, 139, 160, 0.2); backdrop-filter: blur(2px); }
@@ -146,9 +147,9 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 .time-divider { width: 1.5px; height: 12px; background: rgba(0,0,0,0.1); }
 .hardware-status-module { display: flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 800; border-left: 1.5px solid rgba(0,0,0,0.1); padding-left: 12px; }
 .ping-latency { color: var(--color-success); }
-.battery-chassis { width: 22px; height: 11px; border: 1.5px solid var(--color-text-main); border-radius: 3px; padding: 1px; position: relative; }
+.battery-chassis { width: 22px; height: 11px; border: 1.5px solid var(--color-text-main); border-radius: 3px; padding: 1px; position: relative; display: flex; align-items: center; }
 .battery-terminal-tip { position: absolute; right: -3px; top: 50%; transform: translateY(-50%); width: 2px; height: 4px; background: var(--color-text-main); }
-.battery-fluid-core { height: 100%; width: 100%; background: var(--color-success); border-radius: 1px; transition: width 1s; }
+.battery-fluid-core { height: 100%; width: 100%; background: var(--color-success); border-radius: 1px; transition: width 1s var(--ease-apple-spring); }
 .battery-fluid-core.critically-low { background: var(--color-error); animation: batteryPanicPulse 1s infinite alternate; }
 @keyframes batteryPanicPulse { 100% { opacity: 0.4; } }
 .audio-harmony-module { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 10px; border-radius: var(--radius-full); background: rgba(255, 255, 255, 0.5); box-shadow: 0 4px 10px rgba(212, 139, 160, 0.1); }
@@ -178,8 +179,8 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 
 .pin-encryption-matrix { display: flex; justify-content: center; gap: clamp(8px, 2vw, 16px); margin-bottom: var(--spacing-xl); }
 .pin-encryption-node { width: clamp(14px, 4vw, 18px); height: clamp(14px, 4vw, 18px); border-radius: 50%; background: var(--color-bg-alt); border: 2px solid transparent; box-shadow: inset 2px 2px 4px rgba(0,0,0,0.08), inset -2px -2px 4px rgba(255,255,255,0.9); transition: all 0.3s var(--ease-bouncy); }
-.pin-encryption-node.node-filled { background: var(--color-text-main); box-shadow: 0 5px 15px rgba(42,31,34,0.4); transform: scale(1.15); border-color: var(--color-text-main); }
-.pin-encryption-node.node-error { background: var(--color-error); border-color: var(--color-error); box-shadow: 0 5px 15px rgba(255, 77, 79, 0.4); }
+.pin-encryption-node.node-filled { background: var(--color-text-main); border-color: var(--color-text-main); transform: scale(1.15); }
+.pin-encryption-node.node-error { background: var(--color-error); border-color: var(--color-error); }
 .matrix-shake-error { animation: brutalAuthShake 0.5s var(--ease-apple-spring); }
 @keyframes brutalAuthShake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-15px); } 40% { transform: translateX(15px); } 60% { transform: translateX(-10px); } 80% { transform: translateX(10px); } }
 
@@ -212,7 +213,7 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 /* ==========================================================================
    [9] ORBITAL BLOOM LOADING SEQUENCE
    ========================================================================== */
-.loading-central-core { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-xl); width: 100%; max-width: 400px; padding: var(--spacing-md); }
+.loader-core { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-xl); width: 100%; max-width: 400px; padding: var(--spacing-md); }
 .quantum-orbital-bloom { position: relative; width: 160px; height: 160px; display: flex; justify-content: center; align-items: center; filter: drop-shadow(0 15px 30px rgba(212,139,160,0.3)); }
 .orbital-bloom-svg { width: 100%; height: 100%; animation: cosmicRotation 12s linear infinite; }
 .orbit-track-outer, .orbit-track-middle, .orbit-track-inner { fill: none; stroke: rgba(212,139,160,0.15); stroke-width: 2.5; }
@@ -245,7 +246,8 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 }
 .massive-section {
     min-height: 100vh;
-    padding: var(--spacing-section-y) clamp(16px, 4vw, 32px);
+    /* PADDING ATAS DITAMBAH BIAR GAK KETUTUP HUD JAM */
+    padding: clamp(120px, 15vh, 180px) clamp(16px, 4vw, 32px) 80px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -267,7 +269,7 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 /* ==========================================================================
    [11] SECTION 1: HERO GYRO 3D & ULTRA SVG
    ========================================================================== */
-.gyroscope-physics-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; position: relative; transform-style: preserve-3d; will-change: transform; margin-top: clamp(20px, 5vh, 60px); }
+.gyroscope-physics-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; position: relative; transform-style: preserve-3d; will-change: transform; margin-top: clamp(10px, 2vh, 40px); }
 .hero-chassis-content { padding: var(--spacing-xl) var(--spacing-md); text-align: center; transform: translateZ(40px); width: 100%; max-width: 700px; z-index: 10; margin-bottom: 20px; }
 .premium-date-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--color-text-inverse); color: var(--color-primary-600); padding: 10px 24px; border-radius: var(--radius-full); font-size: var(--fs-xs); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: var(--spacing-md); box-shadow: 0 10px 25px rgba(212,139,160,0.15); }
 .hero-mega-title { font-size: var(--fs-mega); font-weight: 800; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: var(--spacing-md); color: var(--color-text-main); text-shadow: 0 15px 40px rgba(42,31,34,0.08); }
@@ -278,11 +280,11 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 .hero-mega-subtitle { font-size: var(--fs-md); line-height: 1.7; color: var(--color-text-muted); font-weight: 500; max-width: 580px; margin: 0 auto; }
 
 /* 3D SVG ART - MOBILE RESPONSIVE FIX (CLAMP SIZING) */
-.hero-art-layer { position: relative; width: 100%; max-width: clamp(280px, 80vw, 400px); height: clamp(280px, 80vw, 400px); margin: 0 auto; transform-style: preserve-3d; z-index: 5; pointer-events: none; margin-top: -40px; }
+.hero-art-layer { position: relative; width: 100%; max-width: clamp(250px, 70vw, 400px); height: clamp(250px, 70vw, 400px); margin: 0 auto; transform-style: preserve-3d; z-index: 5; pointer-events: none; margin-top: -30px; }
 .ultra-precision-vector { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 15px 25px rgba(212,139,160,0.25)); }
 .art-cake-3d { position: absolute; bottom: 0; left: 0; width: 100%; transform: translateZ(50px); }
-.art-cat-3d { position: absolute; width: clamp(120px, 40vw, 180px); height: clamp(120px, 40vw, 180px); bottom: 10%; left: -5%; transform: translateZ(80px); }
-.art-rabbit-3d { position: absolute; width: clamp(120px, 40vw, 180px); height: clamp(120px, 40vw, 180px); bottom: 20%; right: -5%; transform: translateZ(110px); }
+.art-cat-3d { position: absolute; width: clamp(100px, 35vw, 180px); height: clamp(100px, 35vw, 180px); bottom: 10%; left: -10%; transform: translateZ(80px); }
+.art-rabbit-3d { position: absolute; width: clamp(100px, 35vw, 180px); height: clamp(100px, 35vw, 180px); bottom: 20%; right: -10%; transform: translateZ(110px); }
 
 .float-heavy-anim { animation: complexFloatHeavy 6s infinite alternate var(--ease-fluid); }
 .float-medium-anim { animation: complexFloatMedium 5s infinite alternate-reverse var(--ease-fluid); }
@@ -294,7 +296,7 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 @keyframes organicFlicker { 0% { transform: scale(0.9) rotate(-3deg); opacity: 0.8; } 100% { transform: scale(1.1) rotate(3deg); opacity: 1; } }
 
 /* ==========================================================================
-   [13] SECTION 2: ROMANTIC LETTERS (RESPONSIVE GRID)
+   [12] SECTION 2: ROMANTIC LETTERS (FIX ANTI-KEPOTONG)
    ========================================================================== */
 .section-title-wrap { text-align: center; margin-bottom: var(--spacing-2xl); width: 100%; }
 .massive-section-title { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -1px; margin-bottom: var(--spacing-sm); color: var(--color-text-main); }
@@ -308,24 +310,47 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 }
 
 .poetry-card-module { padding: var(--spacing-xl) var(--spacing-lg); display: flex; flex-direction: column; gap: var(--spacing-md); position: relative; z-index: 2; }
-.poetry-chapter-title { font-size: var(--fs-xl); font-weight: 800; color: var(--color-primary-700); margin-bottom: var(--spacing-xs); display: inline-block; position: relative; width: max-content; }
+
+/* PENTING! FIX UNTUK JUDUL BAB YANG KEPOTONG (GAMBAR 2,3,4) */
+.poetry-chapter-title { 
+    font-size: var(--fs-xl); 
+    font-weight: 800; 
+    color: var(--color-primary-700); 
+    margin-bottom: var(--spacing-xs); 
+    display: inline-block; 
+    position: relative; 
+    /* width: max-content dihapus, ganti dengan word-wrap */
+    max-width: 100%;
+    word-wrap: break-word;
+    white-space: normal;
+}
 .poetry-chapter-title::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 40px; height: 3px; background: var(--color-primary-400); border-radius: 2px; }
+
 .poetry-content-body { display: flex; flex-direction: column; gap: var(--spacing-sm); }
 .poetry-content-body p { font-size: var(--fs-sm); line-height: 1.9; color: var(--color-text-main); font-weight: 500; text-align: justify; }
 
-/* THE GRAND CONCLUSION CARD */
-.poetry-grand-highlight-card { background: var(--color-text-main); color: var(--color-text-inverse); text-align: center; padding: var(--spacing-3xl) var(--spacing-lg); border-radius: var(--radius-xl); box-shadow: var(--shadow-heavy); position: relative; overflow: hidden; }
+/* THE GRAND CONCLUSION CARD (FIX PADDING TERLALU SEMPIT GAMBAR 5) */
+.poetry-grand-highlight-card { 
+    background: var(--color-text-main); 
+    color: var(--color-text-inverse); 
+    text-align: center; 
+    /* Padding dikurangi agar tidak menjepit tulisan di mobile */
+    padding: clamp(32px, 5vw, 64px) clamp(20px, 4vw, 40px); 
+    border-radius: var(--radius-xl); 
+    box-shadow: var(--shadow-heavy); 
+    position: relative; 
+    overflow: hidden; 
+}
 .glow-rotating-aura-fx { position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: conic-gradient(from 0deg, transparent 0deg, rgba(212,139,160,0.15) 90deg, rgba(212,139,160,0.3) 180deg, rgba(212,139,160,0.15) 270deg, transparent 360deg); animation: rotateAura 10s linear infinite; pointer-events: none; z-index: 0; }
 @keyframes rotateAura { 100% { transform: rotate(360deg); } }
 .highlight-neon-title { font-size: var(--fs-2xl); font-weight: 800; color: var(--color-primary-400); margin-bottom: var(--spacing-md); text-shadow: 0 0 30px rgba(212,139,160,0.6); position: relative; z-index: 2; }
 .highlight-paragraph-text { color: rgba(255,255,255,0.95); font-size: var(--fs-md); line-height: 1.9; position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
 
 /* ==========================================================================
-   [14] SECTION 3: MASONRY GALLERY (DOUBLE TAP TO LOVE)
+   [13] SECTION 3: MASONRY GALLERY (DOUBLE TAP TO LOVE)
    ========================================================================== */
-.brutal-masonry-architecture { column-count: 1; column-gap: var(--spacing-lg); }
+.brutal-masonry-architecture { column-count: 1; column-gap: var(--spacing-lg); width: 100%; }
 @media (min-width: 768px) { .brutal-masonry-architecture { column-count: 2; } }
-@media (min-width: 1024px) { .brutal-masonry-architecture { column-count: 3; } }
 
 .masonry-media-box { break-inside: avoid; margin-bottom: var(--spacing-lg); padding: var(--spacing-xs); border-radius: var(--radius-lg); cursor: pointer; transform: translateZ(0); transition: transform 0.4s var(--ease-bouncy), box-shadow 0.4s ease; }
 .masonry-media-box:hover { transform: translateY(-5px) scale(1.01); box-shadow: 0 20px 40px rgba(212,139,160,0.2); }
@@ -334,34 +359,26 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 .media-inner-bound img, .media-inner-bound video { width: 100%; height: auto; display: block; object-fit: cover; transition: transform 1s var(--ease-apple-spring), filter 0.5s; }
 .masonry-media-box:hover .media-inner-bound img, .masonry-media-box:hover .media-inner-bound video { transform: scale(1.05); filter: brightness(1.05); }
 
+/* Double-Tap Love Pop Effect */
 .love-popup-fx-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 80px; height: 80px; z-index: 5; pointer-events: none; opacity: 0; display: flex; justify-content: center; align-items: center; }
 .love-popup-fx-container svg { width: 100%; height: 100%; fill: var(--color-error); filter: drop-shadow(0 10px 20px rgba(255, 77, 79, 0.5)); }
 .love-anim-active { animation: popLove 1s var(--ease-bouncy) forwards; }
-@keyframes popLove { 0% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; } 30% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); opacity: 1; } 50% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } 80% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; } }
+@keyframes popLove { 0% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; } 30% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); opacity: 1; } 50%, 80% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; } }
 
 /* ==========================================================================
-   [15] SECTION 4: GOOEY WISH CONSOLE (FIXED FONT)
+   [14] SECTION 4: GOOEY WISH CONSOLE
    ========================================================================== */
-.wish-transmission-console { width: 100%; padding: var(--spacing-2xl) var(--spacing-lg); text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--spacing-lg); transition: opacity 0.8s, transform 0.8s; }
-.console-star-levitator { width: clamp(60px, 15vw, 100px); height: clamp(60px, 15vw, 100px); filter: drop-shadow(0 20px 30px rgba(255,215,0,0.4)); animation: floatSoft 4s infinite alternate ease-in-out; }
+.wish-console-ui { width: 100%; padding: var(--spacing-2xl) var(--spacing-lg); text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--spacing-lg); transition: opacity 0.8s, transform 0.8s; }
+.console-star-levitator { width: clamp(60px, 15vw, 100px); height: clamp(60px, 15vw, 100px); filter: drop-shadow(0 20px 30px rgba(255,215,0,0.4)); animation: gentleLevitation 5s infinite alternate ease-in-out; }
 .aesthetic-textarea-wrapper { width: 100%; margin-top: var(--spacing-md); position: relative; z-index: 2; }
-
-/* FIX TEXTAREA FONT HARDCODED TO PLUS JAKARTA SANS */
-#wish-textarea-node { 
-    width: 100%; height: clamp(150px, 30vh, 200px); padding: var(--spacing-md); border-radius: var(--radius-lg); 
-    border: 2px solid rgba(255,255,255,0.9); background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); 
-    font-size: var(--fs-md); line-height: 1.6; resize: none; outline: none; transition: all 0.4s var(--ease-apple-spring); 
-    color: var(--color-text-main); 
-    font-family: 'Plus Jakarta Sans', sans-serif !important; /* HARDCODE FONT PREVENT TIMES NEW ROMAN */
-    box-shadow: inset 0 4px 10px rgba(0,0,0,0.03), 0 10px 20px rgba(212,139,160,0.1); 
-}
-#wish-textarea-node:focus { background: #fff; box-shadow: 0 20px 50px rgba(212,139,160,0.2), inset 0 2px 8px rgba(0,0,0,0.02); border-color: var(--color-primary-500); transform: translateY(-2px); }
-.focus-breathing-ring { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: var(--radius-lg); border: 2px solid var(--color-primary-400); opacity: 0; pointer-events: none; transition: opacity 0.4s; transform: scale(1.02); }
-#wish-textarea-node:focus + .focus-breathing-ring { opacity: 1; animation: breatheRing 2s infinite alternate; }
-@keyframes breatheRing { 0% { transform: scale(1.01); opacity: 0.5; } 100% { transform: scale(1.03); opacity: 0; } }
+#wish-textarea-node { width: 100%; height: 220px; padding: var(--spacing-lg); border-radius: var(--radius-lg); border: 2px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); font-size: var(--fs-md); line-height: 1.6; resize: none; outline: none; transition: all 0.4s var(--ease-apple-spring); color: var(--color-text-main); font-family: 'Plus Jakarta Sans', sans-serif !important; box-shadow: inset 0 4px 10px rgba(0,0,0,0.03), 0 10px 20px rgba(212,139,160,0.1); }
+#wish-textarea-node:focus { background: #fff; box-shadow: 0 20px 50px rgba(212,139,160,0.2), inset 0 2px 8px rgba(0,0,0,0.02); border-color: var(--color-primary-500); transform: translateY(-4px); }
+.focus-pulse-ring { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: var(--radius-lg); border: 2px solid var(--color-primary-400); opacity: 0; pointer-events: none; transition: opacity 0.4s; transform: scale(1.02); }
+#wish-textarea-node:focus + .focus-pulse-ring { opacity: 1; animation: breatheRing 2s infinite alternate; }
+@keyframes breatheRing { 0% { transform: scale(1.01); opacity: 0.4; } 100% { transform: scale(1.03); opacity: 0; } }
 
 /* GOOEY BUTTON ENGINE */
-.gooey-button-container { filter: url('#gooey-morph-fx'); width: 100%; display: flex; justify-content: center; padding: 15px 0; }
+.gooey-btn-wrap { filter: url('#gooey-morph-fx'); width: 100%; display: flex; justify-content: center; padding: 15px 0; }
 .gooey-execution-button { width: 100%; max-width: 340px; padding: clamp(16px, 4vw, 24px); border-radius: var(--radius-full); border: none; background: var(--color-text-main); color: var(--color-text-inverse); font-size: var(--fs-md); font-weight: 800; letter-spacing: 1px; cursor: pointer; transition: 0.3s var(--ease-bouncy); box-shadow: var(--shadow-heavy); position: relative; }
 .gooey-execution-button::before, .gooey-execution-button::after { content: ''; position: absolute; background: var(--color-text-main); border-radius: 50%; transition: 0.4s var(--ease-apple-spring); z-index: -1; }
 .gooey-execution-button::before { width: 40px; height: 40px; top: 50%; left: 20%; transform: translate(-50%, -50%); }
@@ -380,9 +397,8 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 @keyframes brutalMeteorStrike { 0%{transform:translateY(200px) scale(0) rotate(0deg); opacity:0;} 20%{transform:translateY(0) scale(1.5) rotate(45deg); opacity:1;} 80%{transform:translateY(-40vh) scale(1.2) rotate(45deg); opacity:1;} 100%{transform:translateY(-100vh) scale(0) rotate(45deg); opacity:0;} }
 
 /* ==========================================================================
-   [16] SECTION 5: FINAL SECRET GIFT (Z-INDEX BUG FIXED!)
+   [15] SECTION 5: FINAL SECRET GIFT (Z-INDEX BUG FIXED!)
    ========================================================================== */
-.section-padding-bottom-extreme { padding-bottom: clamp(150px, 20vh, 250px); } 
 .relative-stack-engine { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; width: 100%; }
 
 /* Heart Draw */
@@ -406,27 +422,27 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 .box-explode-anim .box-base-element, .box-explode-anim .box-ribbon-element { transform: translateY(20px) scale(0.9); opacity: 0; transition: all 0.8s 0.2s cubic-bezier(0.19, 1, 0.22, 1); }
 
 /* Z-INDEX 99 FORCES BUTTON TO BE CLICKABLE ABOVE EVERYTHING */
-.mega-execution-button { width: 100%; padding: clamp(16px, 4vw, 24px); border-radius: var(--radius-full); border: none; background: var(--color-primary-600); color: #fff; font-size: var(--fs-md); font-weight: 800; cursor: pointer; box-shadow: var(--shadow-heavy-glow); transition: 0.3s; margin-top: var(--spacing-md); position: relative; z-index: 99; pointer-events: auto; }
+.mega-execution-button { width: 100%; padding: clamp(16px, 4vw, 24px); border-radius: var(--radius-full); border: none; background: var(--color-primary-600); color: #fff; font-size: var(--fs-md); font-weight: 800; cursor: pointer; box-shadow: var(--shadow-heavy-glow); transition: 0.3s; margin-top: var(--space-md); position: relative; z-index: 99; pointer-events: auto; }
 .mega-execution-button:active { transform: scale(0.95); }
 
 /* Final Payload */
-#reward-payload-container { width: 100%; padding: var(--spacing-xl) var(--spacing-md); display: flex; flex-direction: column; gap: var(--spacing-xl); position: absolute; transition: 1s var(--ease-bouncy); z-index: 20; box-shadow: 0 40px 80px rgba(42,31,34,0.2), inset 0 0 0 1px rgba(255,255,255,0.8); }
+#reward-payload-container { width: 100%; padding: var(--space-xl) var(--space-md); display: flex; flex-direction: column; gap: var(--space-xl); position: absolute; transition: 1s var(--ease-bouncy); z-index: 20; box-shadow: 0 40px 80px rgba(42,31,34,0.2), inset 0 0 0 1px rgba(255,255,255,0.8); }
 .payload-media-frame { width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); overflow: hidden; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.2); border: 3px solid #fff; background: #000; }
 .payload-img-content { width: 100%; height: 100%; object-fit: cover; opacity: 0.95; }
 .glass-shine-sweep-fx { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent); transform: skewX(-25deg); animation: premiumSweepShine 5s infinite 2s; pointer-events: none; }
 @keyframes premiumSweepShine { 0%, 60% { left: -100%; } 100% { left: 200%; } }
 
 .payload-data-content { text-align: center; }
-.payload-heading-h3 { font-size: var(--fs-2xl); font-weight: 800; color: var(--color-primary-800); margin-bottom: var(--spacing-sm); text-shadow: 0 4px 12px rgba(212,139,160,0.3); }
-.payload-description-p { font-size: var(--fs-sm); line-height: 1.8; font-weight: 600; color: var(--color-text-main); margin-bottom: var(--spacing-lg); }
-.mega-wa-button { background: #25D366; display: flex; justify-content: center; align-items: center; gap: var(--spacing-sm); padding: clamp(16px, 4vw, 22px); border-radius: var(--radius-full); color: #fff; font-size: var(--fs-md); font-weight: 800; box-shadow: 0 20px 40px rgba(37,211,102,0.4), inset 0 2px 4px rgba(255,255,255,0.4); transition: 0.3s var(--ease-bouncy); text-decoration: none; position: relative; z-index: 99; pointer-events: auto; }
+.payload-heading-h3 { font-size: var(--fs-2xl); font-weight: 800; color: var(--color-primary-800); margin-bottom: var(--space-sm); text-shadow: 0 4px 12px rgba(212,139,160,0.3); }
+.payload-description-p { font-size: var(--fs-sm); line-height: 1.8; font-weight: 600; color: var(--color-text-main); margin-bottom: var(--space-lg); }
+.mega-wa-button { background: #25D366; display: flex; justify-content: center; align-items: center; gap: var(--space-sm); padding: clamp(16px, 4vw, 22px); border-radius: var(--radius-full); color: #fff; font-size: var(--fs-md); font-weight: 800; box-shadow: 0 20px 40px rgba(37,211,102,0.4), inset 0 2px 4px rgba(255,255,255,0.4); transition: 0.3s var(--ease-bouncy); text-decoration: none; position: relative; z-index: 99; pointer-events: auto; }
 .mega-wa-button:active { transform: scale(0.95); box-shadow: 0 10px 20px rgba(37,211,102,0.3); }
 .icon-whatsapp-svg { width: 28px; height: 28px; fill: #fff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
 
 /* ==========================================================================
-   [17] APPLE-STYLE FLOATING DOCK NAVIGATION
+   [16] APPLE-STYLE FLOATING DOCK NAVIGATION
    ========================================================================== */
-.apple-dock-navigation { position: fixed; bottom: clamp(16px, 4vw, 32px); left: 0; width: 100%; display: flex; justify-content: center; z-index: var(--z-index-dock); padding: 0 var(--spacing-sm); transition: opacity 0.8s, transform 0.8s var(--ease-bouncy); pointer-events: none; }
+.apple-dock-navigation { position: fixed; bottom: clamp(16px, 4vw, 32px); left: 0; width: 100%; display: flex; justify-content: center; z-index: var(--z-index-dock); padding: 0 var(--space-sm); transition: opacity 0.8s, transform 0.8s var(--ease-bouncy); pointer-events: none; }
 .dock-capsule-wrapper { display: flex; justify-content: space-between; padding: 8px; width: 100%; max-width: 420px; border-radius: var(--radius-full); pointer-events: auto; box-shadow: 0 20px 40px rgba(42,31,34,0.15), inset 0 1px 3px rgba(255,255,255,0.8); }
 .dock-item-btn { width: clamp(48px, 12vw, 64px); height: clamp(48px, 12vw, 64px); display: flex; justify-content: center; align-items: center; border-radius: 50%; color: var(--color-text-muted); transition: 0.4s var(--ease-apple-spring); text-decoration: none; position: relative; }
 .dock-item-btn svg { width: clamp(20px, 6vw, 28px); height: clamp(20px, 6vw, 28px); transition: 0.4s var(--ease-apple-spring); }
@@ -437,10 +453,28 @@ body.magnetic-hover-active #cursor-magnetic-aura { width: 72px; height: 72px; ba
 .dock-item-btn.active-dock-link svg { transform: scale(1.2); }
 
 /* ==========================================================================
-   [18] SECRET KONAMI CODE OVERLAY (MATRIX)
+   [17] SECRET KONAMI CODE OVERLAY (MATRIX)
    ========================================================================== */
-#secret-konami-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: opacity 1s; padding: var(--spacing-lg); }
+#secret-konami-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: opacity 1s; padding: var(--space-lg); }
 #matrix-rain-canvas { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0.4; }
 .secret-text-box { position: relative; z-index: 2; text-align: center; color: #00ff41; font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 10px #00ff41; }
-.secret-text-box h2 { font-size: var(--fs-3xl); margin-bottom: var(--spacing-md); }
+.secret-text-box h2 { font-size: var(--fs-3xl); margin-bottom: var(--space-md); }
 .secret-text-box p { font-size: var(--fs-md); max-width: 600px; margin: 0 auto; line-height: 1.8; }
+
+/* ==========================================================================
+   [18] RESPONSIVE MEGA FIXES (MOBILE-FIRST SAFEGUARDS)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .poetry-card-module { padding: var(--space-2xl) var(--space-lg); }
+    .poetry-grand-highlight-card { padding: var(--space-2xl) var(--space-lg); } /* FIXED CRAMPED PADDING (GAMBAR 5) */
+    .hero-mega-title { font-size: var(--fs-4xl); }
+    .mega-section { padding-top: 140px; padding-bottom: 80px; } /* CLEARS THE HUD AT THE TOP (GAMBAR 1) */
+    .dynamic-island-header { top: 12px; width: 94%; }
+    .telemetry-time-module { display: none; } /* Hide time on small screens to save space */
+}
+
+@media (max-width: 480px) {
+    .auth-security-card { padding: var(--space-2xl) var(--space-md); }
+    .n-keypad-btn { width: 64px; height: 64px; }
+    .n-keypad-btn span { font-size: var(--fs-2xl); }
+}
