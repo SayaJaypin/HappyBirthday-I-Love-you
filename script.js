@@ -1,6 +1,6 @@
 /**
  * ==============================================================================
- * ZAHRA'S UNIVERSE - ULTIMATE CORE ENGINE V13.0 (GOD TIER - BUG DESTROYER)
+ * ZAHRA'S UNIVERSE - ULTIMATE CORE ENGINE V14.0 (GOD TIER - BUG DESTROYER)
  * ARCHITECTURE: Object-Oriented, High-Performance, WebGL-ready Canvas, Web Audio
  * FEATURES: Heartbeat Sync, Confetti Physics, Double-Tap Logic, Hardware Telemetry
  * ==============================================================================
@@ -119,13 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Inisialisasi Latar Belakang Ganda
     new StellarPhysicsEngine('stellar-constellation-canvas', 70, 140, false);
     new StellarPhysicsEngine('cosmic-dust-canvas', 120, 0, true);
 
 
     /** ========================================================================
-     * [3] HARDWARE TELEMETRY (BATTERY, TIME, LATENCY) - CRASH PROOF
+     * [3] HARDWARE TELEMETRY (BATTERY, TIME, LATENCY)
      * ======================================================================== */
     const HardwareTelemetry = {
         initTime: () => {
@@ -217,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.isInitialized = true;
                 if (this.canvas) this.renderVisualizer();
             } catch (e) {
-                console.warn("Web Audio API not fully supported. Fallback to standard player.", e);
+                console.warn("Web Audio API not fully supported. Fallback to basic player.", e);
             }
         }
 
@@ -279,7 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const GlobalAudioEngine = new AdvancedAudioEngine();
 
-
     /** ========================================================================
      * [5] NEUMORPHIC AUTHENTICATION (CRYPTOGRAPHIC DELAY SIMULATION)
      * ======================================================================== */
@@ -295,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bindKeypad() {
             document.querySelectorAll('.n-keypad-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    CoreUtils.triggerHaptic([15]); // Getaran tombol halus
+                    CoreUtils.triggerHaptic([15]); 
                     
                     const key = btn.getAttribute('data-pin-key');
                     if (key === 'C') this.currentInput = "";
@@ -323,7 +321,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         validate() {
             if (this.currentInput === this.correctPin) {
-                // KODE BENAR: Buka gerbang
                 setTimeout(() => {
                     this.authLayer.style.opacity = '0';
                     setTimeout(() => {
@@ -333,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 900); 
                 }, 300); 
             } else {
-                // KODE SALAH: Haptic marah dan Shake
                 CoreUtils.triggerHaptic([30, 50, 30]); 
                 const authCard = document.querySelector('.auth-security-card');
                 if(authCard) authCard.classList.add('matrix-shake-error');
@@ -348,7 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     new NeumorphicAuthenticator();
-
 
     /** ========================================================================
      * [6] QUANTUM BLOOM LOADING SEQUENCE
@@ -392,7 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 150);
     }
 
-
     /** ========================================================================
      * [7] MASSIVE SYSTEM BOOT & INTERSECTION OBSERVER
      * ======================================================================== */
@@ -417,9 +411,8 @@ document.addEventListener('DOMContentLoaded', () => {
             initIntersectionObserver();
             initDeviceGyroscope();
             initDoubleTapToLove();
-            initHeartbeatSync(); // FITUR BARU CEWEK LU
+            initHeartbeatSync(); // FITUR SINKRONISASI JANTUNG
             
-            // Coba Auto Play Musik
             GlobalAudioEngine.initializeAudioContext();
             const coreAudio = CoreUtils.getElement('core-audio-engine');
             if(coreAudio) {
@@ -432,23 +425,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initIntersectionObserver() {
-        const observerOptions = {
-            root: null,
-            threshold: 0.1,
-            rootMargin: "0px 0px -100px 0px"
-        };
+        const observerOptions = { root: null, threshold: 0.1, rootMargin: "0px 0px -100px 0px" };
 
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('has-revealed', 'is-triggered');
                     
-                    // Trigger Menggambar Hati SVG Secara Otomatis
                     if (entry.target.id === 'svg-heart-drawing-sequence' && !window.giftDecryptionSequenceStarted) {
                         window.giftDecryptionSequenceStarted = true;
                         entry.target.classList.add('heart-draw-triggered');
                         
-                        // Menunggu SVG selesai digambar (4.5s) sebelum memunculkan kotak kado 3D
                         setTimeout(() => {
                             const boxTrigger = CoreUtils.getElement('gift-box-interactive-module');
                             if(boxTrigger) {
@@ -463,8 +450,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelectorAll('.reveal-up-anim, .split-text-animation-trigger').forEach(el => revealObserver.observe(el));
         
-        // --- PARALLAX & DOCK NAV LOGIC (60FPS SCROLL) ---
-        const parallaxElements = document.querySelectorAll('.parallax-layer');
+        // PARALLAX & DOCK NAV LOGIC (60FPS SCROLL)
+        const parallaxElements = document.querySelectorAll('.parallax-layer, .parallax-element');
         const readProgressBar = CoreUtils.getElement('reading-progress-bar');
         const sections = document.querySelectorAll('.massive-section');
         const dockBtns = document.querySelectorAll('.dock-item-btn');
@@ -472,38 +459,30 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY || window.pageYOffset;
             
-            // 1. Reading Progress
             const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = (scrollY / scrollHeight) * 100;
             if (readProgressBar) readProgressBar.style.width = `${scrollPercent}%`;
 
-            // 2. High-Performance Parallax Matrix
             requestAnimationFrame(() => {
                 parallaxElements.forEach(el => {
-                    const speed = parseFloat(el.getAttribute('data-parallax-speed'));
+                    const speed = parseFloat(el.getAttribute('data-parallax-speed') || el.getAttribute('data-speed'));
                     if(!isNaN(speed)) el.style.transform = `translate3d(0, ${-(scrollY * speed)}px, 0)`;
                 });
             });
 
-            // 3. Apple Dock Highlight
             let currentSectionId = '';
             sections.forEach(sec => {
                 const secTop = sec.offsetTop;
-                if (scrollY >= secTop - (window.innerHeight / 2.5)) {
-                    currentSectionId = sec.getAttribute('id');
-                }
+                if (scrollY >= secTop - (window.innerHeight / 2.5)) currentSectionId = sec.getAttribute('id');
             });
 
             dockBtns.forEach(btn => {
                 btn.classList.remove('active-dock-link');
-                if (btn.getAttribute('href') === `#${currentSectionId}`) {
-                    btn.classList.add('active-dock-link');
-                }
+                if (btn.getAttribute('href') === `#${currentSectionId}`) btn.classList.add('active-dock-link');
             });
 
         }, { passive: true });
 
-        // Smooth Anchor Scrolling
         dockBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -516,7 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /** ========================================================================
-     * [8] FITUR BARU: SINKRONISASI JANTUNG (HEARTBEAT SYNC)
+     * [8] FITUR BARU: SINKRONISASI JANTUNG (HEARTBEAT SYNC) - FIX SENTUH BUG
      * ======================================================================== */
     function initHeartbeatSync() {
         const hbBtn = CoreUtils.getElement('heartbeat-sensor-btn');
@@ -527,22 +506,27 @@ document.addEventListener('DOMContentLoaded', () => {
         let pulseIntervalId;
         let isHolding = false;
 
+        // Cegah menu klik kanan saat ditahan
+        hbBtn.addEventListener('contextmenu', e => e.preventDefault());
+
         const startSync = (e) => {
-            e.preventDefault(); // Mencegah scrolling saat ditekan
+            // MENCEGAH BROWSER MEN-SCROLL ATAU ZOOM SAAT DITAHAN (CRITICAL FIX)
+            if (e.cancelable) e.preventDefault(); 
+            
             if(isHolding) return;
             isHolding = true;
             
-            CoreUtils.triggerHaptic([20]); // Initial feedback
+            CoreUtils.triggerHaptic([20]); 
             
-            // Loop getaran detak jantung manusia [Sistolik, Diastolik]
+            // Simulasi detak jantung [Sistolik, Diastolik]
             const heartbeatPulse = () => {
                 if(!isHolding) return;
                 CoreUtils.triggerHaptic([40, 100, 40]);
-                pulseIntervalId = setTimeout(heartbeatPulse, 800); // 800ms per detak
+                pulseIntervalId = setTimeout(heartbeatPulse, 800); 
             };
             heartbeatPulse();
 
-            // Memunculkan pesan rahasia setelah 2.5 detik ditahan
+            // Memunculkan pesan rahasia setelah 2.5 detik
             hbTimerId = setTimeout(() => {
                 hbText.classList.remove('hidden-state');
                 setTimeout(() => {
@@ -553,6 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const stopSync = (e) => {
+            if (e.cancelable) e.preventDefault();
             if(!isHolding) return;
             isHolding = false;
             
@@ -566,10 +551,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 800);
         };
 
-        // Support untuk layar sentuh dan mouse
+        // BINDING EVENT TOUCH & MOUSE SECARA ABSOLUT
         hbBtn.addEventListener('touchstart', startSync, {passive: false});
-        hbBtn.addEventListener('touchend', stopSync);
-        hbBtn.addEventListener('touchcancel', stopSync);
+        hbBtn.addEventListener('touchend', stopSync, {passive: false});
+        hbBtn.addEventListener('touchcancel', stopSync, {passive: false});
         
         hbBtn.addEventListener('mousedown', startSync);
         hbBtn.addEventListener('mouseup', stopSync);
@@ -583,7 +568,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const gyroWrapper = CoreUtils.getElement('gyro-master-wrapper');
         if (!gyroWrapper) return;
 
-        // Mobile Gyroscope Parallax
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', (e) => {
                 let beta = e.beta; 
@@ -603,7 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /** ========================================================================
-     * [10] INSTAGRAM-STYLE DOUBLE TAP TO LOVE (CALCULATES EXACT XY COORDS)
+     * [10] INSTAGRAM-STYLE DOUBLE TAP TO LOVE
      * ======================================================================== */
     function initDoubleTapToLove() {
         const galleryItems = document.querySelectorAll('.double-tap-interactive-zone');
@@ -616,16 +600,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tapLength = currentTime - lastTapTime;
                 
                 if (tapLength < 350 && tapLength > 0) {
-                    // Terdeteksi klik dua kali!
                     e.preventDefault();
-                    CoreUtils.triggerHaptic([20, 40, 20]); // Getaran detak jantung
+                    CoreUtils.triggerHaptic([20, 40, 20]); 
                     
                     const rect = item.getBoundingClientRect();
-                    // Akurasi koordinat X dan Y di dalam elemen
                     let x = e.clientX - rect.left;
                     let y = e.clientY - rect.top;
                     
-                    // Fallback untuk sentuhan mobile
                     if (e.touches && e.touches.length > 0) {
                         x = e.touches[0].clientX - rect.left;
                         y = e.touches[0].clientY - rect.top;
@@ -634,11 +615,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const loveFx = item.querySelector('.love-popup-fx-container');
                     if(!loveFx) return;
                     
-                    // Posisi Hati presisi di tempat sentuhan
                     loveFx.style.left = `${x}px`;
                     loveFx.style.top = `${y}px`;
                     
-                    // Trigger ulang animasi
                     loveFx.classList.remove('love-anim-active');
                     void loveFx.offsetWidth; 
                     loveFx.classList.add('love-anim-active');
@@ -663,7 +642,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const textValue = textArea.value.trim();
             
             if (!textValue) {
-                // Getaran error jika input kosong
                 textArea.style.transform = 'translateX(-10px)';
                 setTimeout(() => textArea.style.transform = 'translateX(10px)', 100);
                 setTimeout(() => textArea.style.transform = 'translateX(0)', 200);
@@ -675,7 +653,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const outputDisplay = CoreUtils.getElement('wish-output-display');
             const meteorEntity = CoreUtils.getElement('meteor-animated-entity');
 
-            // Sembunyikan form
             consoleUI.style.opacity = '0';
             consoleUI.style.transform = 'scale(0.9)';
             
@@ -685,15 +662,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 outputDisplay.innerText = `"${textValue}"`;
                 
-                // Tunggu user membaca kalimatnya, lalu tembak meteor
                 setTimeout(() => {
                     outputDisplay.style.opacity = '0'; 
-                    
                     setTimeout(() => {
                         meteorEntity.classList.add('meteor-shoot-trigger');
-                        CoreUtils.triggerHaptic([60, 60, 150]); // Getaran meteor jatuh
+                        CoreUtils.triggerHaptic([60, 60, 150]); 
                     }, 1000);
-                    
                 }, 3500); 
                 
             }, 800);
@@ -701,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /** ========================================================================
-     * [12] CONFETTI TORNADO PHYSICS ENGINE (3D GRAVITY & AIR DRAG)
+     * [12] CONFETTI TORNADO PHYSICS ENGINE
      * ======================================================================== */
     class ConfettiTornadoEngine {
         constructor(canvasId) {
@@ -722,13 +696,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         detonate() {
             this.particles = [];
-            // Buat 300 partikel untuk ledakan brutal
             for(let i=0; i<300; i++) {
                 this.particles.push({
                     x: this.canvas.width / 2,
                     y: this.canvas.height / 2 + 100, 
-                    vx: CoreUtils.randomBetween(-35, 35), // Sebaran sumbu X
-                    vy: CoreUtils.randomBetween(-45, -10), // Ledakan ke atas sumbu Y
+                    vx: CoreUtils.randomBetween(-35, 35), 
+                    vy: CoreUtils.randomBetween(-45, -10), 
                     size: CoreUtils.randomBetween(6, 15),
                     color: this.colors[Math.floor(Math.random() * this.colors.length)],
                     rotation: CoreUtils.randomBetween(0, 360),
@@ -746,25 +719,19 @@ document.addEventListener('DOMContentLoaded', () => {
             let activeParticles = false;
 
             this.particles.forEach(p => {
-                // Kalkulasi Fisika
                 p.x += p.vx;
                 p.y += p.vy;
                 p.vy += 0.9; // Tarikan Gravitasi Bumi
                 p.vx *= 0.96; // Gesekan Angin (Air Drag)
-                
-                // Ilusi 3D Rotasi
                 p.rotation += p.rotationSpeed;
                 p.tilt += p.tiltSpeed;
 
-                // Render hanya partikel yang belum jatuh melewati layar
                 if (p.y < this.canvas.height + 50) {
                     activeParticles = true;
-                    
                     this.ctx.save();
                     this.ctx.translate(p.x, p.y);
                     this.ctx.rotate(CoreUtils.degreesToRads(p.rotation));
                     
-                    // Ilusi putaran koin 3D dengan scaleY
                     const scaleY = Math.abs(Math.sin(CoreUtils.degreesToRads(p.tilt)));
                     this.ctx.scale(1, scaleY);
                     
@@ -778,51 +745,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.animationId = requestAnimationFrame(() => this.render());
             } else {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.particles = []; // Bersihkan memori
+                this.particles = []; 
             }
         }
     }
 
     /** ========================================================================
-     * [13] FINAL GIFT DECRYPTION SEQUENCE (FIXED BUTTON Z-INDEX)
+     * [13] FINAL GIFT DECRYPTION SEQUENCE
      * ======================================================================== */
     const ConfettiSystem = new ConfettiTornadoEngine('confetti-physics-canvas');
-
     const btnOpenGift = CoreUtils.getElement('cmd-execute-decryption');
+    
     if(btnOpenGift) {
         btnOpenGift.addEventListener('click', (e) => {
-            // Hentikan propagasi event biar gak bentrok
             e.stopPropagation();
-            
-            CoreUtils.triggerHaptic([60, 120, 180]); // Ledakan haptic
+            CoreUtils.triggerHaptic([60, 120, 180]); 
             
             const interactionModule = CoreUtils.getElement('gift-box-interactive-module');
             const backgroundDraw = CoreUtils.getElement('svg-heart-drawing-sequence');
             const payloadContainer = CoreUtils.getElement('reward-payload-container');
             const svgBoxWrapper = CoreUtils.getElement('svg-gift-box-wrapper');
 
-            // 1. Trigger CSS Animation Ledakan Kado 3D
             if(svgBoxWrapper) svgBoxWrapper.classList.add('box-explode-anim');
             
-            // 2. Eksekusi Kanvas Fisika Konfeti
             const confettiCanvas = CoreUtils.getElement('confetti-physics-canvas');
             if(confettiCanvas) {
                 confettiCanvas.classList.remove('hidden-state');
                 setTimeout(() => ConfettiSystem.detonate(), 200); 
             }
 
-            // 3. Sinkronisasi Waktu Transisi UI (Mencegah Overlap)
             setTimeout(() => {
-                // Pudar
                 if(interactionModule) interactionModule.style.opacity = '0';
                 if(backgroundDraw) backgroundDraw.style.opacity = '0';
 
                 setTimeout(() => {
-                    // Hilangkan sepenuhnya dari aliran DOM
                     if(interactionModule) interactionModule.classList.add('hidden-state');
                     if(backgroundDraw) backgroundDraw.classList.add('hidden-state');
                     
-                    // Munculkan Hadiah Utama (Gambar & Tombol WhatsApp)
                     if(payloadContainer) {
                         payloadContainer.classList.remove('hidden-state');
                         setTimeout(() => {
@@ -830,10 +789,71 @@ document.addEventListener('DOMContentLoaded', () => {
                             payloadContainer.style.transform = 'translateY(0) scale(1)';
                         }, 50);
                     }
-                }, 900); // Sesuaikan durasi CSS Opacity Transition
-
-            }, 1600); // Tunggu kado meledak dan terbang dulu
+                }, 900); 
+            }, 1600); 
         });
+    }
+
+    /** ========================================================================
+     * [14] SECRET KONAMI CODE (MATRIX EASTER EGG)
+     * ======================================================================== */
+    const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === konamiSequence[konamiIndex]) {
+            konamiIndex++;
+            if (konamiIndex === konamiSequence.length) {
+                activateMatrixEasterEgg();
+                konamiIndex = 0; 
+            }
+        } else {
+            konamiIndex = 0; 
+        }
+    });
+
+    function activateMatrixEasterEgg() {
+        const overlay = CoreUtils.getElement('secret-konami-overlay');
+        if(!overlay) return;
+        
+        overlay.classList.remove('hidden-state');
+        CoreUtils.triggerHaptic([100, 50, 100, 50, 100]);
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        CoreUtils.getElement('matrix-rain-canvas').appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+        
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*ZAHRA'.split('');
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for(let x = 0; x < columns; x++) drops[x] = 1;
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#d48ba0'; 
+            ctx.font = fontSize + 'px monospace';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        const matrixIntv = setInterval(drawMatrix, 35);
+        
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            clearInterval(matrixIntv);
+            setTimeout(() => {
+                overlay.classList.add('hidden-state');
+                CoreUtils.getElement('matrix-rain-canvas').innerHTML = '';
+            }, 1000);
+        }, 12000);
     }
 
 });
