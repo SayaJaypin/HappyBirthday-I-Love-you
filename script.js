@@ -1,33 +1,39 @@
 /**
  * ==============================================================================
- * ZAHRA'S UNIVERSE - ULTIMATE CORE ENGINE V11.0 (ANTI-BUG MOBILE FIRST EDITION)
+ * ZAHRA'S UNIVERSE - ULTIMATE CORE ENGINE V12.0 (GOD TIER - BUG DESTROYER)
  * ARCHITECTURE: Object-Oriented, High-Performance, WebGL-ready Canvas, Web Audio
  * ==============================================================================
+ * WARNING: THIS IS A MASSIVE PHYSICS AND ANIMATION ENGINE.
+ * DO NOT MODIFY UNLESS YOU KNOW EXACTLY WHAT YOU ARE DOING.
  */
 
 "use strict";
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    /** ========================================================================
-     * [1] CORE UTILITIES, MATH ENGINE, & HAPTIC FEEDBACK
-     * ======================================================================== */
+    // ========================================================================
+    // [1] CORE UTILITIES, MATH ENGINE, & HAPTIC FEEDBACK
+    // ========================================================================
     const CoreUtils = {
         lerp: (start, end, factor) => start + (end - start) * factor,
         randomBetween: (min, max) => Math.random() * (max - min) + min,
         distance: (x1, y1, x2, y2) => Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)),
         degreesToRads: (degrees) => (degrees * Math.PI) / 180,
         triggerHaptic: (pattern = [15]) => {
-            // Aman untuk perangkat yang mendukung API Getaran (Android)
+            // Aman untuk perangkat Android yang mendukung API Getaran
             if ('vibrate' in navigator) {
-                try { navigator.vibrate(pattern); } catch(e) { console.warn("Haptic disabled"); }
+                try { navigator.vibrate(pattern); } catch(e) { console.warn("Haptic override prevented by OS"); }
             }
+        },
+        getElement: (primaryId, fallbackId) => {
+            // Smart Selector untuk mencegah crash jika ID HTML berubah
+            return document.getElementById(primaryId) || document.getElementById(fallbackId);
         }
     };
 
-    /** ========================================================================
-     * [2] STELLAR CONSTELLATION & COSMIC DUST PHYSICS ENGINE (DUAL CANVAS)
-     * ======================================================================== */
+    // ========================================================================
+    // [2] STELLAR CONSTELLATION & COSMIC DUST PHYSICS ENGINE (DUAL CANVAS)
+    // ========================================================================
     class StellarPhysicsEngine {
         constructor(canvasId, particleCount, connectionDistance, isDust = false) {
             this.canvas = document.getElementById(canvasId);
@@ -51,9 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         populateUniverse() {
             this.particles = [];
-            // Deteksi layar HP untuk optimasi partikel
+            // Deteksi layar HP untuk optimasi partikel agar tidak lag
             const isMobile = window.innerWidth <= 768;
-            const optimizedCount = isMobile ? Math.floor(this.particleCount * 0.6) : this.particleCount;
+            const optimizedCount = isMobile ? Math.floor(this.particleCount * 0.5) : this.particleCount;
 
             for (let i = 0; i < optimizedCount; i++) {
                 this.particles.push({
@@ -62,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     vx: CoreUtils.randomBetween(-0.2, 0.2),
                     vy: CoreUtils.randomBetween(-0.3, 0.1),
                     radius: this.isDust ? CoreUtils.randomBetween(0.5, 1.5) : CoreUtils.randomBetween(1, 2.5),
-                    alpha: CoreUtils.randomBetween(0.2, 0.8)
+                    alpha: CoreUtils.randomBetween(0.2, 0.7)
                 });
             }
         }
@@ -111,12 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Inisialisasi Latar Belakang Ganda
-    new StellarPhysicsEngine('stellar-constellation-canvas', 70, 140, false);
-    new StellarPhysicsEngine('cosmic-dust-canvas', 120, 0, true);
+    new StellarPhysicsEngine('stellar-constellation-canvas', 80, 140, false);
+    new StellarPhysicsEngine('cosmic-dust-canvas', 150, 0, true);
 
-    /** ========================================================================
-     * [3] MAGNETIC CURSOR (HOOKE'S LAW SPRING PHYSICS) - MATI DI MOBILE
-     * ======================================================================== */
+    // ========================================================================
+    // [3] MAGNETIC CURSOR (HOOKE'S LAW SPRING PHYSICS) - MATI DI MOBILE
+    // ========================================================================
     class MagneticCursor {
         constructor() {
             this.core = document.getElementById('cursor-magnetic-core');
@@ -160,19 +166,20 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(() => this.render());
         }
     }
-    // Cegah kursor kustom berjalan di HP layar sentuh
+    // Cegah kursor kustom berjalan di HP layar sentuh (mencegah lag)
     if (window.matchMedia("(pointer: fine)").matches) {
         new MagneticCursor();
     }
 
-    /** ========================================================================
-     * [4] HARDWARE TELEMETRY (BATTERY, TIME, LATENCY)
-     * ======================================================================== */
+    // ========================================================================
+    // [4] HARDWARE TELEMETRY (BATTERY, TIME, LATENCY) - FIX JAM CRASH!
+    // ========================================================================
     const HardwareTelemetry = {
         initTime: () => {
-            const wibEl = document.getElementById('tz-wib');
-            const witaEl = document.getElementById('tz-wita');
-            const witEl = document.getElementById('tz-wit');
+            // Smart selector untuk memastikan jam tetap jalan meski ID berubah
+            const wibEl = CoreUtils.getElement('tz-wib', 'time-wib');
+            const witaEl = CoreUtils.getElement('tz-wita', 'time-wita');
+            const witEl = CoreUtils.getElement('tz-wit', 'time-wit');
             
             setInterval(() => {
                 const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
@@ -191,14 +198,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 navigator.getBattery().then(battery => {
                     const updateBattery = () => {
                         const level = Math.round(battery.level * 100);
-                        const fill = document.getElementById('battery-fluid-fill');
-                        const text = document.getElementById('battery-percentage');
+                        const fill = document.getElementById('battery-fluid-fill') || document.getElementById('batt-fill');
+                        const text = document.getElementById('battery-percentage') || document.getElementById('batt-val');
                         
                         if(fill) fill.style.width = `${level}%`;
                         if(text) text.innerText = `${level}%`;
                         
-                        if (level <= 20) fill.classList.add('critically-low');
-                        else fill.classList.remove('critically-low');
+                        if (level <= 20 && fill) fill.classList.add('critically-low');
+                        else if (fill) fill.classList.remove('critically-low');
                     };
                     updateBattery();
                     battery.addEventListener('levelchange', updateBattery);
@@ -207,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         initSimulatedPing: () => {
-            const pingEl = document.getElementById('network-ping');
+            const pingEl = document.getElementById('network-ping') || document.getElementById('net-ping');
             if(!pingEl) return;
             setInterval(() => {
                 const ping = Math.floor(CoreUtils.randomBetween(12, 45));
@@ -220,19 +227,19 @@ document.addEventListener('DOMContentLoaded', () => {
     HardwareTelemetry.initBattery();
     HardwareTelemetry.initSimulatedPing();
 
-    /** ========================================================================
-     * [5] WEB AUDIO API & REALTIME FREQUENCY ANALYZER
-     * ======================================================================== */
+    // ========================================================================
+    // [5] WEB AUDIO API & REALTIME FREQUENCY ANALYZER
+    // ========================================================================
     class AdvancedAudioEngine {
         constructor() {
-            this.audioEl = document.getElementById('core-audio-engine');
-            this.toggleBtn = document.getElementById('music-playback-controller');
-            this.canvas = document.getElementById('frequency-visualizer-bars');
-            this.progressRing = document.getElementById('music-progress-arc');
+            this.audioEl = document.getElementById('core-audio-engine') || document.getElementById('core-audio-bg');
+            this.toggleBtn = document.getElementById('music-playback-controller') || document.getElementById('music-controller');
+            this.canvas = document.getElementById('frequency-visualizer-bars') || document.getElementById('audio-visualizer');
+            this.progressRing = document.getElementById('music-progress-arc'); // Only in V1
             
-            if (!this.audioEl || !this.toggleBtn || !this.canvas) return;
+            if (!this.audioEl || !this.toggleBtn) return;
             
-            this.ctx = this.canvas.getContext('2d');
+            if (this.canvas) this.ctx = this.canvas.getContext('2d');
             this.isInitialized = false;
             this.isPlaying = false;
             
@@ -256,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.dataArray = new Uint8Array(this.bufferLength);
                 
                 this.isInitialized = true;
-                this.renderVisualizer();
+                if (this.canvas) this.renderVisualizer();
             } catch (e) {
                 console.warn("Web Audio API not fully supported. Fallback to basic player.", e);
             }
@@ -264,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         bindEvents() {
             this.toggleBtn.addEventListener('click', () => {
-                CoreUtils.triggerHaptic([10]);
+                CoreUtils.triggerHaptic([15]);
                 this.initializeAudioContext();
                 
                 if (this.audioCtx && this.audioCtx.state === 'suspended') this.audioCtx.resume();
@@ -281,7 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.audioEl.addEventListener('timeupdate', () => {
                 if (this.audioEl.duration && this.progressRing) {
                     const percent = (this.audioEl.currentTime / this.audioEl.duration) * 100;
-                    // Circle path length is approx 100
                     this.progressRing.setAttribute('stroke-dasharray', `${percent}, 100`);
                 }
             });
@@ -291,22 +297,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateUIState(playing) {
             this.isPlaying = playing;
-            const playIcon = document.querySelector('.svg-icon-play');
-            const pauseIcon = document.querySelector('.svg-icon-pause');
+            const playIcon = document.querySelector('.svg-icon-play') || document.querySelector('.svg-play');
+            const pauseIcon = document.querySelector('.svg-icon-pause') || document.querySelector('.svg-pause');
             
             if (playing) {
                 this.toggleBtn.classList.add('is-playing');
-                if(playIcon) playIcon.classList.add('hidden-state');
-                if(pauseIcon) pauseIcon.classList.remove('hidden-state');
+                if(playIcon) playIcon.classList.add('hidden-state', 'hidden-element');
+                if(pauseIcon) pauseIcon.classList.remove('hidden-state', 'hidden-element');
             } else {
                 this.toggleBtn.classList.remove('is-playing');
-                if(playIcon) playIcon.classList.remove('hidden-state');
-                if(pauseIcon) pauseIcon.classList.add('hidden-state');
+                if(playIcon) playIcon.classList.remove('hidden-state', 'hidden-element');
+                if(pauseIcon) pauseIcon.classList.add('hidden-state', 'hidden-element');
             }
         }
 
         renderVisualizer() {
-            if (!this.isPlaying || !this.analyser) {
+            if (!this.isPlaying || !this.analyser || !this.canvas) {
                 requestAnimationFrame(() => this.renderVisualizer());
                 return;
             }
@@ -333,24 +339,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const GlobalAudioEngine = new AdvancedAudioEngine();
 
-    /** ========================================================================
-     * [6] NEUMORPHIC AUTHENTICATION (CRYPTOGRAPHIC DELAY SIMULATION)
-     * ======================================================================== */
+    // ========================================================================
+    // [6] RIPPLE MICRO-INTERACTION (MATERIAL/APPLE HYBRID)
+    // ========================================================================
+    document.body.addEventListener('click', (e) => {
+        const target = e.target.closest('.ripple-effect');
+        if(!target) return;
+        const rect = target.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple-circle', 'ripple-wave');
+        ripple.style.left = `${e.clientX - rect.left}px`;
+        ripple.style.top = `${e.clientY - rect.top}px`;
+        target.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 800);
+    });
+
+    // ========================================================================
+    // [7] NEUMORPHIC AUTHENTICATION (CRYPTOGRAPHIC DELAY SIMULATION)
+    // ========================================================================
     class NeumorphicAuthenticator {
         constructor() {
             this.correctPin = "090812";
             this.currentInput = "";
-            this.nodes = document.querySelectorAll('.pin-encryption-node');
-            this.authLayer = document.getElementById('authentication-layer');
+            this.nodes = document.querySelectorAll('.pin-encryption-node, .pin-dot');
+            this.authLayer = document.getElementById('authentication-layer') || document.getElementById('auth-layer');
             this.bindKeypad();
         }
 
         bindKeypad() {
-            document.querySelectorAll('.n-keypad-btn').forEach(btn => {
+            document.querySelectorAll('.n-keypad-btn, .n-key').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     CoreUtils.triggerHaptic([15]); // Getaran tombol
                     
-                    const key = btn.getAttribute('data-pin-key');
+                    const key = btn.getAttribute('data-pin-key') || btn.getAttribute('data-key');
                     if (key === 'C') this.currentInput = "";
                     else if (key === 'DEL') this.currentInput = this.currentInput.slice(0, -1);
                     else if (this.currentInput.length < 6) {
@@ -365,13 +386,13 @@ document.addEventListener('DOMContentLoaded', () => {
         updateVisuals(isError = false) {
             this.nodes.forEach((node, idx) => {
                 if (isError) {
-                    node.classList.add('node-error');
+                    node.classList.add('node-error', 'is-error');
                 } else {
-                    node.classList.remove('node-error');
+                    node.classList.remove('node-error', 'is-error');
                     if (idx < this.currentInput.length) {
-                        node.classList.add('node-filled');
+                        node.classList.add('node-filled', 'is-filled');
                     } else {
-                        node.classList.remove('node-filled');
+                        node.classList.remove('node-filled', 'is-filled');
                     }
                 }
             });
@@ -383,37 +404,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     this.authLayer.style.opacity = '0';
                     setTimeout(() => {
-                        this.authLayer.classList.remove('active-overlay-state');
-                        this.authLayer.classList.add('hidden-state');
+                        this.authLayer.classList.remove('active-overlay-state', 'active-overlay');
+                        this.authLayer.classList.add('hidden-state', 'hidden-element');
                         startQuantumBloomLoader();
-                    }, 900); // Sinkron dengan CSS transition
-                }, 400); // Simulasi delay verifikasi
+                    }, 900); 
+                }, 300); 
             } else {
                 // Gagal (Error Shake)
                 CoreUtils.triggerHaptic([30, 50, 30]); // Getaran error
-                document.querySelector('.auth-security-card').classList.add('matrix-shake-error');
+                const authCard = document.querySelector('.auth-security-card') || document.querySelector('.auth-card');
+                authCard.classList.add('matrix-shake-error', 'shake-err');
                 this.updateVisuals(true);
                 
                 setTimeout(() => {
                     this.currentInput = "";
                     this.updateVisuals();
-                    document.querySelector('.auth-security-card').classList.remove('matrix-shake-error');
+                    authCard.classList.remove('matrix-shake-error', 'shake-err');
                 }, 600);
             }
         }
     }
     new NeumorphicAuthenticator();
 
-    /** ========================================================================
-     * [7] QUANTUM BLOOM LOADING SEQUENCE
-     * ======================================================================== */
+    // ========================================================================
+    // [8] QUANTUM BLOOM LOADING SEQUENCE
+    // ========================================================================
     function startQuantumBloomLoader() {
-        const loaderLayer = document.getElementById('loading-transition-layer');
-        loaderLayer.classList.remove('hidden-state');
+        const loaderLayer = document.getElementById('loading-transition-layer') || document.getElementById('loader-layer');
+        loaderLayer.classList.remove('hidden-state', 'hidden-element');
         
-        const percentText = document.getElementById('loading-percentage-val');
-        const progressBar = document.getElementById('loading-progress-bar-fill');
-        const statusText = document.getElementById('loading-status-msg');
+        const percentText = document.getElementById('loading-percentage-val') || document.getElementById('load-percent');
+        const progressBar = document.getElementById('loading-progress-bar-fill') || document.getElementById('load-bar-fill');
+        const statusText = document.getElementById('loading-status-msg') || document.getElementById('load-status');
         
         let progress = 0;
         const systemLogs = [
@@ -434,33 +456,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(bootMassiveEngine, 600); 
             }
             
-            percentText.innerText = `${Math.floor(progress)}%`;
-            progressBar.style.width = `${progress}%`;
+            if(percentText) percentText.innerText = `${Math.floor(progress)}%`;
+            if(progressBar) progressBar.style.width = `${progress}%`;
             
-            if (progress > 0 && progress <= 25) statusText.innerText = systemLogs[0];
-            else if (progress > 25 && progress <= 50) statusText.innerText = systemLogs[1];
-            else if (progress > 50 && progress <= 85) statusText.innerText = systemLogs[2];
-            else if (progress > 85) statusText.innerText = systemLogs[3];
+            if(statusText) {
+                if (progress > 0 && progress <= 25) statusText.innerText = systemLogs[0];
+                else if (progress > 25 && progress <= 50) statusText.innerText = systemLogs[1];
+                else if (progress > 50 && progress <= 85) statusText.innerText = systemLogs[2];
+                else if (progress > 85) statusText.innerText = systemLogs[3];
+            }
             
         }, 150);
     }
 
-    /** ========================================================================
-     * [8] MASSIVE SYSTEM BOOT & INTERSECTION OBSERVER
-     * ======================================================================== */
+    // ========================================================================
+    // [9] MASSIVE SYSTEM BOOT & INTERSECTION OBSERVER
+    // ========================================================================
     function bootMassiveEngine() {
-        const loaderLayer = document.getElementById('loading-transition-layer');
+        const loaderLayer = document.getElementById('loading-transition-layer') || document.getElementById('loader-layer');
         loaderLayer.style.opacity = '0';
         
         setTimeout(() => {
-            loaderLayer.classList.add('hidden-state');
-            document.body.classList.remove('system-locked-state');
+            loaderLayer.classList.add('hidden-state', 'hidden-element');
+            document.body.classList.remove('system-locked-state', 'system-locked');
             document.body.classList.add('scroll-unlocked');
             
             // Unhide UI Utama
-            document.getElementById('master-hud-interface').classList.remove('hidden-state');
-            document.getElementById('massive-scroll-engine').classList.remove('hidden-state');
-            document.getElementById('master-dock-bar').classList.remove('hidden-state');
+            const hud = document.getElementById('master-hud-interface') || document.getElementById('master-hud');
+            const main = document.getElementById('massive-scroll-engine') || document.getElementById('main-scroll-engine');
+            const dock = document.getElementById('master-dock-bar') || document.getElementById('dock-bar');
+            
+            if(hud) hud.classList.remove('hidden-state', 'hidden-element');
+            if(main) main.classList.remove('hidden-state', 'hidden-element');
+            if(dock) dock.classList.remove('hidden-state', 'hidden-element');
             
             initIntersectionObserver();
             initDeviceGyroscope();
@@ -468,9 +496,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Coba Auto Play Musik
             GlobalAudioEngine.initializeAudioContext();
-            document.getElementById('core-audio-engine').play().then(() => {
-                GlobalAudioEngine.updateUIState(true);
-            }).catch((err) => console.log("User gesture required for audio"));
+            const coreAudio = document.getElementById('core-audio-engine') || document.getElementById('core-audio-bg');
+            if(coreAudio) {
+                coreAudio.play().then(() => {
+                    GlobalAudioEngine.updateUIState(true);
+                }).catch((err) => console.log("User gesture required for audio"));
+            }
             
         }, 900);
     }
@@ -485,31 +516,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('has-revealed');
+                    entry.target.classList.add('has-revealed', 'is-triggered');
                     
                     // Trigger Menggambar Hati SVG
-                    if (entry.target.id === 'svg-heart-drawing-sequence' && !window.giftDecryptionSequenceStarted) {
+                    if ((entry.target.id === 'svg-heart-drawing-sequence' || entry.target.id === 'heart-draw-bg') && !window.giftDecryptionSequenceStarted) {
                         window.giftDecryptionSequenceStarted = true;
                         entry.target.classList.add('heart-draw-triggered');
                         
                         // Menunggu SVG selesai digambar (4.5s) sebelum memunculkan kotak kado 3D
                         setTimeout(() => {
-                            const boxTrigger = document.getElementById('gift-box-interactive-module');
-                            boxTrigger.classList.remove('hidden-state');
-                            setTimeout(() => boxTrigger.style.opacity = '1', 50);
+                            const boxTrigger = document.getElementById('gift-box-interactive-module') || document.getElementById('gift-box-interactive');
+                            if(boxTrigger) {
+                                boxTrigger.classList.remove('hidden-state', 'hidden-element');
+                                setTimeout(() => boxTrigger.style.opacity = '1', 50);
+                            }
                         }, 4500); 
                     }
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal-up-anim, .split-text-animation-trigger').forEach(el => revealObserver.observe(el));
+        document.querySelectorAll('.reveal-up-anim, .split-text-animation-trigger, .reveal-anim').forEach(el => revealObserver.observe(el));
         
         // --- PARALLAX & DOCK NAV LOGIC (60FPS SCROLL) ---
         const parallaxElements = document.querySelectorAll('.parallax-layer');
-        const readProgressBar = document.getElementById('reading-progress-bar');
-        const sections = document.querySelectorAll('.massive-section');
-        const dockBtns = document.querySelectorAll('.dock-item-btn');
+        const readProgressBar = document.getElementById('reading-progress-bar') || document.getElementById('read-progress');
+        const sections = document.querySelectorAll('.massive-section, .mega-section');
+        const dockBtns = document.querySelectorAll('.dock-item-btn, .dock-btn');
 
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY || window.pageYOffset;
@@ -522,8 +555,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. High-Performance Parallax Matrix
             requestAnimationFrame(() => {
                 parallaxElements.forEach(el => {
-                    const speed = parseFloat(el.getAttribute('data-parallax-speed'));
-                    el.style.transform = `translate3d(0, ${-(scrollY * speed)}px, 0)`;
+                    const speed = parseFloat(el.getAttribute('data-parallax-speed') || el.getAttribute('data-speed'));
+                    if(!isNaN(speed)) el.style.transform = `translate3d(0, ${-(scrollY * speed)}px, 0)`;
                 });
             });
 
@@ -537,9 +570,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             dockBtns.forEach(btn => {
-                btn.classList.remove('active-dock-link');
+                btn.classList.remove('active-dock-link', 'active-dock');
                 if (btn.getAttribute('href') === `#${currentSectionId}`) {
-                    btn.classList.add('active-dock-link');
+                    btn.classList.add('active-dock-link', 'active-dock');
                 }
             });
 
@@ -557,11 +590,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /** ========================================================================
-     * [9] DEVICE GYROSCOPE (HARDWARE 3D PARALLAX FOR HERO SECTION)
-     * ======================================================================== */
+    // ========================================================================
+    // [10] DEVICE GYROSCOPE (HARDWARE 3D PARALLAX FOR HERO SECTION)
+    // ========================================================================
     function initDeviceGyroscope() {
-        const gyroWrapper = document.getElementById('gyro-master-wrapper');
+        const gyroWrapper = document.getElementById('gyro-master-wrapper') || document.getElementById('gyro-master');
         if (!gyroWrapper) return;
 
         // Mobile Gyroscope Parallax
@@ -583,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Desktop Mouse Fallback
-        const heroSection = document.getElementById('module-hero-intro');
+        const heroSection = document.getElementById('module-hero-intro') || document.getElementById('sec-hero');
         if(heroSection) {
             heroSection.addEventListener('mousemove', (e) => {
                 const centerX = window.innerWidth / 2;
@@ -607,11 +640,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /** ========================================================================
-     * [10] INSTAGRAM-STYLE DOUBLE TAP TO LOVE (CALCULATES EXACT XY COORDS)
-     * ======================================================================== */
+    // ========================================================================
+    // [11] INSTAGRAM-STYLE DOUBLE TAP TO LOVE (CALCULATES EXACT XY COORDS)
+    // ========================================================================
     function initDoubleTapToLove() {
-        const galleryItems = document.querySelectorAll('.double-tap-interactive-zone');
+        const galleryItems = document.querySelectorAll('.double-tap-interactive-zone, .masonry-media-box');
         
         galleryItems.forEach(item => {
             let lastTapTime = 0;
@@ -656,55 +689,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /** ========================================================================
-     * [11] WISH TRANSMITTER (GOOEY EXECUTION & METEOR PROJECTILE)
-     * ======================================================================== */
-    document.getElementById('cmd-transmit-wish').addEventListener('click', () => {
-        CoreUtils.triggerHaptic([40]);
-        
-        const textArea = document.getElementById('wish-textarea-node');
-        const textValue = textArea.value.trim();
-        
-        if (!textValue) {
-            // Getaran error jika input kosong
-            textArea.style.transform = 'translateX(-10px)';
-            setTimeout(() => textArea.style.transform = 'translateX(10px)', 100);
-            setTimeout(() => textArea.style.transform = 'translateX(0)', 200);
-            return;
-        }
-
-        const consoleUI = document.getElementById('wish-console-ui');
-        const meteorScene = document.getElementById('wish-meteor-execution-scene');
-        const outputDisplay = document.getElementById('wish-output-display');
-        const meteorEntity = document.getElementById('meteor-animated-entity');
-
-        // Sembunyikan form
-        consoleUI.style.opacity = '0';
-        consoleUI.style.transform = 'scale(0.9)';
-        
-        setTimeout(() => {
-            consoleUI.classList.add('hidden-state');
-            meteorScene.classList.remove('hidden-state');
+    // ========================================================================
+    // [12] WISH TRANSMITTER (GOOEY EXECUTION & METEOR PROJECTILE)
+    // ========================================================================
+    const cmdTransmitWish = document.getElementById('cmd-transmit-wish') || document.getElementById('cmd-send-wish');
+    if(cmdTransmitWish) {
+        cmdTransmitWish.addEventListener('click', () => {
+            CoreUtils.triggerHaptic([40]);
             
-            outputDisplay.innerText = `"${textValue}"`;
+            const textArea = document.getElementById('wish-textarea-node') || document.getElementById('wish-text-input');
+            const textValue = textArea.value.trim();
             
-            // Tunggu user membaca kalimatnya, lalu tembak meteor
+            if (!textValue) {
+                // Getaran error jika input kosong
+                textArea.style.transform = 'translateX(-10px)';
+                setTimeout(() => textArea.style.transform = 'translateX(10px)', 100);
+                setTimeout(() => textArea.style.transform = 'translateX(0)', 200);
+                return;
+            }
+
+            const consoleUI = document.getElementById('wish-console-ui') || document.getElementById('wish-interface');
+            const meteorScene = document.getElementById('wish-meteor-execution-scene') || document.getElementById('wish-magic-scene');
+            const outputDisplay = document.getElementById('wish-output-display') || document.getElementById('wish-result-text');
+            const meteorEntity = document.getElementById('meteor-animated-entity') || document.getElementById('star-vfx-element');
+
+            // Sembunyikan form
+            consoleUI.style.opacity = '0';
+            consoleUI.style.transform = 'scale(0.9)';
+            
             setTimeout(() => {
-                outputDisplay.style.opacity = '0'; 
+                consoleUI.classList.add('hidden-state', 'hidden-element');
+                meteorScene.classList.remove('hidden-state', 'hidden-element');
                 
+                outputDisplay.innerText = `"${textValue}"`;
+                
+                // Tunggu user membaca kalimatnya, lalu tembak meteor
                 setTimeout(() => {
-                    meteorEntity.classList.add('meteor-shoot-trigger');
-                    CoreUtils.triggerHaptic([60, 60, 150]); // Getaran meteor jatuh
-                }, 1000);
+                    outputDisplay.style.opacity = '0'; 
+                    
+                    setTimeout(() => {
+                        meteorEntity.classList.add('meteor-shoot-trigger', 'shoot-vfx-anim');
+                        CoreUtils.triggerHaptic([60, 60, 150]); // Getaran meteor jatuh
+                    }, 1000);
+                    
+                }, 3500); 
                 
-            }, 3500); 
-            
-        }, 800);
-    });
+            }, 800);
+        });
+    }
 
-    /** ========================================================================
-     * [12] CONFETTI TORNADO PHYSICS ENGINE (3D GRAVITY, DRAG & TILT)
-     * ======================================================================== */
+    // ========================================================================
+    // [13] CONFETTI TORNADO PHYSICS ENGINE (3D GRAVITY & AIR DRAG)
+    // ========================================================================
     class ConfettiTornadoEngine {
         constructor(canvasId) {
             this.canvas = document.getElementById(canvasId);
@@ -785,23 +821,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /** ========================================================================
-     * [13] FINAL GIFT DECRYPTION SEQUENCE (FIXED BUTTON CLICK BUG)
-     * ======================================================================== */
+    // ========================================================================
+    // [14] FINAL GIFT DECRYPTION SEQUENCE (FIXED BUTTON CLICK BUG)
+    // ========================================================================
     const ConfettiSystem = new ConfettiTornadoEngine('confetti-physics-canvas');
 
-    const btnOpenGift = document.getElementById('cmd-execute-decryption');
+    const btnOpenGift = document.getElementById('cmd-execute-decryption') || document.getElementById('cmd-open-gift');
     if(btnOpenGift) {
         btnOpenGift.addEventListener('click', (e) => {
-            // Hentikan propagasi event biar gak bentrok
+            // THE FIX: Hentikan propagasi event biar gak bentrok
             e.stopPropagation();
             
             CoreUtils.triggerHaptic([60, 120, 180]); // Ledakan haptic
             
-            const interactionModule = document.getElementById('gift-box-interactive-module');
-            const backgroundDraw = document.getElementById('heart-draw-engine');
-            const payloadContainer = document.getElementById('reward-payload-container');
-            const svgBoxWrapper = document.getElementById('svg-gift-box-wrapper');
+            const interactionModule = document.getElementById('gift-box-interactive-module') || document.getElementById('gift-box-interactive');
+            const backgroundDraw = document.getElementById('svg-heart-drawing-sequence') || document.getElementById('heart-draw-bg');
+            const payloadContainer = document.getElementById('reward-payload-container') || document.getElementById('reward-payload');
+            const svgBoxWrapper = document.getElementById('svg-gift-box-wrapper') || document.getElementById('the-gift-box');
 
             // 1. Trigger CSS Animation Ledakan Kado 3D
             if(svgBoxWrapper) svgBoxWrapper.classList.add('box-explode-anim');
@@ -809,7 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Eksekusi Kanvas Fisika Konfeti
             const confettiCanvas = document.getElementById('confetti-physics-canvas');
             if(confettiCanvas) {
-                confettiCanvas.classList.remove('hidden-state');
+                confettiCanvas.classList.remove('hidden-state', 'hidden-element');
                 setTimeout(() => ConfettiSystem.detonate(), 200); 
             }
 
@@ -821,12 +857,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 setTimeout(() => {
                     // Hilangkan sepenuhnya dari aliran DOM
-                    if(interactionModule) interactionModule.classList.add('hidden-state');
-                    if(backgroundDraw) backgroundDraw.classList.add('hidden-state');
+                    if(interactionModule) interactionModule.classList.add('hidden-state', 'hidden-element');
+                    if(backgroundDraw) backgroundDraw.classList.add('hidden-state', 'hidden-element');
                     
                     // Munculkan Hadiah Utama (Gambar & Tombol WhatsApp)
                     if(payloadContainer) {
-                        payloadContainer.classList.remove('hidden-state');
+                        payloadContainer.classList.remove('hidden-state', 'hidden-element');
                         setTimeout(() => {
                             payloadContainer.style.opacity = '1';
                             payloadContainer.style.transform = 'translateY(0) scale(1)';
@@ -838,9 +874,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /** ========================================================================
-     * [14] SECRET KONAMI CODE (MATRIX EASTER EGG)
-     * ======================================================================== */
+    // ========================================================================
+    // [15] SECRET KONAMI CODE (MATRIX EASTER EGG)
+    // ========================================================================
     const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
     let konamiIndex = 0;
 
