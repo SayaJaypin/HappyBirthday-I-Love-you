@@ -1,6 +1,6 @@
 /**
  * ==============================================================================
- * ZAHRA'S UNIVERSE - ULTIMATE CORE ENGINE V9.9.9
+ * ZAHRA'S UNIVERSE - ULTIMATE CORE ENGINE V10.0.0 (MEGA BRUTAL EDITION)
  * ARCHITECTURE: Object-Oriented, High-Performance, WebGL-ready Canvas, Web Audio
  * ==============================================================================
  */
@@ -10,13 +10,19 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     /** ========================================================================
-     * [1] CORE UTILITIES & MATH ENGINE
+     * [1] CORE UTILITIES, MATH ENGINE, & HAPTIC FEEDBACK
      * ======================================================================== */
-    const MathEngine = {
+    const CoreUtils = {
         lerp: (start, end, factor) => start + (end - start) * factor,
         randomBetween: (min, max) => Math.random() * (max - min) + min,
         distance: (x1, y1, x2, y2) => Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)),
-        degreesToRads: (degrees) => (degrees * Math.PI) / 180
+        degreesToRads: (degrees) => (degrees * Math.PI) / 180,
+        triggerHaptic: (pattern = [15]) => {
+            // Safe execution for devices that support vibration API
+            if ('vibrate' in navigator) {
+                try { navigator.vibrate(pattern); } catch(e) {}
+            }
+        }
     };
 
     /** ========================================================================
@@ -49,11 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.particles.push({
                     x: Math.random() * this.canvas.width,
                     y: Math.random() * this.canvas.height,
-                    vx: MathEngine.randomBetween(-0.3, 0.3),
-                    vy: MathEngine.randomBetween(-0.3, 0.3),
-                    radius: this.isDust ? MathEngine.randomBetween(0.5, 1.5) : MathEngine.randomBetween(1, 2.5),
-                    mass: MathEngine.randomBetween(1, 3),
-                    alpha: MathEngine.randomBetween(0.2, 0.8)
+                    vx: CoreUtils.randomBetween(-0.2, 0.2),
+                    vy: CoreUtils.randomBetween(-0.3, 0.1),
+                    radius: this.isDust ? CoreUtils.randomBetween(0.5, 1.5) : CoreUtils.randomBetween(1, 2.5),
+                    alpha: CoreUtils.randomBetween(0.2, 0.8)
                 });
             }
         }
@@ -64,11 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < this.particles.length; i++) {
                 let p = this.particles[i];
                 
-                // Kinematics
+                // Kinematics updates
                 p.x += p.vx;
                 p.y += p.vy;
 
-                // Screen Wrap (Continuous Universe)
+                // Continuous Universe (Screen Wrap)
                 if (p.x < 0) p.x = this.canvas.width;
                 if (p.x > this.canvas.width) p.x = 0;
                 if (p.y < 0) p.y = this.canvas.height;
@@ -80,15 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.ctx.fillStyle = `rgba(212, 139, 160, ${p.alpha})`;
                 this.ctx.fill();
 
-                // Draw Constellation Lines (Only for non-dust)
+                // Draw Constellation Lines (Only for non-dust canvas)
                 if (!this.isDust) {
                     for (let j = i + 1; j < this.particles.length; j++) {
                         let p2 = this.particles[j];
-                        let dist = MathEngine.distance(p.x, p.y, p2.x, p2.y);
+                        let dist = CoreUtils.distance(p.x, p.y, p2.x, p2.y);
                         
                         if (dist < this.connectionDistance) {
                             this.ctx.beginPath();
-                            this.ctx.strokeStyle = `rgba(212, 139, 160, ${0.2 * (1 - dist / this.connectionDistance)})`;
+                            this.ctx.strokeStyle = `rgba(212, 139, 160, ${0.15 * (1 - dist / this.connectionDistance)})`;
                             this.ctx.lineWidth = 0.5;
                             this.ctx.moveTo(p.x, p.y);
                             this.ctx.lineTo(p2.x, p2.y);
@@ -101,9 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initialize Dual Background Engines
-    new StellarPhysicsEngine('stellar-constellation-canvas', 80, 150, false);
-    new StellarPhysicsEngine('cosmic-dust-canvas', 150, 0, true);
+    // Initialize the background layers
+    new StellarPhysicsEngine('stellar-constellation-canvas', 60, 150, false);
+    new StellarPhysicsEngine('cosmic-dust-canvas', 120, 0, true);
 
     /** ========================================================================
      * [3] MAGNETIC CURSOR (HOOKE'S LAW SPRING PHYSICS)
@@ -128,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.target.y = e.clientY;
             });
 
-            // Magnetic Hover Detection
+            // Magnetic Hover Detection on Buttons and Links
             const interactables = document.querySelectorAll('button, a, .magnetic-hover-target');
             interactables.forEach(el => {
                 el.addEventListener('mouseenter', () => document.body.classList.add('magnetic-hover-active'));
@@ -138,12 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         render() {
             // Core uses fast linear interpolation
-            this.corePos.x = MathEngine.lerp(this.corePos.x, this.target.x, 0.4);
-            this.corePos.y = MathEngine.lerp(this.corePos.y, this.target.y, 0.4);
+            this.corePos.x = CoreUtils.lerp(this.corePos.x, this.target.x, 0.4);
+            this.corePos.y = CoreUtils.lerp(this.corePos.y, this.target.y, 0.4);
             
             // Aura uses spring physics (slower, bouncy)
-            this.auraPos.x = MathEngine.lerp(this.auraPos.x, this.target.x, 0.15);
-            this.auraPos.y = MathEngine.lerp(this.auraPos.y, this.target.y, 0.15);
+            this.auraPos.x = CoreUtils.lerp(this.auraPos.x, this.target.x, 0.15);
+            this.auraPos.y = CoreUtils.lerp(this.auraPos.y, this.target.y, 0.15);
 
             this.core.style.transform = `translate(${this.corePos.x}px, ${this.corePos.y}px)`;
             this.aura.style.transform = `translate(${this.auraPos.x}px, ${this.auraPos.y}px)`;
@@ -151,10 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(() => this.render());
         }
     }
-    new MagneticCursor();
+    // Only init if not on a touch device
+    if (window.matchMedia("(pointer: fine)").matches) {
+        new MagneticCursor();
+    }
 
     /** ========================================================================
-     * [4] HARDWARE TELEMETRY (BATTERY, TIME, LATENCY, HAPTIC)
+     * [4] HARDWARE TELEMETRY (BATTERY, TIME, LATENCY)
      * ======================================================================== */
     const HardwareTelemetry = {
         initTime: () => {
@@ -198,13 +206,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const pingEl = document.getElementById('network-ping');
             if(!pingEl) return;
             setInterval(() => {
-                const ping = Math.floor(MathEngine.randomBetween(12, 45));
+                const ping = Math.floor(CoreUtils.randomBetween(12, 45));
                 pingEl.innerText = `${ping}ms`;
             }, 3000);
-        },
-
-        triggerHaptic: (pattern = [15]) => {
-            if ('vibrate' in navigator) navigator.vibrate(pattern);
         }
     };
     
@@ -234,28 +238,32 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeAudioContext() {
             if (this.isInitialized) return;
             
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            this.audioCtx = new AudioContext();
-            this.analyser = this.audioCtx.createAnalyser();
-            
-            this.source = this.audioCtx.createMediaElementSource(this.audioEl);
-            this.source.connect(this.analyser);
-            this.analyser.connect(this.audioCtx.destination);
-            
-            this.analyser.fftSize = 64; // High frequency resolution
-            this.bufferLength = this.analyser.frequencyBinCount;
-            this.dataArray = new Uint8Array(this.bufferLength);
-            
-            this.isInitialized = true;
-            this.renderVisualizer();
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.audioCtx = new AudioContext();
+                this.analyser = this.audioCtx.createAnalyser();
+                
+                this.source = this.audioCtx.createMediaElementSource(this.audioEl);
+                this.source.connect(this.analyser);
+                this.analyser.connect(this.audioCtx.destination);
+                
+                this.analyser.fftSize = 64; 
+                this.bufferLength = this.analyser.frequencyBinCount;
+                this.dataArray = new Uint8Array(this.bufferLength);
+                
+                this.isInitialized = true;
+                this.renderVisualizer();
+            } catch (e) {
+                console.warn("Web Audio API not fully supported on this device/browser.", e);
+            }
         }
 
         bindEvents() {
             this.toggleBtn.addEventListener('click', () => {
-                HardwareTelemetry.triggerHaptic([10]);
+                CoreUtils.triggerHaptic([10]);
                 this.initializeAudioContext();
                 
-                if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+                if (this.audioCtx && this.audioCtx.state === 'suspended') this.audioCtx.resume();
                 
                 if (this.audioEl.paused) {
                     this.audioEl.play();
@@ -293,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         renderVisualizer() {
-            if (!this.isPlaying) {
+            if (!this.isPlaying || !this.analyser) {
                 requestAnimationFrame(() => this.renderVisualizer());
                 return;
             }
@@ -307,7 +315,6 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < this.bufferLength; i++) {
                 const barHeight = (this.dataArray[i] / 255) * this.canvas.height;
                 
-                // Dynamic Gradient based on frequency height
                 const gradient = this.ctx.createLinearGradient(0, this.canvas.height, 0, 0);
                 gradient.addColorStop(0, '#d48ba0');
                 gradient.addColorStop(1, '#a9677b');
@@ -322,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const GlobalAudioEngine = new AdvancedAudioEngine();
 
     /** ========================================================================
-     * [6] NEUMORPHIC AUTHENTICATION (CRYPTOGRAPHIC DELAY SIMULATION)
+     * [6] NEUMORPHIC AUTHENTICATION (PIN PAD WITH HAPTIC)
      * ======================================================================== */
     class NeumorphicAuthenticator {
         constructor() {
@@ -336,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bindKeypad() {
             document.querySelectorAll('.n-keypad-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    HardwareTelemetry.triggerHaptic([15]); // Haptic Feedback
+                    CoreUtils.triggerHaptic([15]); 
                     
                     const key = btn.getAttribute('data-pin-key');
                     if (key === 'C') this.currentInput = "";
@@ -374,11 +381,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         this.authLayer.classList.remove('active-overlay-state');
                         this.authLayer.classList.add('hidden-state');
                         startQuantumBloomLoader();
-                    }, 900); // 0.9s defined in CSS
+                    }, 900); // Wait for CSS transition
                 }, 300); // Cryptographic delay
             } else {
                 // Error Sequence
-                HardwareTelemetry.triggerHaptic([30, 50, 30]); // Error vibration
+                CoreUtils.triggerHaptic([30, 50, 30]); 
                 document.querySelector('.auth-security-card').classList.add('matrix-shake-error');
                 this.updateVisuals(true);
                 
@@ -412,21 +419,19 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         
         const loadingInterval = setInterval(() => {
-            // Easing function for realistic loading (fast start, slow end)
-            let increment = MathEngine.randomBetween(2, 8);
-            if (progress > 80) increment = MathEngine.randomBetween(1, 3);
+            let increment = CoreUtils.randomBetween(2, 8);
+            if (progress > 80) increment = CoreUtils.randomBetween(1, 3);
             
             progress += increment;
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(loadingInterval);
-                setTimeout(bootMassiveEngine, 500); // Wait for 100% to linger
+                setTimeout(bootMassiveEngine, 500); 
             }
             
             percentText.innerText = `${Math.floor(progress)}%`;
             progressBar.style.width = `${progress}%`;
             
-            // Change text dynamically based on progress
             if (progress > 0 && progress <= 25) statusText.innerText = systemLogs[0];
             else if (progress > 25 && progress <= 50) statusText.innerText = systemLogs[1];
             else if (progress > 50 && progress <= 85) statusText.innerText = systemLogs[2];
@@ -447,30 +452,30 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('system-locked-state');
             document.body.classList.add('scroll-unlocked');
             
-            // Reveal HUD, Scroll Container, and Dock
+            // Unhide main containers
             document.getElementById('master-hud-interface').classList.remove('hidden-state');
             document.getElementById('massive-scroll-engine').classList.remove('hidden-state');
             document.getElementById('master-dock-bar').classList.remove('hidden-state');
             
-            // Initialize Core Systems
+            // Initialize Subsystems
             initIntersectionObserver();
             initDeviceGyroscope();
             initDoubleTapToLove();
             
-            // Auto Play Audio Attempt
+            // Attempt auto-play
             GlobalAudioEngine.initializeAudioContext();
             document.getElementById('core-audio-engine').play().then(() => {
                 GlobalAudioEngine.updateUIState(true);
-            }).catch((err) => console.log("User gesture required for audio playback."));
+            }).catch((err) => console.log("User interaction required to play audio."));
             
-        }, 900); // CSS transition duration
+        }, 900);
     }
 
     function initIntersectionObserver() {
         const observerOptions = {
             root: null,
             threshold: 0.15,
-            rootMargin: "0px 0px -100px 0px" // Trigger slightly before it hits bottom
+            rootMargin: "0px 0px -50px 0px"
         };
 
         const revealObserver = new IntersectionObserver((entries) => {
@@ -478,17 +483,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('has-revealed');
                     
-                    // Final Gift Heart SVG Drawing Trigger
+                    // Specific trigger for Final SVG Heart Drawing
                     if (entry.target.id === 'svg-heart-drawing-sequence' && !window.giftDecryptionSequenceStarted) {
                         window.giftDecryptionSequenceStarted = true;
                         entry.target.classList.add('heart-draw-triggered');
                         
-                        // Wait for SVG path to finish drawing (4.5s) before revealing the 3D Box
+                        // Wait for SVG path to finish drawing (4s) before revealing the 3D Box
                         setTimeout(() => {
                             const boxTrigger = document.getElementById('gift-box-interactive-module');
                             boxTrigger.classList.remove('hidden-state');
                             setTimeout(() => boxTrigger.style.opacity = '1', 50);
-                        }, 4500); 
+                        }, 4000); 
                     }
                 }
             });
@@ -505,12 +510,12 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY || window.pageYOffset;
             
-            // 1. Reading Progress Calculation
+            // Reading Progress
             const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = (scrollY / scrollHeight) * 100;
-            readProgressBar.style.width = `${scrollPercent}%`;
+            if(readProgressBar) readProgressBar.style.width = `${scrollPercent}%`;
 
-            // 2. High-Performance Parallax Matrix
+            // Parallax Matrix
             requestAnimationFrame(() => {
                 parallaxElements.forEach(el => {
                     const speed = parseFloat(el.getAttribute('data-parallax-speed'));
@@ -518,11 +523,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // 3. Apple Dock Highlight Tracker
+            // Dock Highlight
             let currentSectionId = '';
             sections.forEach(sec => {
                 const secTop = sec.offsetTop;
-                if (scrollY >= secTop - (window.innerHeight / 2)) {
+                if (scrollY >= secTop - (window.innerHeight / 2.5)) {
                     currentSectionId = sec.getAttribute('id');
                 }
             });
@@ -534,13 +539,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-        }, { passive: true }); // Passive flag for 60FPS scroll performance
+        }, { passive: true }); // 60FPS passive scroll
 
-        // Smooth Anchor Scrolling
+        // Smooth Scroll for Dock
         dockBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                HardwareTelemetry.triggerHaptic([15]);
+                CoreUtils.triggerHaptic([15]);
                 const targetId = btn.getAttribute('href');
                 document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
             });
@@ -557,16 +562,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Mobile Gyroscope
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', (e) => {
-                let beta = e.beta; // X-axis (-180 to 180)
-                let gamma = e.gamma; // Y-axis (-90 to 90)
+                let beta = e.beta; 
+                let gamma = e.gamma; 
                 
-                // Clamp values
                 if (beta > 90) beta = 90; if (beta < -90) beta = -90;
                 if (gamma > 90) gamma = 90; if (gamma < -90) gamma = -90;
                 
-                // Calculate Rotation
-                const rotX = (beta / 90) * -15; // Max 15 deg
-                const rotY = (gamma / 90) * 15;  // Max 15 deg
+                const rotX = (beta / 90) * -15; 
+                const rotY = (gamma / 90) * 15;  
                 
                 requestAnimationFrame(() => {
                     gyroWrapper.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
@@ -583,8 +586,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const mouseX = e.clientX - centerX;
             const mouseY = e.clientY - centerY;
             
-            const rotX = (mouseY / centerY) * -10; // Max 10 deg
-            const rotY = (mouseX / centerX) * 10;  // Max 10 deg
+            const rotX = (mouseY / centerY) * -10;
+            const rotY = (mouseX / centerX) * 10;
             
             requestAnimationFrame(() => {
                 gyroWrapper.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
@@ -599,7 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /** ========================================================================
-     * [10] INSTAGRAM-STYLE DOUBLE TAP TO LOVE (CALCULATES EXACT XY COORDS)
+     * [10] INSTAGRAM-STYLE DOUBLE TAP TO LOVE
      * ======================================================================== */
     function initDoubleTapToLove() {
         const galleryItems = document.querySelectorAll('.double-tap-interactive-zone');
@@ -612,9 +615,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tapLength = currentTime - lastTapTime;
                 
                 if (tapLength < 300 && tapLength > 0) {
-                    // Double Tap Detected!
+                    // Double Tap!
                     e.preventDefault();
-                    HardwareTelemetry.triggerHaptic([20, 30, 20]); // Heartbeat haptic
+                    CoreUtils.triggerHaptic([20, 30, 20]); 
                     
                     const rect = item.getBoundingClientRect();
                     const x = e.clientX - rect.left;
@@ -622,16 +625,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const loveFx = item.querySelector('.love-popup-fx-container');
                     
-                    // Position the heart exactly where the user tapped
                     loveFx.style.left = `${x}px`;
                     loveFx.style.top = `${y}px`;
                     
                     // Retrigger animation
                     loveFx.classList.remove('love-anim-active');
-                    void loveFx.offsetWidth; // Force reflow
+                    void loveFx.offsetWidth; // Reflow
                     loveFx.classList.add('love-anim-active');
                     
-                    lastTapTime = 0; // Reset
+                    lastTapTime = 0;
                 } else {
                     lastTapTime = currentTime;
                 }
@@ -640,49 +642,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /** ========================================================================
-     * [11] WISH TRANSMITTER (GOOEY EXECUTION & METEOR PROJECTILE)
+     * [11] WISH TRANSMITTER (GOOEY BUTTON & METEOR PROJECTILE)
      * ======================================================================== */
-    document.getElementById('cmd-transmit-wish').addEventListener('click', () => {
-        HardwareTelemetry.triggerHaptic([40]);
+    document.getElementById('cmd-send-wish').addEventListener('click', () => {
+        CoreUtils.triggerHaptic([40]);
         
-        const textArea = document.getElementById('wish-textarea-node');
+        const textArea = document.getElementById('wish-text-input');
         const textValue = textArea.value.trim();
         
         if (!textValue) {
-            // Shake textarea if empty
             textArea.style.transform = 'translateX(-10px)';
             setTimeout(() => textArea.style.transform = 'translateX(10px)', 100);
             setTimeout(() => textArea.style.transform = 'translateX(0)', 200);
             return;
         }
 
-        const consoleUI = document.getElementById('wish-console-ui');
-        const meteorScene = document.getElementById('wish-meteor-execution-scene');
-        const outputDisplay = document.getElementById('wish-output-display');
-        const meteorEntity = document.getElementById('meteor-animated-entity');
+        const consoleUI = document.getElementById('wish-interface');
+        const meteorScene = document.getElementById('wish-magic-scene');
+        const outputDisplay = document.getElementById('wish-result-text');
+        const meteorEntity = document.getElementById('star-vfx-element');
 
-        // Fade out console
         consoleUI.style.opacity = '0';
         consoleUI.style.transform = 'scale(0.9)';
         
         setTimeout(() => {
-            consoleUI.classList.add('hidden-state');
-            meteorScene.classList.remove('hidden-state');
+            consoleUI.classList.add('hidden-element');
+            meteorScene.classList.remove('hidden-element');
             
-            // Format and display text
             outputDisplay.innerText = `"${textValue}"`;
             
-            // Trigger sequence
             setTimeout(() => {
-                outputDisplay.style.opacity = '0'; // Fade text out
+                outputDisplay.style.opacity = '0';
                 
                 setTimeout(() => {
-                    // Trigger Meteor Animation
-                    meteorEntity.classList.add('meteor-shoot-trigger');
-                    HardwareTelemetry.triggerHaptic([50, 50, 100]); // Long vibration for shooting star
+                    meteorEntity.classList.add('shoot-vfx-anim');
+                    CoreUtils.triggerHaptic([50, 50, 100]); // Meteor sound haptic
                 }, 1000);
                 
-            }, 3500); // Read time
+            }, 3500); 
             
         }, 800);
     });
@@ -693,6 +690,7 @@ document.addEventListener('DOMContentLoaded', () => {
     class ConfettiTornadoEngine {
         constructor(canvasId) {
             this.canvas = document.getElementById(canvasId);
+            if(!this.canvas) return;
             this.ctx = this.canvas.getContext('2d');
             this.particles = [];
             this.colors = ['#d48ba0', '#f8cdd6', '#FFD700', '#ffffff', '#e6c8d3', '#a9677b'];
@@ -707,19 +705,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         detonate() {
-            // Generate 250 particles for a massive burst
-            for(let i=0; i<250; i++) {
+            this.particles = [];
+            // Generate 300 particles for massive burst
+            for(let i=0; i<300; i++) {
                 this.particles.push({
                     x: this.canvas.width / 2,
-                    y: this.canvas.height / 2 + 100, // Start from the box
-                    vx: MathEngine.randomBetween(-25, 25), // Explosive X velocity
-                    vy: MathEngine.randomBetween(-35, -5), // Explosive Y velocity upwards
-                    size: MathEngine.randomBetween(6, 12),
+                    y: this.canvas.height / 2 + 120, // Start around the box
+                    vx: CoreUtils.randomBetween(-30, 30), 
+                    vy: CoreUtils.randomBetween(-40, -10), 
+                    size: CoreUtils.randomBetween(6, 14),
                     color: this.colors[Math.floor(Math.random() * this.colors.length)],
-                    rotation: MathEngine.randomBetween(0, 360),
-                    rotationSpeed: MathEngine.randomBetween(-15, 15),
-                    tilt: MathEngine.randomBetween(0, 360),
-                    tiltSpeed: MathEngine.randomBetween(-15, 15)
+                    rotation: CoreUtils.randomBetween(0, 360),
+                    rotationSpeed: CoreUtils.randomBetween(-15, 15),
+                    tilt: CoreUtils.randomBetween(0, 360),
+                    tiltSpeed: CoreUtils.randomBetween(-15, 15)
                 });
             }
             if (this.animationId) cancelAnimationFrame(this.animationId);
@@ -734,23 +733,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Physics calculation
                 p.x += p.vx;
                 p.y += p.vy;
-                p.vy += 0.8; // Heavy Gravity
-                p.vx *= 0.98; // Air drag / Friction X
+                p.vy += 0.9; // Gravity
+                p.vx *= 0.97; // Friction X
                 
                 // Rotation & Tilt 3D illusion
                 p.rotation += p.rotationSpeed;
                 p.tilt += p.tiltSpeed;
 
-                // Check if still on screen
+                // Render if on screen
                 if (p.y < this.canvas.height + 50) {
                     activeParticles = true;
                     
                     this.ctx.save();
                     this.ctx.translate(p.x, p.y);
-                    this.ctx.rotate(MathEngine.degreesToRads(p.rotation));
+                    this.ctx.rotate(CoreUtils.degreesToRads(p.rotation));
                     
-                    // Simulate 3D flip by scaling Y based on tilt sine wave
-                    const scaleY = Math.abs(Math.sin(MathEngine.degreesToRads(p.tilt)));
+                    // 3D flip illusion using scaleY
+                    const scaleY = Math.abs(Math.sin(CoreUtils.degreesToRads(p.tilt)));
                     this.ctx.scale(1, scaleY);
                     
                     this.ctx.fillStyle = p.color;
@@ -763,112 +762,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.animationId = requestAnimationFrame(() => this.render());
             } else {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.particles = []; // Free memory
+                this.particles = [];
             }
         }
     }
 
     /** ========================================================================
-     * [13] FINAL GIFT DECRYPTION SEQUENCE
+     * [13] FINAL GIFT DECRYPTION SEQUENCE (FIXED BUG)
      * ======================================================================== */
     const ConfettiSystem = new ConfettiTornadoEngine('confetti-physics-canvas');
 
     document.getElementById('cmd-execute-decryption').addEventListener('click', () => {
-        HardwareTelemetry.triggerHaptic([50, 100, 150]); // Heavy haptic impact
+        CoreUtils.triggerHaptic([50, 100, 150]); 
         
         const interactionModule = document.getElementById('gift-box-interactive-module');
         const backgroundDraw = document.getElementById('heart-draw-engine');
         const payloadContainer = document.getElementById('reward-payload-container');
         const svgBoxWrapper = document.getElementById('svg-gift-box-wrapper');
 
-        // 1. Trigger Box CSS Animation (Lid flies off, box shrinks)
+        // 1. Trigger CSS Animation Box Explode
         svgBoxWrapper.classList.add('box-explode-anim');
         
-        // 2. Detonate Canvas Confetti Physics
+        // 2. Detonate Canvas Confetti
         document.getElementById('confetti-physics-canvas').classList.remove('hidden-state');
-        ConfettiSystem.detonate();
+        setTimeout(() => ConfettiSystem.detonate(), 200); // Slight delay for impact
 
-        // 3. Sequence Timing
+        // 3. Precise Timing to Swap UI safely without overlapping
         setTimeout(() => {
-            // Fade out the interactive modules
+            // Fade out
             interactionModule.style.opacity = '0';
             backgroundDraw.style.opacity = '0';
 
             setTimeout(() => {
-                // Hide them completely
+                // Ensure completely hidden from DOM flow
                 interactionModule.classList.add('hidden-state');
                 backgroundDraw.classList.add('hidden-state');
                 
-                // Reveal the Final Payload
+                // Unhide the reward payload
                 payloadContainer.classList.remove('hidden-state');
+                
+                // Allow browser to register removal before fading in
                 setTimeout(() => {
                     payloadContainer.style.opacity = '1';
                     payloadContainer.style.transform = 'translateY(0) scale(1)';
-                }, 50);
-            }, 800); // Match CSS opacity transition
+                }, 100);
 
-        }, 1500); // Wait for confetti burst to peak and lid to fly away
+            }, 800); // Matches CSS transition duration
+
+        }, 1800); // Wait for box explode to finish and confetti to scatter
     });
-
-    /** ========================================================================
-     * [14] SECRET KONAMI CODE (MEMORY MATRIX EASTER EGG)
-     * ======================================================================== */
-    const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    let konamiIndex = 0;
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === konamiSequence[konamiIndex]) {
-            konamiIndex++;
-            if (konamiIndex === konamiSequence.length) {
-                activateMatrixEasterEgg();
-                konamiIndex = 0; // Reset
-            }
-        } else {
-            konamiIndex = 0; // Reset on wrong key
-        }
-    });
-
-    function activateMatrixEasterEgg() {
-        const overlay = document.getElementById('secret-konami-overlay');
-        overlay.classList.remove('hidden-state');
-        HardwareTelemetry.triggerHaptic([100, 50, 100, 50, 100]);
-        
-        // Matrix Rain Canvas Logic
-        const canvas = document.createElement('canvas');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        document.getElementById('matrix-rain-canvas').appendChild(canvas);
-        const ctx = canvas.getContext('2d');
-        
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*ZAHRA'.split('');
-        const fontSize = 14;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-        for(let x = 0; x < columns; x++) drops[x] = 1;
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#0F0';
-            ctx.font = fontSize + 'px monospace';
-            
-            for(let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-        setInterval(drawMatrix, 33);
-        
-        // Auto close after 10 seconds
-        setTimeout(() => {
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.classList.add('hidden-state');
-                document.getElementById('matrix-rain-canvas').innerHTML = '';
-            }, 1000);
-        }, 10000);
-    }
 
 });
