@@ -2,68 +2,48 @@
 <html lang="id" dir="ltr">
 <head>
     <meta charset="UTF-8">
+    <!-- FIX ZOOM & SCROLL BUG DI HP -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="description" content="Perayaan ulang tahun virtual eksklusif dan tak terhingga untuk Zahra.">
-    <title>Zahra's Universe | Perfect V13 Edition</title>
+    <meta name="description" content="Perayaan Ulang Tahun Virtual Eksklusif Zahra">
+    <title>Zahra's Universe | Ultra Masterpiece V14</title>
     
-    <!-- Preload Resource & Fonts -->
+    <!-- FONT DIKUNCI MATI DARI GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     
-    <!-- PWA Settings -->
+    <link rel="stylesheet" href="style.css">
     <meta name="theme-color" content="#fcf8fa">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
-<body class="system-locked-state theme-soft-romance" data-scroll-speed="0">
+<body class="system-locked-state">
 
     <!-- ======================================================================= -->
-    <!-- [0] SVG FILTERS LIBRARY (SAFE EDITION - NO GOOEY BUGS)                  -->
+    <!-- [1] AMBIENT ENGINE & SVG FILTERS                                        -->
     <!-- ======================================================================= -->
     <svg style="width:0; height:0; position:absolute; z-index:-9999;" aria-hidden="true">
         <defs>
-            <filter id="premium-cinematic-noise">
-                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" result="noise_texture"/>
-                <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.05 0" in="noise_texture" result="colored_noise" />
-                <feBlend in="SourceGraphic" in2="colored_noise" mode="overlay" />
-            </filter>
-
-            <!-- Heavy Glow for 3D Art -->
             <filter id="clay-heavy-glow" x="-30%" y="-30%" width="160%" height="160%">
-                <feDropShadow dx="0" dy="15" stdDeviation="20" flood-color="#d48ba0" flood-opacity="0.35" result="shadow_1"/>
-                <feMerge>
-                    <feMergeNode in="shadow_1"/>
-                    <feMergeNode in="SourceGraphic"/>
-                </feMerge>
+                <feDropShadow dx="0" dy="15" stdDeviation="20" flood-color="#d48ba0" flood-opacity="0.35"/>
             </filter>
-
-            <!-- Gradients -->
             <linearGradient id="grad-primary-soft" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#f8cdd6"/>
-                <stop offset="100%" stop-color="#e6c8d3"/>
+                <stop offset="0%" stop-color="#f8cdd6"/><stop offset="100%" stop-color="#e6c8d3"/>
             </linearGradient>
             <linearGradient id="grad-heart-draw" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#d48ba0"/>
-                <stop offset="100%" stop-color="#f8cdd6"/>
+                <stop offset="0%" stop-color="#d48ba0"/><stop offset="100%" stop-color="#f8cdd6"/>
+            </linearGradient>
+            <linearGradient id="grad-gold-sparkle" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFD700"/><stop offset="100%" stop-color="#d4af37"/>
             </linearGradient>
         </defs>
     </svg>
 
-    <!-- ======================================================================= -->
-    <!-- [1] AMBIENT BACKGROUND ENGINE                                           -->
-    <!-- ======================================================================= -->
     <div class="ambient-fluid-container" aria-hidden="true">
-        <div class="fluid-orb orb-alpha"></div>
-        <div class="fluid-orb orb-beta"></div>
-        <div class="fluid-orb orb-gamma"></div>
-        <div class="fluid-orb orb-delta"></div>
+        <div class="fluid-orb orb-alpha"></div><div class="fluid-orb orb-beta"></div>
+        <div class="fluid-orb orb-gamma"></div><div class="fluid-orb orb-delta"></div>
     </div>
     
     <canvas id="stellar-constellation-canvas" class="background-canvas-layer"></canvas>
     <canvas id="cosmic-dust-canvas" class="background-canvas-layer"></canvas>
-    <div class="cinematic-grain-overlay"></div>
 
     <!-- ======================================================================= -->
     <!-- [2] DYNAMIC ISLAND (HUD)                                                -->
@@ -106,11 +86,9 @@
     <!-- ======================================================================= -->
     <section id="authentication-layer" class="fullscreen-absolute-overlay active-overlay-state">
         <div class="auth-security-card premium-glassmorphism">
-            
             <div class="auth-glowing-icon float-soft-anim">
-                <svg viewBox="0 0 24 24" class="icon-secure-lock"><path fill="currentColor" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                <svg viewBox="0 0 24 24" class="icon-secure-lock"><path fill="currentColor" d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6zM18 20H6V10h12v10z"/></svg>
             </div>
-            
             <h1 class="auth-heading-title">Ruang Eksklusif Zahra</h1>
             <p class="auth-heading-subtitle">Silakan masukkan tanggal istimewa kita (DDMMYY) untuk membuka ruang memori ini.</p>
             
@@ -125,16 +103,14 @@
                 <button class="n-keypad-btn" data-pin-key="7"><span>7</span></button><button class="n-keypad-btn" data-pin-key="8"><span>8</span></button><button class="n-keypad-btn" data-pin-key="9"><span>9</span></button>
                 <button class="n-keypad-btn action-keypad clear-btn" data-pin-key="C"><span>C</span></button><button class="n-keypad-btn" data-pin-key="0"><span>0</span></button><button class="n-keypad-btn action-keypad del-btn" data-pin-key="DEL"><span>&larr;</span></button>
             </div>
-            
         </div>
     </section>
 
     <!-- ======================================================================= -->
-    <!-- [4] NEW BRUTAL LOADING SCREEN (HEARTBEAT + ORBIT + PROGRESS)            -->
+    <!-- [4] STELLAR BLOOM LOADING SCREEN                                        -->
     <!-- ======================================================================= -->
     <section id="loading-transition-layer" class="fullscreen-absolute-overlay hidden-state">
         <div class="loading-central-core">
-            
             <div class="quantum-orbital-bloom">
                 <svg viewBox="0 0 240 240" class="orbital-bloom-svg">
                     <circle cx="120" cy="120" r="100" class="orbit-track-outer"/><circle cx="120" cy="120" r="100" class="orbit-fill-outer"/>
@@ -142,30 +118,31 @@
                 </svg>
                 <div class="loading-percentage-text" id="loading-percentage-val">0%</div>
             </div>
-            
             <div class="loading-typography-group">
-                <p class="loading-status-text" id="loading-status-msg">Menyusun piksel kenangan...</p>
-                <!-- Animasi EKG Jantung -->
+                <p class="loading-status-text" id="loading-status-msg">Menyusun memori indah kita...</p>
                 <svg viewBox="0 0 200 40" class="heartbeat-loader-line">
                     <path d="M0,20 L50,20 L60,0 L70,40 L80,20 L200,20" fill="none" stroke="#d48ba0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="ekg-path"/>
                 </svg>
                 <div class="loading-progress-bar-bg"><div class="loading-progress-bar-fill" id="loading-progress-bar-fill"></div></div>
             </div>
-            
         </div>
     </section>
 
     <!-- ======================================================================= -->
-    <!-- [5] MAIN SCROLL ENGINE                                                  -->
+    <!-- [5] MAIN CONTINUOUS SCROLL ENGINE (ANTI-OVERLAP FIX)                    -->
     <!-- ======================================================================= -->
     <main id="massive-scroll-engine" class="hidden-state">
         
-        <!-- HERO SECTION -->
-        <section id="module-hero-intro" class="massive-section flex-col-center">
+        <!-- SECTION 1: HERO (FIX: PADDING ATAS DITAMBAH BIAR GAK NABRAK JAM) -->
+        <section id="module-hero-intro" class="massive-section flex-col-center hero-safe-padding">
             <div class="hero-chassis-content">
                 <div class="premium-date-badge reveal-up-anim">09 Agustus</div>
                 <h1 class="hero-mega-title reveal-up-anim delay-100">Happy Birthday,<br><span class="gradient-text-shimmer">Zahra.</span></h1>
-                <p class="hero-mega-subtitle reveal-up-anim delay-200">Dipersembahkan oleh Jay. Walaupun layar memisahkan kita, semoga kehangatan ruang virtual ini merengkuh hatimu dengan nyata.</p>
+                
+                <!-- FIX: BUNGKUS TEKS DALAM CONTAINER LEGA -->
+                <div class="hero-desc-wrapper reveal-up-anim delay-200">
+                    <p class="hero-mega-subtitle">Dipersembahkan oleh Jay. Walaupun layar memisahkan kita, semoga kehangatan ruang virtual ini nyata memeluk hatimu.</p>
+                </div>
             </div>
             
             <div class="hero-art-layer reveal-up-anim delay-300">
@@ -200,18 +177,18 @@
             </div>
         </section>
 
-        <!-- MODULE 2: 65 ROMANTIC SENTENCES (7 CHAPTERS) -->
+        <!-- SECTION 2: 65 ROMANTIC SENTENCES (FIX HEIGHT & OVERFLOW) -->
         <section id="module-letters-romance" class="massive-section">
             <div class="content-bound-massive">
-                <div class="section-title-core reveal-up-anim">
+                <div class="section-title-wrap reveal-up-anim">
                     <h2 class="title-h2">Rekaman Jiwa</h2>
                     <p class="title-p">65 baris kalimat yang kutulis perlahan, mewakili jutaan doa yang tak sempat terucap, didedikasikan sepenuhnya untukmu.</p>
                 </div>
                 
-                <div class="romantic-grid-system">
+                <div class="romantic-poetry-grid-system">
                     
-                    <!-- BAB I (1-10) -->
-                    <article class="romance-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.02">
+                    <!-- BAB I -->
+                    <article class="poetry-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.02">
                         <h3 class="chapter-badge">Bab I: Fajar Pengejawantahan</h3>
                         <p>1. Selamat ulang tahun, Zahra. Hari ini adalah manifestasi keindahan, di mana semesta tersenyum merayakan keberadaanmu.</p>
                         <p>2. Terima kasih telah hadir dan memilih untuk menetap. Meski kita hanya bertatap lewat deretan piksel di layar, kehangatanmu merengkuh hatiku dengan nyata.</p>
@@ -225,8 +202,8 @@
                         <p>10. Layar ini hanyalah kaca yang dingin, namun secara magis, ia sukses memantulkan senyum manismu yang menjadi alasan utamaku tersenyum.</p>
                     </article>
 
-                    <!-- BAB II (11-20) -->
-                    <article class="romance-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.04">
+                    <!-- BAB II -->
+                    <article class="poetry-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.04">
                         <h3 class="chapter-badge">Bab II: Resonansi Nirkabel</h3>
                         <p>11. Aku mungkin tidak bisa berdiri di depan pintumu membawa kue hari ini. Tapi doaku akan selalu melintasi langit untuk menjagamu di sana.</p>
                         <p>12. Semoga di usiamu yang baru ini, kebahagiaan sejati, tawa yang tak terputus, dan kedamaian hati senantiasa mengelilingi setiap langkahmu.</p>
@@ -240,8 +217,8 @@
                         <p>20. Meskipun kita hanya bertukar kabar melalui layar genggam, rasanya tetap magis. Seperti kita duduk berdampingan menatap senja yang sama.</p>
                     </article>
 
-                    <!-- BAB III (21-30) -->
-                    <article class="romance-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.06">
+                    <!-- BAB III -->
+                    <article class="poetry-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.06">
                         <h3 class="chapter-badge">Bab III: Arsitektur Jarak</h3>
                         <p>21. Jarak fisik ini tidak akan pernah mampu mengikis ikatan yang sedang kita bangun. Ia justru menjadi fondasi yang kuat.</p>
                         <p>22. Kamu adalah bukti hidup bahwa kedekatan emosional dapat melampaui batasan fisik. Kehadiranmu sangat terasa di sini.</p>
@@ -255,8 +232,8 @@
                         <p>30. Selamat merayakan hari kelahiranmu ke dunia ini, Zahra. Semoga lembaran baru di usiamu ditulis dengan tinta emas kebahagiaan.</p>
                     </article>
 
-                    <!-- BAB IV (31-40) -->
-                    <article class="romance-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.08">
+                    <!-- BAB IV -->
+                    <article class="poetry-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.08">
                         <h3 class="chapter-badge">Bab IV: Suaka Pikiran</h3>
                         <p>31. Kehadiran virtualmu senantiasa membawa warna pastel yang lembut ke dalam hidupku yang terkadang terasa monokrom.</p>
                         <p>32. Aku berjanji untuk selalu menjadi pendengar setiamu. Kapan pun duniamu terasa berat, serahkan sebagian bebannya pada pundakku.</p>
@@ -270,8 +247,8 @@
                         <p>40. Kamu membuat ruang virtual yang dulunya kosong dan hampa ini terasa sangat hangat, hidup, layaknya sebuah rumah tempatku berpulang.</p>
                     </article>
 
-                    <!-- BAB V (41-50) -->
-                    <article class="romance-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.05">
+                    <!-- BAB V -->
+                    <article class="poetry-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.05">
                         <h3 class="chapter-badge">Bab V: Konstelasi Harapan</h3>
                         <p>41. Setiap pesan pop-up darimu adalah kado kecil tak terduga yang selalu sukses membuka hariku dengan sebuah keindahan yang sederhana.</p>
                         <p>42. Aku akan selalu ada di sini. Di setiap ketukan jarimu pada kaca layar ponselmu, aku merayakan keberadaanmu.</p>
@@ -285,8 +262,8 @@
                         <p>50. Jarak ini tidak akan pernah mampu memudarkan indahnya namamu di benakku.</p>
                     </article>
 
-                    <!-- BAB VI (51-60) -->
-                    <article class="romance-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.07">
+                    <!-- BAB VI -->
+                    <article class="poetry-card premium-glassmorphism reveal-up-anim parallax-element" data-parallax-speed="0.07">
                         <h3 class="chapter-badge">Bab VI: Anomali Terindah</h3>
                         <p>51. Kehadiranmu adalah anomali terindah dalam rutinitasku yang monoton.</p>
                         <p>52. Setiap kali aku merasa dunia terlalu bising, aku selalu mencari perlindungan dan ketenangan di dalam ruang obrolan kita.</p>
@@ -300,47 +277,54 @@
                         <p>60. Kau adalah bait puisi yang tak akan pernah selesai kutulis, karena keindahan karaktermu selalu mekar dan berkembang setiap harinya.</p>
                     </article>
 
-                    <!-- BAB VII (61-65) - THE FINALE HIGHLIGHT -->
+                    <!-- BAB VII (FIX: FONT DIKUNCI MATI + PADDING LEGA) -->
                     <div class="poetry-grand-highlight-card reveal-up-anim parallax-element" data-parallax-speed="0.09">
                         <div class="glow-rotating-aura-fx"></div>
                         <h3 class="highlight-neon-title">Bab VII: Selamanya</h3>
-                        <p class="highlight-paragraph-text">61. Tetaplah di sini, bersamaku, melampaui segala jarak, waktu, dan dimensi layar kaca ini.<br><br>62. Selamat merayakan hari di mana rotasi bumi menjadi jauh lebih indah karena kau lahir ke dalamnya.<br><br>63. Ini bukan sekadar ucapan ulang tahun biasa. Ini adalah sebuah proklamasi dan janji bahwa aku akan terus ada untuk membersamaimu.<br><br>64. Maafkan aku jika aku belum bisa menggenggam tanganmu secara langsung hari ini. Tapi genggamlah ponselmu erat-erat, karena di sanalah eksistensiku berada menemanimu.<br><br>65. Selamat ulang tahun, cintaku, duniaku, Zahra. Aku mencintaimu dalam bahasa yang tak membutuhkan raga untuk membuktikannya.</p>
+                        <div class="highlight-paragraph-wrapper">
+                            <p class="highlight-paragraph-text">61. Tetaplah di sini, bersamaku, melampaui segala jarak, waktu, dan dimensi layar kaca ini.</p>
+                            <p class="highlight-paragraph-text">62. Selamat merayakan hari di mana rotasi bumi menjadi jauh lebih indah karena kau lahir ke dalamnya.</p>
+                            <p class="highlight-paragraph-text">63. Ini bukan sekadar ucapan ulang tahun biasa. Ini adalah sebuah proklamasi dan janji bahwa aku akan terus ada untuk membersamaimu.</p>
+                            <p class="highlight-paragraph-text">64. Maafkan aku jika aku belum bisa menggenggam tanganmu secara langsung hari ini. Tapi genggamlah ponselmu erat-erat, karena di sanalah eksistensiku berada menemanimu.</p>
+                            <p class="highlight-paragraph-text">65. Selamat ulang tahun, cintaku, duniaku, Zahra. Aku mencintaimu dalam bahasa yang tak membutuhkan raga untuk membuktikannya.</p>
+                        </div>
                     </div>
 
                 </div>
             </div>
         </section>
 
-        <!-- MODULE 3: NEW FEATURE!!! SINKRONISASI JANTUNG (HEARTBEAT SYNC) -->
+        <!-- SECTION 3: SINKRONISASI JANTUNG (FITUR BARU ANTI-BUG SENTUH) -->
         <section id="module-heartbeat-sync" class="massive-section flex-col-center">
             <div class="content-bound-medium text-center reveal-up-anim">
                 <div class="heartbeat-header">
                     <h2 class="title-h2 text-gradient-pulse">Sinkronisasi Jantung</h2>
-                    <p class="title-p">Jarak memisahkan fisik kita, tapi layar ini bisa menyatukan detak jantung kita. Genggam ponselmu dengan erat.</p>
+                    <p class="title-p">Jarak memisahkan fisik kita, tapi layar ini bisa menyatukan detak jantung kita. Genggam ponselmu dan sentuh area di bawah ini.</p>
                 </div>
                 
-                <div class="fingerprint-interaction-zone" id="heartbeat-sensor-btn">
-                    <!-- Fingerprint SVG Icon -->
+                <!-- FIX: MENGGUNAKAN BUTTON ASLI AGAR TOUCH EVENTS TIDAK DIBLOCK BROWSER -->
+                <button class="fingerprint-interaction-zone" id="heartbeat-sensor-btn" aria-label="Sentuh dan tahan untuk sinkronisasi jantung">
                     <svg viewBox="0 0 24 24" class="fingerprint-svg"><path fill="currentColor" d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 14 3 12.01 3c-1.98 0-3.86.47-5.57 1.41-.24.13-.54.04-.68-.2-.13-.24-.04-.55.2-.68C7.82 2.52 9.86 2 12.01 2c2.13 0 3.99.47 5.6 1.36.24.13.32.43.19.67-.11.21-.31.33-.53.33zm1.65 4.96c-.14 0-.29-.05-.4-.15-.71-.62-1.52-1.12-2.42-1.5-.25-.1-.37-.38-.27-.63.1-.25.38-.37.63-.27 1.03.43 1.95 1.01 2.76 1.71.21.18.23.49.05.7-.1.14-.26.21-.43.21zm-10.42.06c-.1 0-.21-.03-.31-.08C7.03 8.5 5.09 8 3 8c-.28 0-.5-.22-.5-.5s.22-.5.5-.5c2.25 0 4.35.54 6.24 1.58.24.13.33.43.2.67-.12.2-.33.32-.54.32zm-4.38 6.57c-.12 0-.24-.04-.34-.13-.74-.63-1.39-1.36-1.92-2.18-.15-.23-.08-.53.15-.68.23-.15.53-.08.68.15.48.74 1.06 1.39 1.72 1.96.21.18.23.49.05.7-.11.14-.27.21-.44.21zm14.15-5.32c-.11 0-.22-.03-.32-.1-.85-.56-1.81-.98-2.82-1.22-.27-.06-.44-.33-.38-.6.06-.27.33-.44.6-.38 1.15.28 2.24.75 3.2 1.39.23.15.3.45.15.68-.11.16-.29.25-.48.25zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7c0 .28-.22.5-.5.5s-.5-.22-.5-.5c0-3.31-2.69-6-6-6s-6 2.69-6 6 2.69 6 6 6c.28 0 .5.22.5.5s-.22.5-.5.5z"/></svg>
                     <div class="ripple-pulse-rings"></div>
-                    <p class="hold-instruction-text">Sentuh & Tahan</p>
-                </div>
+                    <span class="hold-instruction-text">Sentuh & Tahan</span>
+                </button>
                 
                 <div class="heartbeat-secret-message hidden-state" id="heartbeat-secret-text">
-                    "Ini adalah detak jantungku setiap kali notifikasi namamu muncul di layarku, Zahra."
+                    "Ini adalah simulasi detak jantungku setiap kali notifikasi namamu muncul di layarku, Zahra."
                 </div>
             </div>
         </section>
 
-        <!-- MODULE 4: MASONRY GALLERY (DOUBLE TAP TO LOVE) -->
+        <!-- SECTION 4: MASONRY GALLERY -->
         <section id="module-visual-gallery" class="massive-section">
             <div class="content-bound-large">
                 <div class="section-title-wrap reveal-up-anim">
                     <h2 class="title-h2">Direktori Memori</h2>
-                    <p class="title-p">Sentuh dua kali (double-tap) pada foto untuk mengirimkan getaran cinta. Ruang ini didedikasikan agar tak ada satu pun teks yang menutupi pesonamu.</p>
+                    <p class="title-p">Sentuh dua kali (double-tap) pada foto untuk mengirimkan getaran cinta. Ruang ini didedikasikan agar tak ada teks yang menutupi pesonamu.</p>
                 </div>
                 
                 <div class="brutal-masonry-architecture">
+                    <!-- Gallery Items -->
                     <div class="masonry-media-box premium-glassmorphism reveal-up-anim double-tap-interactive-zone"><div class="media-inner-bound"><img src="assets/images/photo1.jpg" alt="Zahra Memori" loading="lazy"><div class="love-popup-fx-container"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div></div></div>
                     <div class="masonry-media-box premium-glassmorphism reveal-up-anim delay-100"><div class="media-inner-bound"><video src="assets/videos/video1.mp4" autoplay loop muted playsinline></video></div></div>
                     <div class="masonry-media-box premium-glassmorphism reveal-up-anim delay-200 double-tap-interactive-zone"><div class="media-inner-bound"><img src="assets/images/photo2.jpg" alt="Zahra Memori" loading="lazy"><div class="love-popup-fx-container"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div></div></div>
@@ -353,7 +337,7 @@
             </div>
         </section>
 
-        <!-- MODULE 5: WISH CONSOLE (FIXED WHITE BUTTON BUG) -->
+        <!-- SECTION 5: WISH CONSOLE (FIX: TOMBOL 1000% MUNCUL CSS NYA) -->
         <section id="module-wish-console" class="massive-section flex-col-center">
             <div class="content-bound-medium">
                 <div class="wish-transmission-console premium-glassmorphism reveal-up-anim" id="wish-console-ui">
@@ -365,8 +349,8 @@
                         <textarea id="wish-textarea-node" placeholder="Ketik harapan manismu di sini..."></textarea>
                     </div>
                     
-                    <!-- TOMBOL FIXED: Gak pake filter gooey lagi biar tulisan tetep kelihatan di HP -->
-                    <button id="cmd-transmit-wish" class="solid-dark-button mt-24">TRANSMISIKAN HARAPAN</button>
+                    <!-- FIX CLASS BUTTON! -->
+                    <button id="cmd-transmit-wish" class="btn-ultra-premium mt-24">TRANSMISIKAN HARAPAN</button>
                 </div>
 
                 <div id="wish-meteor-execution-scene" class="hidden-state absolute-center-overlay-local">
@@ -379,7 +363,7 @@
             </div>
         </section>
 
-        <!-- MODULE 6: FINAL SECRET GIFT -->
+        <!-- SECTION 6: FINAL GIFT (FIX: TOMBOL 1000% MUNCUL CSS NYA) -->
         <section id="module-gift-decryption" class="massive-section flex-col-center section-padding-bottom-extreme">
             <div class="content-bound-medium relative-stack-engine">
                 
@@ -404,8 +388,8 @@
                             </g>
                         </svg>
                     </div>
-                    <!-- TOMBOL FIXED: Z-INDEX 9999 ABSOLUTE CLICKABLE -->
-                    <button id="cmd-execute-decryption" class="solid-dark-button mt-24">BUKA KOTAK RAHASIA</button>
+                    <!-- FIX CLASS BUTTON! -->
+                    <button id="cmd-execute-decryption" class="btn-ultra-premium mt-24">BUKA KOTAK RAHASIA</button>
                 </div>
 
                 <div id="reward-payload-container" class="premium-glassmorphism hidden-state">
@@ -416,7 +400,7 @@
                     <div class="payload-data-content">
                         <h3 class="payload-heading-h3">DEKRIPSI BERHASIL</h3>
                         <p class="payload-description-p">HAYYIEE CINTAAA, ini hadiah buat kamu! hadiah ini mungkin kecil dan ngga seberapa, tapi aku bener bener merayakan sekali ulang tahun kamu. selamat bertambah umur yaa cintaa, YUKKK, ambil hadiah nyaa!</p>
-                        <a href="https://wa.me/6283815954022?text=AKU%20MAU%20SAYANGGG%20%3A3" target="_blank" rel="noopener noreferrer" class="mega-wa-button">
+                        <a href="https://wa.me/6283815954022?text=AKU%20MAU%20SAYANGGG%20%3A3" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-premium">
                             <svg viewBox="0 0 24 24" class="icon-whatsapp-svg"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                             <span>AMBIL HADIAH SEKARANG</span>
                         </a>
@@ -428,12 +412,11 @@
 
     </main>
 
-    <!-- DOCK NAVIGATION -->
+    <!-- FLOATING DOCK -->
     <nav class="apple-dock-navigation hidden-state" id="master-dock-bar">
         <div class="dock-capsule-wrapper premium-glassmorphism">
             <a href="#module-hero-intro" class="dock-item-btn active-dock-link"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3L4 9v12h5v-7h6v7h5V9z"/></svg></a>
             <a href="#module-letters-romance" class="dock-item-btn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/></svg></a>
-            <!-- TAMBAHAN LINK FITUR HEARTBEAT -->
             <a href="#module-heartbeat-sync" class="dock-item-btn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></a>
             <a href="#module-visual-gallery" class="dock-item-btn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14h14v-2H4V6H2z"/></svg></a>
             <a href="#module-wish-console" class="dock-item-btn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24z"/></svg></a>
