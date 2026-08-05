@@ -1,315 +1,281 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Zahra's Special Day</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Zahra's Universe</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ffe6ea">
+    <meta name="theme-color" content="#fcf8fa">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 
-    <!-- REALTIME CLOCKS -->
-    <div id="clocks-container" class="glass-effect">
-        <div class="clock-item"><span id="wib-time">00:00:00</span> WIB</div>
-        <div class="clock-item"><span id="wita-time">00:00:00</span> WITA</div>
-        <div class="clock-item"><span id="wit-time">00:00:00</span> WIT</div>
+    <div id="ambient-background">
+        <div class="gradient-sphere sphere-1"></div>
+        <div class="gradient-sphere sphere-2"></div>
+        <div class="gradient-sphere sphere-3"></div>
     </div>
+    
+    <canvas id="particle-canvas"></canvas>
 
-    <!-- MUSIC PLAYER -->
-    <div id="music-player" class="glass-effect">
-        <div class="music-info">
-            <svg viewBox="0 0 24 24" class="music-icon" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-            <div class="music-title">Merry Christmas, I Miss You</div>
+    <div id="global-header" class="glass-panel hidden">
+        <div class="clock-pill">
+            <span id="time-wib">00:00</span> <small>WIB</small> &bull; 
+            <span id="time-wita">00:00</span> <small>WITA</small> &bull; 
+            <span id="time-wit">00:00</span> <small>WIT</small>
         </div>
-        <div class="music-controls">
-            <button id="btn-play-pause" class="ctrl-btn">
-                <svg id="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                <svg id="icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-            </button>
-            <button id="btn-mute" class="ctrl-btn">
-                <svg id="icon-vol" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-            </button>
+        <div class="music-pill">
+            <div class="music-icon-wrap" id="toggle-music">
+                <svg viewBox="0 0 24 24" class="icon-play"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                <svg viewBox="0 0 24 24" class="icon-pause" style="display:none;"><path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </div>
+            <div class="music-info">
+                <span class="track-name">Merry Christmas, I Miss You</span>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="music-progress"></div></div>
+            </div>
         </div>
-        <div class="progress-bar-container">
-            <div class="progress-bar" id="music-progress"></div>
-        </div>
-        <audio id="bg-music" loop>
+        <audio id="bgm" loop preload="auto">
             <source src="assets/audio/song.mp3" type="audio/mpeg">
         </audio>
     </div>
 
-    <!-- SCREEN 1: PIN SCREEN -->
-    <section id="screen-pin" class="overlay-screen active">
-        <div class="pin-container glass-effect">
-            <h1 class="pin-title">Zahra's Space</h1>
-            <p class="pin-subtitle">Masukkan kode tanggal (DDMMYY)</p>
-            <div class="pin-dots">
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <!-- LOCK SCREEN -->
+    <section id="screen-lock" class="screen-layer active">
+        <div class="lock-content">
+            <div class="lock-icon">
+                <svg viewBox="0 0 24 24" width="32" height="32"><path fill="currentColor" d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6zM18 20H6V10h12v10z"/></svg>
             </div>
-            <div class="keypad">
-                <button class="key">1</button><button class="key">2</button><button class="key">3</button>
-                <button class="key">4</button><button class="key">5</button><button class="key">6</button>
-                <button class="key">7</button><button class="key">8</button><button class="key">9</button>
-                <button class="key action">C</button><button class="key">0</button><button class="key action">&larr;</button>
+            <h1 class="lock-title">Zahra's Space</h1>
+            <p class="lock-subtitle">Masukkan kode sandi (DDMMYY)</p>
+            
+            <div class="pin-indicator">
+                <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+                <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+            </div>
+
+            <div class="numpad">
+                <button class="num-key" data-val="1">1</button><button class="num-key" data-val="2">2</button><button class="num-key" data-val="3">3</button>
+                <button class="num-key" data-val="4">4</button><button class="num-key" data-val="5">5</button><button class="num-key" data-val="6">6</button>
+                <button class="num-key" data-val="7">7</button><button class="num-key" data-val="8">8</button><button class="num-key" data-val="9">9</button>
+                <button class="num-key act-key" data-act="clear">C</button><button class="num-key" data-val="0">0</button><button class="num-key act-key" data-act="del">&larr;</button>
             </div>
         </div>
     </section>
 
-    <!-- SCREEN 2: LOADING SCREEN -->
-    <section id="screen-loading" class="overlay-screen">
-        <div class="loading-content">
-            <div class="loading-icon">
-                <svg viewBox="0 0 100 100" class="spin-anim">
-                    <circle cx="50" cy="50" r="40" stroke="var(--soft-purple)" stroke-width="4" fill="none" stroke-dasharray="200" stroke-dashoffset="100"/>
-                </svg>
-                <!-- Cute Bunny Loading Element -->
-                <svg viewBox="0 0 64 64" class="heart-center cute-svg"><path fill="#fff" d="M32 48c-10 0-18-6-18-14 0-5 3-10 8-12-2-6-3-14 2-18 4-3 10 0 12 6h-2c2-6 8-9 12-6 5 4 4 12 2 18 5 2 8 7 8 12 0 8-8 14-18 14z"/><circle cx="26" cy="36" r="2" fill="#000"/><circle cx="38" cy="36" r="2" fill="#000"/><path fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" d="M30 40c1 1 3 1 4 0"/></svg>
-            </div>
-            <p class="loading-text">Menyiapkan keajaiban...</p>
-            <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+    <!-- LOADING SCREEN -->
+    <section id="screen-loading" class="screen-layer">
+        <div class="loader-content">
+            <svg class="spinner" viewBox="0 0 50 50">
+                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+            </svg>
+            <p class="loader-text">Menyiapkan memori indah...</p>
         </div>
     </section>
 
-    <!-- MAIN APP WRAPPER (SCROLLABLE) -->
-    <main id="main-app">
-        <canvas id="fireworks-canvas"></canvas>
-        <div class="floating-decorations" id="floating-decorations"></div>
-
-        <!-- PAGE 1: OPENING -->
-        <section id="page-opening" class="page scroll-section">
-            <div class="page-content center-flex">
-                <div class="hero-card glass-effect animate-on-scroll">
-                    <p class="hero-date">09 Agustus</p>
-                    <h1 class="hero-title">Happy Birthday,<br>Zahra!</h1>
-                    
-                    <!-- ADVANCED 3D CAKE -->
-                    <div class="scene3d">
-                        <div class="cake3d">
-                            <!-- Bottom Tier -->
-                            <div class="tier tier1">
-                                <div class="face top"></div>
-                                <div class="face front"></div>
-                                <div class="face back"></div>
-                                <div class="face left"></div>
-                                <div class="face right"></div>
-                            </div>
-                            <!-- Middle Tier -->
-                            <div class="tier tier2">
-                                <div class="face top"></div>
-                                <div class="face front"></div>
-                                <div class="face back"></div>
-                                <div class="face left"></div>
-                                <div class="face right"></div>
-                            </div>
-                            <!-- Top Tier -->
-                            <div class="tier tier3">
-                                <div class="face top"></div>
-                                <div class="face front"></div>
-                                <div class="face back"></div>
-                                <div class="face left"></div>
-                                <div class="face right"></div>
-                            </div>
-                            <!-- Candle -->
-                            <div class="candle3d">
-                                <div class="flame3d"></div>
-                                <div class="body3d"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- CUTE CAT SVG PEEKING -->
-                    <div class="peeking-cat">
-                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20,60 Q20,30 50,30 Q80,30 80,60" fill="#fff" />
-                            <polygon points="20,40 25,15 40,32" fill="#fff" />
-                            <polygon points="80,40 75,15 60,32" fill="#fff" />
-                            <circle cx="40" cy="45" r="3" fill="#333" />
-                            <circle cx="60" cy="45" r="3" fill="#333" />
-                            <path d="M48,52 Q50,55 52,52" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" />
-                            <path d="M25,50 L10,45 M25,55 L10,55 M25,60 L10,65" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M75,50 L90,45 M75,55 L90,55 M75,60 L90,65" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/>
-                            <ellipse cx="30" cy="52" rx="4" ry="2" fill="#ff99c2" opacity="0.6"/>
-                            <ellipse cx="70" cy="52" rx="4" ry="2" fill="#ff99c2" opacity="0.6"/>
+    <!-- MAIN APP -->
+    <main id="main-interface" class="hidden">
+        
+        <!-- VIEW 1: HOME (CAKE & ANIMALS) -->
+        <article id="view-home" class="view-section active">
+            <div class="view-scroll-wrapper center-layout">
+                <div class="hero-badge fade-up">09 Agustus</div>
+                <h1 class="hero-heading fade-up delay-1">Happy Birthday,<br>Zahra.</h1>
+                <p class="hero-subheading fade-up delay-2">Dari Jay, untuk bintang paling bersinar di semestaku.</p>
+                
+                <div class="premium-illustration fade-up delay-3 glass-panel">
+                    <!-- Aesthetic Cat & Rabbit -->
+                    <div class="illustration-animals">
+                        <svg class="aesthetic-svg cat-svg" viewBox="0 0 100 100">
+                            <path d="M20,80 Q20,50 50,50 Q80,50 80,80 Z" fill="var(--soft-white)"/>
+                            <path d="M20,50 L25,30 L40,45 M80,50 L75,30 L60,45" fill="none" stroke="var(--soft-white)" stroke-width="4" stroke-linejoin="round"/>
+                            <circle cx="35" cy="65" r="3" fill="var(--text-dark)"/><circle cx="65" cy="65" r="3" fill="var(--text-dark)"/>
+                            <path d="M48,70 Q50,72 52,70" fill="none" stroke="var(--text-pink)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <svg class="aesthetic-svg rabbit-svg" viewBox="0 0 100 100">
+                            <path d="M25,80 Q25,55 50,55 Q75,55 75,80 Z" fill="#fff9f9"/>
+                            <path d="M35,55 Q35,15 45,15 Q45,35 45,55 M65,55 Q65,15 55,15 Q55,35 55,55" fill="none" stroke="#fff9f9" stroke-width="8" stroke-linecap="round"/>
+                            <circle cx="40" cy="65" r="3" fill="var(--text-dark)"/><circle cx="60" cy="65" r="3" fill="var(--text-dark)"/>
+                            <path d="M48,70 Q50,72 52,70" fill="none" stroke="var(--text-pink)" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </div>
-
-                    <p class="hero-subtitle">Dari Jay, untuk bintang paling terang di langit malamku.</p>
-                </div>
-                <div class="scroll-indicator">
-                    <p>Scroll ke bawah</p>
-                    <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                </div>
-            </div>
-        </section>
-
-        <!-- PAGE 2: MIDDLE 1 -->
-        <section id="page-middle-1" class="page scroll-section">
-            <div class="page-content">
-                <div class="greeting-card glass-effect animate-on-scroll parallax-item">
-                    <h2>Untuk Zahra...</h2>
-                    <p>Selamat ulang tahun, Zahra. Hari istimewa untuk manusia paling istimewa.</p>
-                    <p>Terima kasih telah hadir dalam hidupku. Walaupun layar menjadi perantara, doaku selalu menyertaimu.</p>
-                    <p>Setiap notifikasi darimu adalah kebahagiaan kecilku. Terima kasih sudah menemani hari-hariku yang panjang.</p>
-                    <p>Jarak mengajarkan kita arti bersabar. Waktu yang kita habiskan bersama secara virtual adalah harta karunku.</p>
-                    <p>Kamu adalah alasan di balik senyumku akhir-akhir ini. Semoga hari ini membawa tawa sebanyak yang kamu berikan padaku.</p>
-                </div>
-
-                <div class="media-grid">
-                    <div class="media-wrap glass-effect animate-on-scroll delay-1">
-                        <img src="assets/images/photo1.jpg" alt="Zahra 1" class="media-item">
-                    </div>
-                    <div class="media-wrap glass-effect animate-on-scroll delay-2">
-                        <video src="assets/videos/video1.mp4" autoplay loop muted playsinline class="media-item"></video>
-                    </div>
-                </div>
-
-                <div class="greeting-card glass-effect animate-on-scroll parallax-item">
-                    <p>Aku mengagumi keindahan hatimu dari jauh. Semoga kita selalu saling menjaga.</p>
-                    <p>Dunia terasa lebih hangat sejak aku mengenalmu. Meski dipisahkan jarak, frekuensi hati kita selalu sama.</p>
-                    <p>Cerita-ceritamu selalu kutunggu. Suaramu mengalahkan riuhnya duniaku.</p>
-                    <p>Semoga hubungan kita semakin kuat seiring berjalannya waktu. Doaku untukmu menembus ruang dan waktu.</p>
-                    <p>Tetaplah menjadi Zahra yang selalu ceria. Aku bangga pada segala hal yang kamu capai.</p>
-                    <p>Semoga kebahagiaan selalu menyertaimu dalam setiap langkah. Terima kasih telah membagikan duniamu denganku.</p>
-                </div>
-
-                <div class="media-grid reverse">
-                    <div class="media-wrap glass-effect animate-on-scroll delay-1">
-                        <video src="assets/videos/video2.mp4" autoplay loop muted playsinline class="media-item"></video>
-                    </div>
-                    <div class="media-wrap glass-effect animate-on-scroll delay-2">
-                        <img src="assets/images/photo2.jpg" alt="Zahra 2" class="media-item">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PAGE 3: MIDDLE 2 -->
-        <section id="page-middle-2" class="page scroll-section">
-            <div class="page-content">
-                <div class="greeting-card glass-effect animate-on-scroll parallax-item">
-                    <h2>Lembar Kedua</h2>
-                    <p>Jangan pernah merasa sendiri, karena aku selalu mendukungmu. Semoga mimpimu satu per satu terwujud.</p>
-                    <p>Kamu memiliki tempat paling spesial di hatiku. Terima kasih sudah menjadi dirimu sendiri.</p>
-                    <p>Aku bersyukur semesta mempertemukan kita. Kehadiranmu membawa warna baru yang indah.</p>
-                    <p>Semoga hari-harimu diisi dengan kedamaian. Percakapan larut malam kita adalah favoritku.</p>
-                    <p>Kamu selalu punya cara untuk membuatku merasa lebih baik. Semoga kesehatan dan keberkahan selalu mengelilingimu.</p>
-                </div>
-
-                <div class="media-grid">
-                    <div class="media-wrap glass-effect animate-on-scroll delay-1">
-                        <img src="assets/images/photo3.jpg" alt="Zahra 3" class="media-item">
-                    </div>
-                    <div class="media-wrap glass-effect animate-on-scroll delay-2">
-                        <video src="assets/videos/video3.mp4" autoplay loop muted playsinline class="media-item"></video>
-                    </div>
-                </div>
-
-                <div class="greeting-card glass-effect animate-on-scroll parallax-item">
-                    <p>Melihatmu bahagia adalah tujuanku. Teruslah bersinar dengan caramu sendiri.</p>
-                    <p>Aku menghargai setiap detik yang kita bagikan. Semoga kita bisa terus tumbuh bersama.</p>
-                    <p>Jarak ini tidak akan melemahkan apa yang kita bangun. Terima kasih atas pengertian dan kesabaranmu.</p>
-                    <p>Kamu adalah anugerah terindah tahun ini. Tetaplah melangkah dengan penuh percaya diri.</p>
-                    <p>Aku selalu mendoakan yang terbaik untuk masa depanmu. Semoga sedihmu cepat berlalu.</p>
-                    <p>Bahagiamu adalah bahagiaku juga. Mari ciptakan lebih banyak memori indah.</p>
-                    <p class="highlight-text">Selamat ulang tahun sekali lagi, Zahra, cintaku.</p>
-                </div>
-
-                <div class="media-grid reverse">
-                    <div class="media-wrap glass-effect animate-on-scroll delay-1">
-                        <video src="assets/videos/video4.mp4" autoplay loop muted playsinline class="media-item"></video>
-                    </div>
-                    <div class="media-wrap glass-effect animate-on-scroll delay-2">
-                        <img src="assets/images/photo4.jpg" alt="Zahra 4" class="media-item">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PAGE 4: MAKE A WISH -->
-        <section id="page-wish" class="page scroll-section">
-            <div class="page-content center-flex relative-wrap">
-                <!-- Cute Bunny Decor -->
-                <div class="cute-bunny-wish animate-on-scroll">
-                    <svg viewBox="0 0 100 100">
-                        <ellipse cx="50" cy="65" rx="30" ry="25" fill="#fff" />
-                        <ellipse cx="35" cy="30" rx="8" ry="25" fill="#fff" transform="rotate(-15 35 30)"/>
-                        <ellipse cx="65" cy="30" rx="8" ry="25" fill="#fff" transform="rotate(15 65 30)"/>
-                        <ellipse cx="35" cy="30" rx="4" ry="15" fill="#ffb6c1" transform="rotate(-15 35 30)"/>
-                        <ellipse cx="65" cy="30" rx="4" ry="15" fill="#ffb6c1" transform="rotate(15 65 30)"/>
-                        <circle cx="40" cy="60" r="3" fill="#333" />
-                        <circle cx="60" cy="60" r="3" fill="#333" />
-                        <path d="M48,65 Q50,68 52,65" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" />
-                        <ellipse cx="32" cy="65" rx="5" ry="3" fill="#ff99c2" opacity="0.6"/>
-                        <ellipse cx="68" cy="65" rx="5" ry="3" fill="#ff99c2" opacity="0.6"/>
-                        <!-- Heart -->
-                        <path d="M80,45 C80,40 75,35 70,35 C66,35 62,38 60,42 C58,38 54,35 50,35 C45,35 40,40 40,45 C40,55 60,65 60,65 C60,65 80,55 80,45 Z" fill="#ff4d4d" class="heart-beat"/>
-                    </svg>
-                </div>
-
-                <div class="wish-card glass-effect animate-on-scroll" id="wish-card-container">
-                    <h2>Make a Wish</h2>
-                    <p>Tulis harapanmu di tahun ini, lalu terbangkan ke semesta.</p>
-                    <textarea id="wish-input" placeholder="Tulis harapan indahmu di sini..."></textarea>
-                    <button id="btn-send-wish" class="premium-btn">Kirim Harapan</button>
-                </div>
-                
-                <div id="wish-animation-container" class="hidden">
-                    <p id="wish-display"></p>
-                    <svg viewBox="0 0 24 24" id="flying-star"><path fill="#FFD700" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-            </div>
-        </section>
-
-        <!-- PAGE 5: FINAL -->
-        <section id="page-final" class="page scroll-section">
-            <div class="page-content center-flex relative-wrap">
-                <div class="calm-background"></div>
-                
-                <div id="love-drawing-container" class="animate-on-scroll">
-                    <svg viewBox="0 0 100 100" id="drawn-love">
-                        <path class="love-path" d="M50,85 C25,65 10,45 10,28 C10,15 22,5 35,5 C43,5 50,12 50,12 C50,12 57,5 65,5 C78,5 90,15 90,28 C90,45 75,65 50,85 Z"/>
-                    </svg>
-                </div>
-
-                <div id="secret-box-container" class="hidden">
-                    <button id="btn-open-secret" class="premium-btn glass-effect brutal-glow">Buka Secret Box</button>
-                </div>
-
-                <div id="final-gift-container" class="glass-effect hidden">
-                    <img src="assets/images/hadiah.jpg" alt="Hadiah Zahra" class="gift-image">
-                    <p class="gift-caption">HAYYIEE CINTAAA, ini hadiah buat kamu! hadiah ini mungkin kecil dan ngga seberapa, tapi aku bener bener merayakan sekali ulang tahun kamu. selamat bertambah umur yaa cintaa, YUKKK, ambil hadiah nyaa!</p>
-                    <a href="https://wa.me/6283815954022?text=AKU%20MAU%20SAYANGGG%20%3A3" class="premium-btn whatsapp-btn brutal-glow" target="_blank" rel="noopener noreferrer">Ambil Hadiah</a>
                     
-                    <button id="btn-reset" class="secondary-btn">Kembali ke Awal</button>
+                    <!-- Aesthetic Cake -->
+                    <div class="illustration-cake">
+                        <svg viewBox="0 0 120 100" class="cake-svg">
+                            <rect x="20" y="60" width="80" height="30" rx="10" fill="var(--cream)"/>
+                            <rect x="30" y="40" width="60" height="20" rx="8" fill="var(--soft-pink)"/>
+                            <path d="M20,65 Q30,75 40,65 T60,65 T80,65 T100,65" fill="none" stroke="var(--soft-white)" stroke-width="4" stroke-linecap="round"/>
+                            <rect x="57" y="15" width="6" height="25" rx="3" fill="#ffe3e3"/>
+                            <path d="M60,10 Q65,0 60,-5 Q55,0 60,10 Z" fill="#ffd700" class="flame-anim"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
-        </section>
+        </article>
 
-        <!-- EXTRA SPACE FOR SCROLL PADDING -->
-        <div style="height: 100px;"></div>
+        <!-- VIEW 2: MESSAGES (TYPOGRAPHY FOCUSED) -->
+        <article id="view-messages" class="view-section">
+            <div class="view-scroll-wrapper pad-bottom">
+                <div class="message-header fade-up">
+                    <h2>Lembar Hati</h2>
+                    <p>Kata-kata yang tak pernah pudar oleh waktu.</p>
+                </div>
+
+                <div class="message-cards-container">
+                    <div class="msg-card glass-panel fade-up">
+                        <p>Selamat ulang tahun, Zahra. Hari istimewa untuk jiwa yang paling istimewa.</p>
+                        <p>Terima kasih telah hadir dalam hidupku. Walaupun layar menjadi perantara, hangatnya kebaikanmu selalu sampai ke hatiku.</p>
+                    </div>
+                    <div class="msg-card glass-panel fade-up">
+                        <p>Setiap notifikasi darimu adalah alasan di balik senyumku. Terima kasih sudah menemani hari-hariku yang panjang dan membuatnya terasa jauh lebih ringan.</p>
+                        <p>Dunia terasa lebih teduh sejak aku mengenalmu. Jarak mengajarkan kita arti ketulusan dan kesabaran.</p>
+                    </div>
+                    <div class="msg-card glass-panel fade-up">
+                        <p>Waktu yang kita habiskan bersama secara virtual adalah harta karun yang paling berharga bagiku.</p>
+                        <p>Aku mengagumi keindahan hatimu. Frekuensi jiwa kita seolah bersenandung dalam harmoni yang sama, tak peduli seberapa jauh dimensi memisahkan kita.</p>
+                    </div>
+                    <div class="msg-card glass-panel fade-up">
+                        <p>Cerita-ceritamu selalu menjadi melodi favoritku. Suaramu mengalahkan riuhnya duniaku yang terkadang melelahkan.</p>
+                        <p>Semoga hubungan kita semakin kuat seiring berjalannya waktu. Doaku untukmu selalu menembus ruang, waktu, dan cakrawala.</p>
+                    </div>
+                    <div class="msg-card glass-panel fade-up">
+                        <p>Tetaplah menjadi Zahra yang selalu ceria dan penuh cahaya. Aku bangga pada segala hal kecil maupun besar yang berhasil kamu capai.</p>
+                        <p>Semoga kebahagiaan sejati selalu menyertaimu dalam setiap langkah. Terima kasih telah membagikan keindahan duniamu denganku.</p>
+                    </div>
+                    <div class="msg-card glass-panel fade-up">
+                        <p>Layar ini adalah jendela menuju senyum manismu. Kamu adalah bintang yang paling benderang di langit malamku.</p>
+                        <p>Jangan pernah merasa sendiri, karena doaku dan dukunganku selalu memelukmu dari jauh. Semoga mimpimu satu per satu mekar menjadi nyata.</p>
+                    </div>
+                    <div class="msg-card glass-panel fade-up">
+                        <p>Kamu memiliki ruang paling spesial dan tak tergantikan di hatiku. Terima kasih sudah berani menjadi dirimu sendiri yang luar biasa.</p>
+                        <p>Aku bersyukur semesta menenun benang takdir kita di dunia maya ini. Kehadiranmu membawa warna pastel yang lembut ke dalam hidupku.</p>
+                    </div>
+                    <div class="msg-card glass-panel fade-up">
+                        <p>Percakapan larut malam kita adalah tempat persembunyian favoritku. Semoga kesehatan, kedamaian, dan keberkahan selalu mengelilingimu.</p>
+                        <p>Melihatmu bahagia adalah tujuan utamaku. Teruslah bersinar terang dengan caramu sendiri yang unik dan elegan.</p>
+                    </div>
+                    <div class="msg-card glass-panel fade-up highlight-card">
+                        <h3>Selamat bertambah usia, cintaku.</h3>
+                        <p>Aku akan selalu ada di sini, di setiap tap dan scroll, merayakan keberadaanmu setiap hari.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- VIEW 3: GALLERY (DEDICATED MEDIA PLACE) -->
+        <article id="view-gallery" class="view-section">
+            <div class="view-scroll-wrapper pad-bottom">
+                <div class="message-header fade-up">
+                    <h2>Galeri Memori</h2>
+                    <p>Kepingan waktu yang kita abadikan.</p>
+                </div>
+                
+                <div class="premium-gallery">
+                    <div class="gallery-item photo-item fade-up glass-panel">
+                        <img src="assets/images/photo1.jpg" alt="Zahra 1" loading="lazy">
+                    </div>
+                    <div class="gallery-item video-item fade-up glass-panel delay-1">
+                        <video src="assets/videos/video1.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="gallery-item photo-item fade-up glass-panel delay-2">
+                        <img src="assets/images/photo2.jpg" alt="Zahra 2" loading="lazy">
+                    </div>
+                    <div class="gallery-item video-item fade-up glass-panel">
+                        <video src="assets/videos/video2.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="gallery-item photo-item fade-up glass-panel delay-1">
+                        <img src="assets/images/photo3.jpg" alt="Zahra 3" loading="lazy">
+                    </div>
+                    <div class="gallery-item video-item fade-up glass-panel delay-2">
+                        <video src="assets/videos/video3.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="gallery-item photo-item fade-up glass-panel">
+                        <img src="assets/images/photo4.jpg" alt="Zahra 4" loading="lazy">
+                    </div>
+                    <div class="gallery-item video-item fade-up glass-panel delay-1">
+                        <video src="assets/videos/video4.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- VIEW 4: WISH -->
+        <article id="view-wish" class="view-section">
+            <div class="view-scroll-wrapper center-layout">
+                <div class="wish-container glass-panel" id="wish-box">
+                    <div class="wish-icon">✨</div>
+                    <h2>Make a Wish</h2>
+                    <p>Tuliskan harapan terindahmu di tahun ini, mari kita terbangkan ke semesta.</p>
+                    <textarea id="wish-input" placeholder="Tulis harapanmu di sini..."></textarea>
+                    <button id="btn-send-wish" class="apple-btn primary">Terbangkan Harapan</button>
+                </div>
+                
+                <div id="wish-animation-layer" class="hidden">
+                    <div class="wish-glowing-text" id="wish-display"></div>
+                    <svg viewBox="0 0 24 24" class="shooting-star" id="wish-star">
+                        <path fill="#ffd700" d="M12,2 L15,9 L22,9 L16,14 L18,21 L12,17 L6,21 L8,14 L2,9 L9,9 Z"/>
+                    </svg>
+                </div>
+            </div>
+        </article>
+
+        <!-- VIEW 5: GIFT -->
+        <article id="view-gift" class="view-section">
+            <div class="view-scroll-wrapper center-layout relative-box">
+                
+                <div id="love-svg-container">
+                    <svg viewBox="0 0 100 100" class="love-draw-svg">
+                        <path id="love-path" d="M50,85 C25,65 10,45 10,28 C10,15 22,5 35,5 C43,5 50,12 50,12 C50,12 57,5 65,5 C78,5 90,15 90,28 C90,45 75,65 50,85 Z"/>
+                    </svg>
+                </div>
+
+                <div id="secret-box-trigger" class="hidden fade-up">
+                    <div class="gift-box-icon">🎁</div>
+                    <button id="btn-open-gift" class="apple-btn primary">Buka Secret Box</button>
+                </div>
+
+                <div id="final-reward" class="glass-panel hidden">
+                    <div class="reward-image-wrap">
+                        <img src="assets/images/hadiah.jpg" alt="Hadiah Spesial" loading="lazy">
+                    </div>
+                    <div class="reward-content">
+                        <p class="reward-text">HAYYIEE CINTAAA, ini hadiah buat kamu! hadiah ini mungkin kecil dan ngga seberapa, tapi aku bener bener merayakan sekali ulang tahun kamu. selamat bertambah umur yaa cintaa, YUKKK, ambil hadiah nyaa!</p>
+                        <a href="https://wa.me/6283815954022?text=AKU%20MAU%20SAYANGGG%20%3A3" class="apple-btn whatsapp-btn" target="_blank" rel="noopener noreferrer">Ambil Hadiah</a>
+                        <button id="btn-restart" class="apple-btn secondary mt-10">Kembali ke Awal</button>
+                    </div>
+                </div>
+
+            </div>
+        </article>
+
+        <!-- APPLE STYLE BOTTOM NAV -->
+        <nav class="dock-nav hidden">
+            <div class="dock-container glass-panel">
+                <button class="dock-item active" data-target="view-home">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3L4 9v12h5v-7h6v7h5V9z"/></svg>
+                    <span>Home</span>
+                </button>
+                <button class="dock-item" data-target="view-messages">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12zM6 9h12v2H6zm0-3h12v2H6zm0 6h8v2H6z"/></svg>
+                    <span>Pesan</span>
+                </button>
+                <button class="dock-item" data-target="view-gallery">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z"/></svg>
+                    <span>Galeri</span>
+                </button>
+                <button class="dock-item" data-target="view-wish">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>
+                    <span>Wish</span>
+                </button>
+                <button class="dock-item" data-target="view-gift">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+                    <span>Kado</span>
+                </button>
+            </div>
+        </nav>
+
     </main>
-
-    <!-- BOTTOM NAVIGATION (NOW ACTS AS SCROLL LINKS) -->
-    <nav class="bottom-nav glass-effect">
-        <a href="#page-opening" class="nav-item active" data-target="page-opening">
-            <svg viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
-        </a>
-        <a href="#page-middle-1" class="nav-item" data-target="page-middle-1">
-            <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-        </a>
-        <a href="#page-middle-2" class="nav-item" data-target="page-middle-2">
-            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-        </a>
-        <a href="#page-wish" class="nav-item" data-target="page-wish">
-            <svg viewBox="0 0 24 24"><path d="M12 15.39l-3.76 2.27.99-4.28-3.32-2.88 4.38-.37L12 6.09l1.71 4.04 4.38.37-3.32 2.88.99 4.28z"/></svg>
-        </a>
-        <a href="#page-final" class="nav-item" data-target="page-final">
-            <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
-        </a>
-    </nav>
 
     <script src="script.js"></script>
 </body>
