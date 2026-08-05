@@ -1,326 +1,316 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // BRUTAL ENGINE: GLOBAL VARIABLES
-    const els = {
-        cursorCore: document.getElementById('brutal-cursor-core'),
-        cursorAura: document.getElementById('brutal-cursor-aura'),
-        neuralCanvas: document.getElementById('neural-bg-canvas'),
-        freqCanvas: document.getElementById('frequency-visualizer'),
-        audioCore: document.getElementById('core-audio-engine'),
-        playBtn: document.getElementById('master-play-btn'),
-        lockScreen: document.getElementById('protocol-lock'),
-        initScreen: document.getElementById('sequence-init'),
-        mainEngine: document.getElementById('brutal-scroll-engine'),
-        masterHud: document.getElementById('master-hud'),
-        masterDock: document.getElementById('master-dock'),
-        gyroMaster: document.getElementById('gyro-master')
-    };
-
-    // 1. BRUTAL CURSOR DYNAMICS (SPRING PHYSICS)
-    let mx = window.innerWidth/2, my = window.innerHeight/2;
-    let cx = mx, cy = my, ax = mx, ay = my;
-    window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
-    document.querySelectorAll('button, a, .glass-brutal').forEach(el => {
-        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
-    function renderCursor() {
-        cx += (mx - cx) * 0.3; cy += (my - cy) * 0.3; // Fast follow
-        ax += (mx - ax) * 0.1; ay += (my - ay) * 0.1; // Spring follow
-        if(els.cursorCore) {
-            els.cursorCore.style.transform = `translate(${cx}px, ${cy}px)`;
-            els.cursorAura.style.transform = `translate(${ax}px, ${ay}px)`;
+    
+    /** ========================================================================
+     *  SYSTEM 1: AESTHETIC PARTICLE PHYSICS ENGINE
+     *  ======================================================================== */
+    class ParticleEngine {
+        constructor(canvasId) {
+            this.canvas = document.getElementById(canvasId);
+            if(!this.canvas) return;
+            this.ctx = this.canvas.getContext('2d');
+            this.particles = [];
+            this.resize();
+            window.addEventListener('resize', () => this.resize());
+            this.initParticles();
+            this.animate();
         }
-        requestAnimationFrame(renderCursor);
-    }
-    renderCursor();
-
-    // 2. NEURAL NETWORK PARTICLE ENGINE (BACKGROUND PHYSICS)
-    const nCtx = els.neuralCanvas.getContext('2d');
-    let particles = [];
-    function resizeNeural() { els.neuralCanvas.width = window.innerWidth; els.neuralCanvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeNeural); resizeNeural();
-    class NeuralNode {
-        constructor() {
-            this.x = Math.random() * els.neuralCanvas.width;
-            this.y = Math.random() * els.neuralCanvas.height;
-            this.vx = (Math.random() - 0.5) * 0.6;
-            this.vy = (Math.random() - 0.5) * 0.6;
-            this.r = Math.random() * 2 + 1;
+        resize() {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
         }
-        update() {
-            this.x += this.vx; this.y += this.vy;
-            if(this.x < 0 || this.x > els.neuralCanvas.width) this.vx *= -1;
-            if(this.y < 0 || this.y > els.neuralCanvas.height) this.vy *= -1;
-        }
-        draw() {
-            nCtx.beginPath(); nCtx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-            nCtx.fillStyle = 'rgba(212, 139, 160, 0.3)'; nCtx.fill();
-        }
-    }
-    for(let i=0; i<80; i++) particles.push(new NeuralNode());
-    function renderNeural() {
-        nCtx.clearRect(0,0,els.neuralCanvas.width,els.neuralCanvas.height);
-        for(let i=0; i<particles.length; i++) {
-            particles[i].update(); particles[i].draw();
-            for(let j=i; j<particles.length; j++) {
-                let dx = particles[i].x - particles[j].x;
-                let dy = particles[i].y - particles[j].y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist < 120) {
-                    nCtx.beginPath(); nCtx.strokeStyle = `rgba(212, 139, 160, ${1 - dist/120})`;
-                    nCtx.lineWidth = 0.5; nCtx.moveTo(particles[i].x, particles[i].y);
-                    nCtx.lineTo(particles[j].x, particles[j].y); nCtx.stroke();
-                }
+        initParticles() {
+            for (let i = 0; i < 70; i++) {
+                this.particles.push({
+                    x: Math.random() * this.canvas.width,
+                    y: Math.random() * this.canvas.height,
+                    r: Math.random() * 2 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4 - 0.1,
+                    alpha: Math.random() * 0.4 + 0.1
+                });
             }
         }
-        requestAnimationFrame(renderNeural);
+        animate() {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.y < 0) { p.y = this.canvas.height; p.x = Math.random() * this.canvas.width; }
+                this.ctx.beginPath();
+                this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                this.ctx.fillStyle = `rgba(212, 139, 160, ${p.alpha})`;
+                this.ctx.fill();
+            });
+            requestAnimationFrame(() => this.animate());
+        }
     }
-    renderNeural();
+    new ParticleEngine('premium-particle-canvas');
 
-    // 3. RIPPLE BLAST ENGINE
+    /** ========================================================================
+     *  SYSTEM 2: RIPPLE MICRO-INTERACTION (MATERIAL/APPLE STYLE)
+     *  ======================================================================== */
     document.body.addEventListener('click', (e) => {
-        const target = e.target.closest('.ripple-trigger');
+        const target = e.target.closest('.ripple-effect');
         if(!target) return;
         const rect = target.getBoundingClientRect();
         const ripple = document.createElement('span');
-        ripple.classList.add('ripple-wave');
+        ripple.classList.add('ripple-circle');
         ripple.style.left = `${e.clientX - rect.left}px`;
         ripple.style.top = `${e.clientY - rect.top}px`;
         target.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 600);
+        setTimeout(() => ripple.remove(), 700);
     });
 
-    // 4. BATTERY & TIME TELEMETRY
-    function initTelemetry() {
-        setInterval(() => {
-            const d = new Date(); const u = d.getTime() + (d.getTimezoneOffset() * 60000);
-            const fmt = (o) => { const td = new Date(u + (3600000*o)); return `${String(td.getHours()).padStart(2,'0')}:${String(td.getMinutes()).padStart(2,'0')}:${String(td.getSeconds()).padStart(2,'0')}`; };
-            document.getElementById('sys-wib').innerText = fmt(7);
-            document.getElementById('sys-wita').innerText = fmt(8);
-            document.getElementById('sys-wit').innerText = fmt(9);
-        }, 1000);
+    /** ========================================================================
+     *  SYSTEM 3: WORLD CLOCK & DATE ENGINE
+     *  ======================================================================== */
+    function updateClocks() {
+        const d = new Date();
+        const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+        const format = (offset) => {
+            const td = new Date(utc + (3600000 * offset));
+            return `${String(td.getHours()).padStart(2,'0')}:${String(td.getMinutes()).padStart(2,'0')}`;
+        };
+        document.getElementById('clock-wib').innerText = format(7);
+        document.getElementById('clock-wita').innerText = format(8);
+        document.getElementById('clock-wit').innerText = format(9);
+    }
+    setInterval(updateClocks, 1000);
+    updateClocks();
 
-        if('getBattery' in navigator) {
-            navigator.getBattery().then(b => {
-                const up = () => {
-                    const l = Math.round(b.level * 100);
-                    document.getElementById('batt-percent').innerText = `${l}%`;
-                    const f = document.getElementById('batt-fluid');
-                    f.style.width = `${l}%`;
-                    l <= 20 ? f.classList.add('b-low') : f.classList.remove('b-low');
-                }; up(); b.addEventListener('levelchange', up);
+    /** ========================================================================
+     *  SYSTEM 4: SECURITY PROTOCOL (PIN ENTRY)
+     *  ======================================================================== */
+    class SecurityProtocol {
+        constructor() {
+            this.pin = "090812";
+            this.input = "";
+            this.dots = document.querySelectorAll('.pin-indicator-dot');
+            this.layer = document.getElementById('security-layer');
+            this.loader = document.getElementById('loading-layer');
+            this.bindEvents();
+        }
+        bindEvents() {
+            document.querySelectorAll('.keypad-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const val = btn.getAttribute('data-val');
+                    if (val === 'C') this.input = "";
+                    else if (val === 'DEL') this.input = this.input.slice(0, -1);
+                    else if (this.input.length < 6) {
+                        this.input += val;
+                        if (this.input.length === 6) this.verify();
+                    }
+                    this.updateUI();
+                });
             });
         }
-    }
-    initTelemetry();
-
-    // 5. SECURITY PROTOCOL LOGIC
-    const PIN = "090812"; let attempt = "";
-    const pNodes = document.querySelectorAll('.pin-node');
-    
-    function refreshNodes(err=false) {
-        pNodes.forEach((n,i) => {
-            if(err) n.classList.add('p-error');
-            else {
-                n.classList.remove('p-error');
-                i < attempt.length ? n.classList.add('p-filled') : n.classList.remove('p-filled');
-            }
-        });
-    }
-    
-    document.querySelectorAll('.kp-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if(btn.classList.contains('clr')) attempt = "";
-            else if(btn.classList.contains('del')) attempt = attempt.slice(0,-1);
-            else if(attempt.length < 6) {
-                attempt += btn.innerText;
-                if(attempt.length === 6) {
-                    refreshNodes();
-                    if(attempt === PIN) authorize();
-                    else {
-                        document.querySelector('.lock-chassis').classList.add('error-shake');
-                        refreshNodes(true);
-                        setTimeout(() => { attempt = ""; refreshNodes(); document.querySelector('.lock-chassis').classList.remove('error-shake'); }, 500);
-                    }
-                    return;
+        updateUI(error = false) {
+            this.dots.forEach((dot, index) => {
+                if (error) dot.classList.add('error-dot');
+                else {
+                    dot.classList.remove('error-dot');
+                    index < this.input.length ? dot.classList.add('filled-dot') : dot.classList.remove('filled-dot');
                 }
+            });
+        }
+        verify() {
+            if (this.input === this.pin) {
+                this.layer.style.opacity = '0';
+                setTimeout(() => {
+                    this.layer.classList.remove('active-overlay');
+                    this.layer.classList.add('hidden-element');
+                    initiateLoadingSequence();
+                }, 800);
+            } else {
+                document.querySelector('.security-card').classList.add('shake-animation');
+                this.updateUI(true);
+                setTimeout(() => {
+                    this.input = ""; this.updateUI();
+                    document.querySelector('.security-card').classList.remove('shake-animation');
+                }, 500);
             }
-            refreshNodes();
-        });
-    });
+        }
+    }
+    new SecurityProtocol();
 
-    function authorize() {
-        els.lockScreen.style.opacity = '0';
-        setTimeout(() => {
-            els.lockScreen.classList.remove('active-overlay');
-            els.lockScreen.classList.add('hidden');
-            bootSequence();
-        }, 800);
+    /** ========================================================================
+     *  SYSTEM 5: PREMIUM LOADING SEQUENCE
+     *  ======================================================================== */
+    function initiateLoadingSequence() {
+        const loader = document.getElementById('loading-layer');
+        loader.classList.remove('hidden-element');
+        
+        let progress = 0;
+        const fillEl = document.getElementById('loading-fill-element');
+        const txtEl = document.getElementById('loading-typography');
+        const texts = ["Mendekripsi keindahan...", "Menyusun memori...", "Menyiapkan mahakarya..."];
+        
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 12) + 4;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                bootMainExperience();
+            }
+            fillEl.style.width = `${progress}%`;
+            if (progress % 30 === 0) txtEl.innerText = texts[Math.min(Math.floor(progress/30), 2)];
+        }, 200);
     }
 
-    // 6. BOOT SEQUENCE & AUDIO CONTEXT
-    let actx, asrc, aanl, adata;
-    function bootSequence() {
-        els.initScreen.classList.remove('hidden');
-        let p = 0; const el = document.getElementById('load-val');
-        const logs = ["Memuat memori...", "Mendekripsi rasa...", "Sinkronisasi detak jantung...", "Mengamankan koneksi...", "Sistem Siap."];
-        const logEl = document.getElementById('term-output');
-        const intv = setInterval(() => {
-            p += Math.floor(Math.random() * 12) + 3;
-            if(p >= 100) { p = 100; clearInterval(intv); executeMain(); }
-            el.innerText = `${p}%`;
-            if(p % 25 === 0) logEl.innerText = logs[Math.min(Math.floor(p/25), 4)];
-        }, 150);
-    }
+    /** ========================================================================
+     *  SYSTEM 6: BOOT MAIN EXPERIENCE & AUDIO ENGINE
+     *  ======================================================================== */
+    const audioEl = document.getElementById('core-bg-music');
+    const musicTrig = document.getElementById('global-music-trigger');
+    const progArc = document.getElementById('music-progress-arc');
 
-    function executeMain() {
-        els.initScreen.style.opacity = '0';
+    function bootMainExperience() {
+        const loader = document.getElementById('loading-layer');
+        loader.style.opacity = '0';
         setTimeout(() => {
-            els.initScreen.classList.add('hidden');
+            loader.classList.add('hidden-element');
+            document.body.classList.remove('locked-state');
             document.body.classList.add('scroll-unlocked');
-            els.masterHud.classList.remove('hidden');
-            els.mainEngine.classList.remove('hidden');
-            els.masterDock.classList.remove('hidden');
             
-            // Audio Web API Logic
-            actx = new (window.AudioContext || window.webkitAudioContext)();
-            aanl = actx.createAnalyser();
-            asrc = actx.createMediaElementSource(els.audioCore);
-            asrc.connect(aanl); aanl.connect(actx.destination);
-            aanl.fftSize = 64; adata = new Uint8Array(aanl.frequencyBinCount);
+            // Show HUDs
+            document.getElementById('main-interface-hud').classList.remove('hidden-element');
+            document.getElementById('smooth-scroll-container').classList.remove('hidden-element');
+            document.getElementById('global-dock-nav').classList.remove('hidden-element');
             
-            const fCtx = els.freqCanvas.getContext('2d');
-            function drawFreq() {
-                requestAnimationFrame(drawFreq);
-                aanl.getByteFrequencyData(adata);
-                fCtx.clearRect(0,0, els.freqCanvas.width, els.freqCanvas.height);
-                let bw = (els.freqCanvas.width / aanl.frequencyBinCount) * 2;
-                let x = 0;
-                for(let i=0; i<aanl.frequencyBinCount; i++) {
-                    let bh = (adata[i] / 255) * els.freqCanvas.height;
-                    fCtx.fillStyle = `rgba(212, 139, 160, ${bh/els.freqCanvas.height + 0.2})`;
-                    fCtx.fillRect(x, els.freqCanvas.height - bh, bw, bh);
-                    x += bw + 1;
-                }
-            }
-            drawFreq();
+            initScrollEngine();
             
-            els.audioCore.play().then(() => togglePlayUI(true)).catch(()=>{});
-            initHardwareSensors();
-            initBrutalObserver();
+            // Try AutoPlay
+            audioEl.play().then(() => toggleAudioUI(true)).catch(() => console.log("User Interaction Required"));
         }, 800);
     }
 
-    els.playBtn.addEventListener('click', () => {
-        if(actx && actx.state === 'suspended') actx.resume();
-        if(els.audioCore.paused) { els.audioCore.play(); togglePlayUI(true); }
-        else { els.audioCore.pause(); togglePlayUI(false); }
+    musicTrig.addEventListener('click', () => {
+        if (audioEl.paused) { audioEl.play(); toggleAudioUI(true); }
+        else { audioEl.pause(); toggleAudioUI(false); }
     });
-    function togglePlayUI(isp) {
-        if(isp) { document.querySelector('.svg-play').classList.add('hidden'); document.querySelector('.svg-pause').classList.remove('hidden'); }
-        else { document.querySelector('.svg-play').classList.remove('hidden'); document.querySelector('.svg-pause').classList.add('hidden'); }
-    }
 
-    // 7. HARDWARE SENSOR PARALLAX (GYRO + MOUSE)
-    function initHardwareSensors() {
-        if(window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
-            DeviceOrientationEvent.requestPermission().then(r => { if(r === 'granted') attachGyro(); }).catch(console.error);
-        } else attachGyro();
-        
-        function attachGyro() {
-            window.addEventListener('deviceorientation', (e) => {
-                let y = e.beta, x = e.gamma;
-                if(x > 90) x=90; if(x < -90) x=-90;
-                els.gyroMaster.style.transform = `rotateY(${(x/90)*25}deg) rotateX(${(y/90)*-25}deg)`;
-            });
+    function toggleAudioUI(isPlaying) {
+        if (isPlaying) {
+            musicTrig.classList.add('is-playing');
+            document.querySelector('.icon-play-state').classList.add('hidden-element');
+            document.querySelector('.icon-pause-state').classList.remove('hidden-element');
+        } else {
+            musicTrig.classList.remove('is-playing');
+            document.querySelector('.icon-play-state').classList.remove('hidden-element');
+            document.querySelector('.icon-pause-state').classList.add('hidden-element');
         }
-        document.getElementById('mod-hero').addEventListener('mousemove', (e) => {
-            let xa = (window.innerWidth/2 - e.pageX)/20, ya = (window.innerHeight/2 - e.pageY)/20;
-            els.gyroMaster.style.transform = `rotateY(${xa}deg) rotateX(${ya}deg)`;
-        });
-        document.getElementById('mod-hero').addEventListener('mouseleave', () => els.gyroMaster.style.transform = `rotateY(0deg) rotateX(0deg)`);
     }
 
-    // 8. BRUTAL INTERSECTION OBSERVER & PARALLAX ENGINE
-    function initBrutalObserver() {
-        // Split text preparation
-        const st = document.querySelector('.split-text-anim');
-        st.innerHTML = st.textContent.replace(/\S/g, "<span class='char'>$&</span>");
-        
-        const obs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if(e.isIntersecting) {
-                    e.target.classList.add('triggered');
-                    if(e.target.id === 'heart-decrypt-sequence' && !window.giftTrig) {
-                        window.giftTrig = true;
-                        e.target.classList.add('draw-heart-anim');
+    audioEl.addEventListener('timeupdate', () => {
+        if (audioEl.duration) {
+            const percent = (audioEl.currentTime / audioEl.duration) * 100;
+            progArc.setAttribute('stroke-dasharray', `${percent}, 100`);
+        }
+    });
+
+    /** ========================================================================
+     *  SYSTEM 7: SCROLL ENGINE (INTERSECTION OBSERVER & PARALLAX)
+     *  ======================================================================== */
+    function initScrollEngine() {
+        // Observer for reveal animations
+        const revealElements = document.querySelectorAll('.reveal-on-scroll');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    
+                    // Specific trigger for Final SVG Heart Drawing
+                    if (entry.target.id === 'heart-drawing-sequence' && !window.giftRevealedState) {
+                        window.giftRevealedState = true;
+                        entry.target.classList.add('trigger-heart-draw');
                         setTimeout(() => {
-                            const gm = document.getElementById('gift-trigger-module');
-                            gm.classList.remove('hidden');
-                            setTimeout(() => gm.style.opacity = '1', 50);
-                        }, 4000);
+                            const box = document.getElementById('gift-box-trigger');
+                            box.classList.remove('hidden-element');
+                            setTimeout(() => box.style.opacity = '1', 50);
+                        }, 4000); // Wait for SVG draw
                     }
                 }
             });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
 
-        document.querySelectorAll('.fade-up-anim, .split-text-anim').forEach(el => obs.observe(el));
+        revealElements.forEach(el => observer.observe(el));
 
-        // Parallax Scroll Engine
-        const pMods = document.querySelectorAll('.parallax-module');
-        const sections = document.querySelectorAll('.brutal-section');
-        const dItems = document.querySelectorAll('.d-item');
+        // Parallax and Active Nav Logic
+        const parallaxEls = document.querySelectorAll('.parallax-element');
+        const sections = document.querySelectorAll('.mega-section');
+        const dockBtns = document.querySelectorAll('.dock-icon-btn');
 
         window.addEventListener('scroll', () => {
-            let sy = window.scrollY;
-            pMods.forEach((pm, i) => pm.style.transform = `translateY(${-(sy * (0.04 + i*0.01))}px)`);
+            let scrollY = window.scrollY;
             
-            let curr = '';
-            sections.forEach(sec => { if(sy >= sec.offsetTop - window.innerHeight/2) curr = sec.getAttribute('id'); });
-            dItems.forEach(di => {
-                di.classList.remove('active');
-                if(di.getAttribute('href') === `#${curr}`) di.classList.add('active');
+            // Apply Parallax Matrix
+            parallaxEls.forEach(el => {
+                const speed = parseFloat(el.getAttribute('data-speed') || 0.05);
+                el.style.transform = `translateY(${-(scrollY * speed)}px)`;
+            });
+
+            // Update Dock Nav State
+            let currentSectionId = '';
+            sections.forEach(sec => {
+                if (scrollY >= sec.offsetTop - window.innerHeight / 2.5) {
+                    currentSectionId = sec.getAttribute('id');
+                }
+            });
+            dockBtns.forEach(btn => {
+                btn.classList.remove('active-dock');
+                if (btn.getAttribute('href') === `#${currentSectionId}`) btn.classList.add('active-dock');
             });
         }, { passive: true });
-        
-        dItems.forEach(di => di.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelector(di.getAttribute('href')).scrollIntoView({behavior: 'smooth'});
-        }));
+
+        // Smooth Scroll for Dock
+        dockBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector(btn.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
     }
 
-    // 9. WISH TRANSMITTER LOGIC
-    document.getElementById('cmd-send-wish').addEventListener('click', () => {
-        const val = document.getElementById('wish-input-field').value.trim();
-        if(!val) return;
-        const term = document.getElementById('wish-terminal');
-        const exec = document.getElementById('wish-execution');
-        const disp = document.getElementById('wish-display');
-        const proj = document.getElementById('star-projectile');
-        
-        term.style.opacity = '0';
+    /** ========================================================================
+     *  SYSTEM 8: WISH TRANSMITTER
+     *  ======================================================================== */
+    document.getElementById('btn-submit-wish').addEventListener('click', () => {
+        const text = document.getElementById('wish-textarea').value.trim();
+        if (!text) return;
+
+        const formModule = document.getElementById('wish-form-module');
+        const animModule = document.getElementById('wish-animation-module');
+        const resultText = document.getElementById('wish-result-text');
+        const starEntity = document.getElementById('star-animation-entity');
+
+        formModule.style.opacity = '0';
         setTimeout(() => {
-            term.classList.add('hidden');
-            exec.classList.remove('hidden');
-            disp.innerText = `"${val}"`;
+            formModule.classList.add('hidden-element');
+            animModule.classList.remove('hidden-element');
+            resultText.innerText = `"${text}"`;
+            
             setTimeout(() => {
-                disp.style.opacity = '0';
-                setTimeout(() => proj.classList.add('projectile-anim'), 1000);
+                resultText.style.opacity = '0';
+                setTimeout(() => starEntity.classList.add('star-shoot-anim'), 800);
             }, 3000);
-        }, 500);
+        }, 600);
     });
 
-    // 10. GIFT DECRYPTION LOGIC
-    document.getElementById('cmd-decrypt-gift').addEventListener('click', () => {
-        const gm = document.getElementById('gift-trigger-module');
-        const hs = document.getElementById('heart-decrypt-sequence');
-        const pld = document.getElementById('final-payload');
-        
-        gm.style.opacity = '0'; hs.style.opacity = '0';
+    /** ========================================================================
+     *  SYSTEM 9: FINAL GIFT DECRYPTION
+     *  ======================================================================== */
+    document.getElementById('btn-open-gift').addEventListener('click', () => {
+        const triggerModule = document.getElementById('gift-box-trigger');
+        const drawingModule = document.getElementById('heart-drawing-sequence');
+        const payloadModule = document.getElementById('final-gift-payload');
+
+        triggerModule.style.opacity = '0';
+        drawingModule.style.opacity = '0';
+
         setTimeout(() => {
-            gm.classList.add('hidden'); hs.classList.add('hidden');
-            pld.classList.remove('hidden');
-            setTimeout(() => pld.style.opacity = '1', 100);
+            triggerModule.classList.add('hidden-element');
+            drawingModule.classList.add('hidden-element');
+            payloadModule.classList.remove('hidden-element');
+            setTimeout(() => payloadModule.style.opacity = '1', 50);
         }, 800);
     });
 });
