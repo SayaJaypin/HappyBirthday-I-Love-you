@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     /** ========================================================================
-     *  SYSTEM 1: AESTHETIC PARTICLE PHYSICS ENGINE
+     *  [1] ADVANCED PARTICLE PHYSICS ENGINE (CANVAS)
      *  ======================================================================== */
-    class ParticleEngine {
+    class StellarEngine {
         constructor(canvasId) {
             this.canvas = document.getElementById(canvasId);
             if(!this.canvas) return;
@@ -11,26 +11,26 @@ document.addEventListener('DOMContentLoaded', () => {
             this.particles = [];
             this.resize();
             window.addEventListener('resize', () => this.resize());
-            this.initParticles();
-            this.animate();
+            this.populate();
+            this.render();
         }
         resize() {
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
         }
-        initParticles() {
-            for (let i = 0; i < 70; i++) {
+        populate() {
+            for (let i = 0; i < 90; i++) {
                 this.particles.push({
                     x: Math.random() * this.canvas.width,
                     y: Math.random() * this.canvas.height,
-                    r: Math.random() * 2 + 0.5,
-                    vx: (Math.random() - 0.5) * 0.4,
-                    vy: (Math.random() - 0.5) * 0.4 - 0.1,
-                    alpha: Math.random() * 0.4 + 0.1
+                    r: Math.random() * 3 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5 - 0.2,
+                    alpha: Math.random() * 0.6 + 0.1
                 });
             }
         }
-        animate() {
+        render() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.particles.forEach(p => {
                 p.x += p.vx; p.y += p.vy;
@@ -40,13 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.ctx.fillStyle = `rgba(212, 139, 160, ${p.alpha})`;
                 this.ctx.fill();
             });
-            requestAnimationFrame(() => this.animate());
+            requestAnimationFrame(() => this.render());
         }
     }
-    new ParticleEngine('premium-particle-canvas');
+    new StellarEngine('stellar-particle-canvas');
 
     /** ========================================================================
-     *  SYSTEM 2: RIPPLE MICRO-INTERACTION (MATERIAL/APPLE STYLE)
+     *  [2] RIPPLE PHYSICS MICRO-INTERACTION
      *  ======================================================================== */
     document.body.addEventListener('click', (e) => {
         const target = e.target.closest('.ripple-effect');
@@ -61,256 +61,310 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /** ========================================================================
-     *  SYSTEM 3: WORLD CLOCK & DATE ENGINE
+     *  [3] WORLD CLOCK MATRIX
      *  ======================================================================== */
-    function updateClocks() {
-        const d = new Date();
-        const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-        const format = (offset) => {
+    function syncClocks() {
+        const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
+        const formatTime = (offset) => {
             const td = new Date(utc + (3600000 * offset));
             return `${String(td.getHours()).padStart(2,'0')}:${String(td.getMinutes()).padStart(2,'0')}`;
         };
-        document.getElementById('clock-wib').innerText = format(7);
-        document.getElementById('clock-wita').innerText = format(8);
-        document.getElementById('clock-wit').innerText = format(9);
+        document.getElementById('tz-wib').innerText = formatTime(7);
+        document.getElementById('tz-wita').innerText = formatTime(8);
+        document.getElementById('tz-wit').innerText = formatTime(9);
     }
-    setInterval(updateClocks, 1000);
-    updateClocks();
+    setInterval(syncClocks, 1000); syncClocks();
 
     /** ========================================================================
-     *  SYSTEM 4: SECURITY PROTOCOL (PIN ENTRY)
+     *  [4] BRUTAL PIN SECURITY & AUTHENTICATION (NEUMORPHIC)
      *  ======================================================================== */
-    class SecurityProtocol {
+    class SecurityAuth {
         constructor() {
-            this.pin = "090812";
-            this.input = "";
-            this.dots = document.querySelectorAll('.pin-indicator-dot');
-            this.layer = document.getElementById('security-layer');
-            this.loader = document.getElementById('loading-layer');
-            this.bindEvents();
+            this.targetPin = "090812";
+            this.currentInput = "";
+            this.dots = document.querySelectorAll('.pin-dot');
+            this.authLayer = document.getElementById('auth-layer');
+            this.bindKeypad();
         }
-        bindEvents() {
-            document.querySelectorAll('.keypad-btn').forEach(btn => {
+        bindKeypad() {
+            document.querySelectorAll('.n-key').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const val = btn.getAttribute('data-val');
-                    if (val === 'C') this.input = "";
-                    else if (val === 'DEL') this.input = this.input.slice(0, -1);
-                    else if (this.input.length < 6) {
-                        this.input += val;
-                        if (this.input.length === 6) this.verify();
+                    const key = btn.getAttribute('data-key');
+                    if (key === 'C') this.currentInput = "";
+                    else if (key === 'DEL') this.currentInput = this.currentInput.slice(0, -1);
+                    else if (this.currentInput.length < 6) {
+                        this.currentInput += key;
+                        if (this.currentInput.length === 6) this.processAuth();
                     }
-                    this.updateUI();
+                    this.refreshVisuals();
                 });
             });
         }
-        updateUI(error = false) {
-            this.dots.forEach((dot, index) => {
-                if (error) dot.classList.add('error-dot');
+        refreshVisuals(isError = false) {
+            this.dots.forEach((dot, idx) => {
+                if (isError) dot.classList.add('is-error');
                 else {
-                    dot.classList.remove('error-dot');
-                    index < this.input.length ? dot.classList.add('filled-dot') : dot.classList.remove('filled-dot');
+                    dot.classList.remove('is-error');
+                    idx < this.currentInput.length ? dot.classList.add('is-filled') : dot.classList.remove('is-filled');
                 }
             });
         }
-        verify() {
-            if (this.input === this.pin) {
-                this.layer.style.opacity = '0';
+        processAuth() {
+            if (this.currentInput === this.targetPin) {
+                this.authLayer.style.opacity = '0';
                 setTimeout(() => {
-                    this.layer.classList.remove('active-overlay');
-                    this.layer.classList.add('hidden-element');
-                    initiateLoadingSequence();
+                    this.authLayer.classList.remove('active-overlay');
+                    this.authLayer.classList.add('hidden-element');
+                    startStellarBloomLoader();
                 }, 800);
             } else {
-                document.querySelector('.security-card').classList.add('shake-animation');
-                this.updateUI(true);
+                document.querySelector('.auth-card').classList.add('shake-err');
+                this.refreshVisuals(true);
                 setTimeout(() => {
-                    this.input = ""; this.updateUI();
-                    document.querySelector('.security-card').classList.remove('shake-animation');
+                    this.currentInput = ""; this.refreshVisuals();
+                    document.querySelector('.auth-card').classList.remove('shake-err');
                 }, 500);
             }
         }
     }
-    new SecurityProtocol();
+    new SecurityAuth();
 
     /** ========================================================================
-     *  SYSTEM 5: PREMIUM LOADING SEQUENCE
+     *  [5] ORBITAL BLOOM LOADING SEQUENCE
      *  ======================================================================== */
-    function initiateLoadingSequence() {
-        const loader = document.getElementById('loading-layer');
+    function startStellarBloomLoader() {
+        const loader = document.getElementById('loader-layer');
         loader.classList.remove('hidden-element');
         
         let progress = 0;
-        const fillEl = document.getElementById('loading-fill-element');
-        const txtEl = document.getElementById('loading-typography');
-        const texts = ["Mendekripsi keindahan...", "Menyusun memori...", "Menyiapkan mahakarya..."];
+        const percentTxt = document.getElementById('load-percent');
+        const statusTxt = document.getElementById('load-status');
+        const fillBar = document.getElementById('load-bar-fill');
+        const stages = ["Menyusun piksel memori...", "Menyelaraskan frekuensi hati...", "Mempersiapkan mahakarya..."];
         
-        const interval = setInterval(() => {
-            progress += Math.floor(Math.random() * 12) + 4;
+        const loaderIntv = setInterval(() => {
+            progress += Math.floor(Math.random() * 10) + 2;
             if (progress >= 100) {
                 progress = 100;
-                clearInterval(interval);
-                bootMainExperience();
+                clearInterval(loaderIntv);
+                bootMainEngine();
             }
-            fillEl.style.width = `${progress}%`;
-            if (progress % 30 === 0) txtEl.innerText = texts[Math.min(Math.floor(progress/30), 2)];
-        }, 200);
+            percentTxt.innerText = `${progress}%`;
+            fillBar.style.width = `${progress}%`;
+            if (progress % 35 === 0) statusTxt.innerText = stages[Math.min(Math.floor(progress/35), 2)];
+        }, 150);
     }
 
     /** ========================================================================
-     *  SYSTEM 6: BOOT MAIN EXPERIENCE & AUDIO ENGINE
+     *  [6] AUDIO ENGINE & AUDIO VISUALIZER
      *  ======================================================================== */
-    const audioEl = document.getElementById('core-bg-music');
-    const musicTrig = document.getElementById('global-music-trigger');
-    const progArc = document.getElementById('music-progress-arc');
+    const audioCore = document.getElementById('core-audio-bg');
+    const musicBtn = document.getElementById('music-controller');
+    
+    function toggleAudio(play) {
+        if(play) {
+            musicBtn.classList.add('is-playing');
+            document.querySelector('.svg-play').classList.add('hidden-element');
+            document.querySelector('.svg-pause').classList.remove('hidden-element');
+        } else {
+            musicBtn.classList.remove('is-playing');
+            document.querySelector('.svg-play').classList.remove('hidden-element');
+            document.querySelector('.svg-pause').classList.add('hidden-element');
+        }
+    }
 
-    function bootMainExperience() {
-        const loader = document.getElementById('loading-layer');
+    musicBtn.addEventListener('click', () => {
+        if(audioCore.paused) { audioCore.play(); toggleAudio(true); }
+        else { audioCore.pause(); toggleAudio(false); }
+    });
+
+    /** ========================================================================
+     *  [7] BOOT MAIN ENGINE & INTERSECTION OBSERVER
+     *  ======================================================================== */
+    function bootMainEngine() {
+        const loader = document.getElementById('loader-layer');
         loader.style.opacity = '0';
         setTimeout(() => {
             loader.classList.add('hidden-element');
-            document.body.classList.remove('locked-state');
+            document.body.classList.remove('system-locked');
             document.body.classList.add('scroll-unlocked');
             
-            // Show HUDs
-            document.getElementById('main-interface-hud').classList.remove('hidden-element');
-            document.getElementById('smooth-scroll-container').classList.remove('hidden-element');
-            document.getElementById('global-dock-nav').classList.remove('hidden-element');
+            document.getElementById('master-hud').classList.remove('hidden-element');
+            document.getElementById('main-scroll-engine').classList.remove('hidden-element');
+            document.getElementById('dock-bar').classList.remove('hidden-element');
             
-            initScrollEngine();
+            initScrollPhysics();
             
-            // Try AutoPlay
-            audioEl.play().then(() => toggleAudioUI(true)).catch(() => console.log("User Interaction Required"));
+            audioCore.play().then(() => { toggleAudio(true); }).catch(()=>{});
         }, 800);
     }
 
-    musicTrig.addEventListener('click', () => {
-        if (audioEl.paused) { audioEl.play(); toggleAudioUI(true); }
-        else { audioEl.pause(); toggleAudioUI(false); }
-    });
-
-    function toggleAudioUI(isPlaying) {
-        if (isPlaying) {
-            musicTrig.classList.add('is-playing');
-            document.querySelector('.icon-play-state').classList.add('hidden-element');
-            document.querySelector('.icon-pause-state').classList.remove('hidden-element');
-        } else {
-            musicTrig.classList.remove('is-playing');
-            document.querySelector('.icon-play-state').classList.remove('hidden-element');
-            document.querySelector('.icon-pause-state').classList.add('hidden-element');
-        }
-    }
-
-    audioEl.addEventListener('timeupdate', () => {
-        if (audioEl.duration) {
-            const percent = (audioEl.currentTime / audioEl.duration) * 100;
-            progArc.setAttribute('stroke-dasharray', `${percent}, 100`);
-        }
-    });
-
-    /** ========================================================================
-     *  SYSTEM 7: SCROLL ENGINE (INTERSECTION OBSERVER & PARALLAX)
-     *  ======================================================================== */
-    function initScrollEngine() {
-        // Observer for reveal animations
-        const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    function initScrollPhysics() {
+        // Reveal Animations Observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
+                    entry.target.classList.add('is-triggered');
                     
-                    // Specific trigger for Final SVG Heart Drawing
-                    if (entry.target.id === 'heart-drawing-sequence' && !window.giftRevealedState) {
-                        window.giftRevealedState = true;
-                        entry.target.classList.add('trigger-heart-draw');
+                    // Final Gift Heart Drawing Trigger
+                    if (entry.target.id === 'heart-draw-bg' && !window.giftActivated) {
+                        window.giftActivated = true;
+                        entry.target.classList.add('heart-draw-triggered');
                         setTimeout(() => {
-                            const box = document.getElementById('gift-box-trigger');
+                            const box = document.getElementById('gift-box-interactive');
                             box.classList.remove('hidden-element');
                             setTimeout(() => box.style.opacity = '1', 50);
-                        }, 4000); // Wait for SVG draw
+                        }, 4000); // Wait for SVG draw to complete
                     }
                 }
             });
-        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
-        revealElements.forEach(el => observer.observe(el));
+        document.querySelectorAll('.reveal-anim').forEach(el => observer.observe(el));
 
-        // Parallax and Active Nav Logic
-        const parallaxEls = document.querySelectorAll('.parallax-element');
+        // Parallax, Reading Progress, & Dock Nav Logic
+        const parallaxEls = document.querySelectorAll('.parallax-layer');
         const sections = document.querySelectorAll('.mega-section');
-        const dockBtns = document.querySelectorAll('.dock-icon-btn');
+        const dockBtns = document.querySelectorAll('.dock-btn');
+        const readProg = document.getElementById('read-progress');
 
         window.addEventListener('scroll', () => {
-            let scrollY = window.scrollY;
+            let sy = window.scrollY;
             
-            // Apply Parallax Matrix
+            // Reading Progress
+            let scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            readProg.style.width = `${(sy / scrollHeight) * 100}%`;
+
+            // Parallax Matrix
             parallaxEls.forEach(el => {
-                const speed = parseFloat(el.getAttribute('data-speed') || 0.05);
-                el.style.transform = `translateY(${-(scrollY * speed)}px)`;
+                const spd = parseFloat(el.getAttribute('data-speed'));
+                el.style.transform = `translateY(${-(sy * spd)}px)`;
             });
 
-            // Update Dock Nav State
-            let currentSectionId = '';
+            // Dock Tracking
+            let currSec = '';
             sections.forEach(sec => {
-                if (scrollY >= sec.offsetTop - window.innerHeight / 2.5) {
-                    currentSectionId = sec.getAttribute('id');
-                }
+                if (sy >= sec.offsetTop - window.innerHeight / 2.5) currSec = sec.getAttribute('id');
             });
             dockBtns.forEach(btn => {
                 btn.classList.remove('active-dock');
-                if (btn.getAttribute('href') === `#${currentSectionId}`) btn.classList.add('active-dock');
+                if (btn.getAttribute('href') === `#${currSec}`) btn.classList.add('active-dock');
             });
         }, { passive: true });
 
-        // Smooth Scroll for Dock
-        dockBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelector(btn.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
+        dockBtns.forEach(btn => btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector(btn.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+        }));
     }
 
     /** ========================================================================
-     *  SYSTEM 8: WISH TRANSMITTER
+     *  [8] WISH CONSOLE TRANSMITTER
      *  ======================================================================== */
-    document.getElementById('btn-submit-wish').addEventListener('click', () => {
-        const text = document.getElementById('wish-textarea').value.trim();
+    document.getElementById('cmd-send-wish').addEventListener('click', () => {
+        const text = document.getElementById('wish-text-input').value.trim();
         if (!text) return;
 
-        const formModule = document.getElementById('wish-form-module');
-        const animModule = document.getElementById('wish-animation-module');
-        const resultText = document.getElementById('wish-result-text');
-        const starEntity = document.getElementById('star-animation-entity');
+        const formUI = document.getElementById('wish-interface');
+        const animUI = document.getElementById('wish-magic-scene');
+        const resTxt = document.getElementById('wish-result-text');
+        const starVFX = document.getElementById('star-vfx-element');
 
-        formModule.style.opacity = '0';
+        formUI.style.opacity = '0';
         setTimeout(() => {
-            formModule.classList.add('hidden-element');
-            animModule.classList.remove('hidden-element');
-            resultText.innerText = `"${text}"`;
+            formUI.classList.add('hidden-element');
+            animUI.classList.remove('hidden-element');
+            resTxt.innerText = `"${text}"`;
             
             setTimeout(() => {
-                resultText.style.opacity = '0';
-                setTimeout(() => starEntity.classList.add('star-shoot-anim'), 800);
+                resTxt.style.opacity = '0';
+                setTimeout(() => starVFX.classList.add('star-shoot-anim'), 800);
             }, 3000);
         }, 600);
     });
 
     /** ========================================================================
-     *  SYSTEM 9: FINAL GIFT DECRYPTION
+     *  [9] CONFETTI PHYSICS ENGINE FOR GIFT DECRYPTION
      *  ======================================================================== */
-    document.getElementById('btn-open-gift').addEventListener('click', () => {
-        const triggerModule = document.getElementById('gift-box-trigger');
-        const drawingModule = document.getElementById('heart-drawing-sequence');
-        const payloadModule = document.getElementById('final-gift-payload');
+    class ConfettiEngine {
+        constructor(canvasId) {
+            this.canvas = document.getElementById(canvasId);
+            this.ctx = this.canvas.getContext('2d');
+            this.particles = [];
+            this.colors = ['#d48ba0', '#f8cdd6', '#FFD700', '#ffffff', '#e6c8d3'];
+            this.resize();
+            window.addEventListener('resize', () => this.resize());
+        }
+        resize() {
+            this.canvas.width = this.canvas.offsetWidth;
+            this.canvas.height = this.canvas.offsetHeight;
+        }
+        burst() {
+            for(let i=0; i<150; i++) {
+                this.particles.push({
+                    x: this.canvas.width / 2,
+                    y: this.canvas.height / 2 + 50,
+                    vx: (Math.random() - 0.5) * 20,
+                    vy: (Math.random() - 1) * 20 - 5,
+                    size: Math.random() * 8 + 4,
+                    color: this.colors[Math.floor(Math.random() * this.colors.length)],
+                    rot: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 10
+                });
+            }
+            this.animate();
+        }
+        animate() {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            let active = false;
+            this.particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.5; // Gravity
+                p.rot += p.rotSpeed;
+                if(p.y < this.canvas.height + 20) active = true;
+                
+                this.ctx.save();
+                this.ctx.translate(p.x, p.y);
+                this.ctx.rotate(p.rot * Math.PI / 180);
+                this.ctx.fillStyle = p.color;
+                this.ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                this.ctx.restore();
+            });
+            if(active) requestAnimationFrame(() => this.animate());
+            else this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+        }
+    }
 
-        triggerModule.style.opacity = '0';
-        drawingModule.style.opacity = '0';
+    /** ========================================================================
+     *  [10] PRECISION GIFT DECRYPTION & ANIMATION
+     *  ======================================================================== */
+    const confettiSys = new ConfettiEngine('confetti-canvas');
+
+    document.getElementById('cmd-open-gift').addEventListener('click', () => {
+        const trigBox = document.getElementById('gift-box-interactive');
+        const drawBg = document.getElementById('heart-draw-bg');
+        const payload = document.getElementById('reward-payload');
+        const svgBox = document.getElementById('the-gift-box');
+
+        // Trigger CSS Box Explode Animation
+        svgBox.classList.add('open-box-anim');
+        
+        // Trigger JS Confetti Engine
+        document.getElementById('confetti-canvas').classList.remove('hidden-element');
+        confettiSys.burst();
 
         setTimeout(() => {
-            triggerModule.classList.add('hidden-element');
-            drawingModule.classList.add('hidden-element');
-            payloadModule.classList.remove('hidden-element');
-            setTimeout(() => payloadModule.style.opacity = '1', 50);
-        }, 800);
+            trigBox.style.opacity = '0';
+            drawBg.style.opacity = '0';
+
+            setTimeout(() => {
+                trigBox.classList.add('hidden-element');
+                drawBg.classList.add('hidden-element');
+                payload.classList.remove('hidden-element');
+                setTimeout(() => payload.style.opacity = '1', 100);
+            }, 800);
+        }, 1500); // Wait for confetti burst to peak
     });
+
 });
