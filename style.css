@@ -1,11 +1,11 @@
 @charset "UTF-8";
 /* ==========================================================================
-   [0] FORCE IMPORT FONTS (ANTI TIMES NEW ROMAN BUG)
+   [0] FORCE IMPORT FONTS (ANTI TIMES NEW ROMAN BUG!)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;700;800&display=swap');
 
 /* ==========================================================================
-   [1] MASSIVE CYBER-ROMANCE VARIABLES (THEMING ENGINE V13)
+   [1] MASSIVE CYBER-ROMANCE VARIABLES (THEMING ENGINE V14)
    ========================================================================== */
 :root {
     /* Primary Soft Romance Palette */
@@ -56,21 +56,21 @@
     --neumorph-down: 2px 2px 5px rgba(212, 139, 160, 0.1), -2px -2px 5px rgba(255, 255, 255, 0.9), inset 6px 6px 12px rgba(212, 139, 160, 0.15), inset -6px -6px 12px rgba(255, 255, 255, 0.9);
     
     /* Kinematics / Easing */
-    --ease-apple: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-apple-spring: cubic-bezier(0.25, 1, 0.5, 1);
     --ease-bouncy: cubic-bezier(0.68, -0.6, 0.32, 1.6);
     --ease-fluid: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
     
-    /* FLUID TYPOGRAPHY CLAMPS (PERFECT MOBILE FIRST) */
+    /* FLUID TYPOGRAPHY CLAMPS (PERFECT MOBILE FIRST & ANTI-KEPOTONG) */
     --fs-xs: clamp(0.7rem, 2vw, 0.8rem);
     --fs-sm: clamp(0.85rem, 2.5vw, 0.95rem);
     --fs-base: clamp(1rem, 3vw, 1.125rem);
     --fs-md: clamp(1.15rem, 3.5vw, 1.25rem);
     --fs-lg: clamp(1.25rem, 4vw, 1.5rem);
-    --fs-xl: clamp(1.5rem, 5vw, 2rem);
-    --fs-2xl: clamp(1.8rem, 6vw, 2.5rem);
-    --fs-3xl: clamp(2.2rem, 7vw, 3.5rem);
-    --fs-mega: clamp(2.8rem, 8vw, 5rem);
+    --fs-xl: clamp(1.5rem, 5vw, 1.8rem); /* Diperkecil dikit buat mobile */
+    --fs-2xl: clamp(1.7rem, 6vw, 2.2rem);
+    --fs-3xl: clamp(2rem, 7vw, 3rem);
+    --fs-mega: clamp(2.5rem, 8vw, 4.5rem);
     
     /* FLUID SPACING */
     --space-xs: clamp(4px, 1vw, 8px);
@@ -80,7 +80,9 @@
     --space-xl: clamp(32px, 6vw, 48px);
     --space-2xl: clamp(48px, 8vw, 64px);
     --space-3xl: clamp(64px, 10vw, 96px);
-    --spacing-section-y: clamp(80px, 15vh, 150px);
+    
+    /* PADDING Y UNTUK SECTION (FIX TEKS NABRAK JAM) */
+    --spacing-section-y: clamp(140px, 18vh, 180px);
     
     --radius-sm: 8px; --radius-md: 16px; --radius-lg: 24px; --radius-xl: 32px; --radius-full: 9999px;
 }
@@ -98,6 +100,7 @@ body {
     height: 100dvh; 
     background-color: var(--c-bg-base); 
     color: var(--c-text-main); 
+    /* KUNCI MATI FONT KE PLUS JAKARTA SANS */
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important; 
     overflow: hidden; 
     position: relative; 
@@ -108,12 +111,14 @@ body.scroll-unlocked { overflow-y: auto; overflow-x: hidden; overscroll-behavior
 body::-webkit-scrollbar { width: 6px; background: transparent; }
 body::-webkit-scrollbar-thumb { background: var(--c-primary-300); border-radius: var(--radius-full); }
 ::selection { background: var(--c-primary-500); color: var(--c-text-inverse); }
+
 img, video, svg { max-width: 100%; height: auto; display: block; }
 a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 .hidden-state { display: none !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; }
+.mt-24 { margin-top: var(--space-lg); }
 
 /* ==========================================================================
-   [3] ULTRA-PREMIUM GLASSMORPHISM (V13)
+   [3] ULTRA-PREMIUM GLASSMORPHISM
    ========================================================================== */
 .premium-glassmorphism {
     background: var(--glass-bg-medium);
@@ -124,7 +129,7 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
     border-radius: var(--radius-xl);
     position: relative;
     overflow: hidden;
-    transform: translateZ(0); 
+    transform: translateZ(0); /* Hardware Acceleration */
 }
 .premium-glassmorphism::after {
     content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
@@ -137,21 +142,33 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
    [4] AMBIENT ENGINE: FLUID ORBS, CONSTELLATIONS & CINEMATIC NOISE
    ========================================================================== */
 .ambient-fluid-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -100; pointer-events: none; overflow: hidden; filter: blur(90px); -webkit-filter: blur(90px); opacity: 0.85; will-change: transform; }
-.fluid-orb { position: absolute; border-radius: 50%; animation: fluidOrbitalMotion 40s infinite alternate var(--ease-apple); mix-blend-mode: multiply; }
+.fluid-orb { position: absolute; border-radius: 50%; animation: fluidOrbitalMotion 40s infinite alternate var(--ease-apple-spring); mix-blend-mode: multiply; }
 .orb-alpha { width: 75vw; height: 75vw; background: var(--c-primary-200); top: -20%; left: -20%; animation-duration: 45s; }
 .orb-beta { width: 85vw; height: 85vw; background: var(--c-secondary-200); bottom: -30%; right: -20%; animation-delay: -10s; animation-duration: 50s; }
 .orb-gamma { width: 60vw; height: 60vw; background: var(--c-primary-100); top: 35%; left: 35%; animation-delay: -20s; animation-duration: 35s; }
 .orb-delta { width: 55vw; height: 55vw; background: var(--c-primary-300); bottom: 5%; left: 10%; animation-delay: -30s; animation-duration: 40s; }
-@keyframes fluidOrbitalMotion { 0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); } 50% { transform: translate3d(-8vw, 25vh, 0) scale(0.9) rotate(-30deg); } 100% { transform: translate3d(18vw, -18vh, 0) scale(1.2) rotate(-45deg); } }
+
+@keyframes fluidOrbitalMotion {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    25% { transform: translate3d(12vw, 15vh, 0) scale(1.15) rotate(45deg); }
+    50% { transform: translate3d(-8vw, 25vh, 0) scale(0.9) rotate(-30deg); }
+    75% { transform: translate3d(-15vw, -10vh, 0) scale(1.05) rotate(60deg); }
+    100% { transform: translate3d(18vw, -18vh, 0) scale(1.2) rotate(-45deg); }
+}
+
 .background-canvas-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }
 #stellar-constellation-canvas { z-index: -50; opacity: 0.6; }
 #cosmic-dust-canvas { z-index: -49; opacity: 0.8; }
-.cinematic-grain-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -40; background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgibm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjA0NSIvPjwvc3ZnPg=='); pointer-events: none; mix-blend-mode: overlay; }
+.cinematic-grain-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -40;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgibm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjA0NSIvPjwvc3ZnPg==');
+    pointer-events: none; mix-blend-mode: overlay;
+}
 
 /* ==========================================================================
-   [5] DYNAMIC ISLAND HUD (MILITARY PRECISION, ROMANTIC AESTHETIC)
+   [6] DYNAMIC ISLAND HUD (HEADER)
    ========================================================================== */
-.dynamic-island-header { position: fixed; top: var(--space-md); left: 50%; transform: translateX(-50%); z-index: 800; width: 94%; max-width: 520px; transition: opacity 1s var(--ease-apple), transform 1s var(--ease-bouncy); will-change: transform, opacity; }
+.dynamic-island-header { position: fixed; top: var(--space-md); left: 50%; transform: translateX(-50%); z-index: 800; width: 94%; max-width: 520px; transition: opacity 1s var(--ease-apple-spring), transform 1s var(--ease-bouncy); will-change: transform, opacity; }
 .hud-glass-capsule { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; border-radius: var(--radius-full); background: var(--glass-bg-light); border: 1px solid var(--glass-border-light); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 .telemetry-time-module { display: flex; align-items: center; gap: var(--space-sm); font-family: 'JetBrains Mono', monospace; }
 .time-block { display: flex; align-items: baseline; gap: 4px; }
@@ -161,89 +178,89 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 
 .hardware-status-module { display: flex; align-items: center; gap: var(--space-xs); font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 800; border-left: 2px solid rgba(42, 31, 34, 0.1); padding-left: var(--space-md); }
 .ping-latency { color: var(--c-success); text-shadow: 0 0 10px rgba(76, 175, 80, 0.3); }
-.battery-chassis { width: 24px; height: 12px; border: 2px solid var(--c-text-main); border-radius: 4px; padding: 1.5px; position: relative; display: flex; align-items: center; }
+.battery-chassis { width: 26px; height: 13px; border: 2px solid var(--c-text-main); border-radius: 4px; padding: 1px; position: relative; display: flex; align-items: center; }
 .battery-chassis::after { content: ''; position: absolute; right: -4px; top: 50%; transform: translateY(-50%); width: 2px; height: 5px; background: var(--c-text-main); border-radius: 0 2px 2px 0; }
-.battery-fluid-core { height: 100%; width: 100%; background: var(--c-success); border-radius: 1px; transition: width 1s var(--ease-apple); }
+.battery-fluid-core { height: 100%; width: 100%; background: var(--c-success); border-radius: 1px; transition: width 1s var(--ease-apple-spring); }
 .battery-fluid-core.critically-low { background: var(--c-error); animation: batteryPanicPulse 1s infinite alternate; }
 @keyframes batteryPanicPulse { 0% { opacity: 1; box-shadow: 0 0 8px var(--c-error); } 100% { opacity: 0.4; box-shadow: none; } }
 
-.audio-harmony-module { display: flex; align-items: center; gap: var(--space-xs); cursor: pointer; padding: 6px 12px; border-radius: var(--radius-full); transition: background 0.3s ease, transform 0.2s var(--ease-bouncy); background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 4px 12px rgba(212, 139, 160, 0.1); }
+.audio-harmony-module { display: flex; align-items: center; gap: var(--space-sm); cursor: pointer; padding: 6px 14px; border-radius: var(--radius-full); transition: background 0.3s ease, transform 0.2s var(--ease-bouncy); background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 4px 12px rgba(212, 139, 160, 0.1); }
 .audio-harmony-module:hover { background: rgba(255, 255, 255, 0.9); transform: scale(1.05); }
-#frequency-visualizer-bars { width: 56px; height: 16px; }
-.audio-toggle-icon { width: 20px; height: 20px; color: var(--c-primary-600); display: flex; justify-content: center; align-items: center; }
+#frequency-visualizer-bars { width: 64px; height: 20px; }
+.audio-toggle-icon { width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; color: var(--c-primary-600); }
 .audio-toggle-icon svg { width: 100%; height: 100%; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(212,139,160,0.3)); }
 
 .reading-progress-track { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.5); border-radius: var(--radius-full); margin-top: 10px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); backdrop-filter: blur(10px); }
 .reading-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-primary-400), var(--c-primary-600)); border-radius: var(--radius-full); transition: width 0.15s cubic-bezier(0.2, 0, 0, 1); box-shadow: 0 0 10px rgba(212,139,160,0.5); }
 
 /* ==========================================================================
-   [6] NEUMORPHIC AUTHENTICATION SCREEN (HAPTIC PIN & FLUID SIZING)
+   [7] NEUMORPHIC AUTHENTICATION SCREEN (HAPTIC PIN)
    ========================================================================== */
-.fullscreen-absolute-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 2000; background: var(--glass-bg-heavy); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px); transition: opacity 0.9s var(--ease-apple), visibility 0.9s; perspective: 1200px; }
+.fullscreen-absolute-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 2000; background: var(--glass-bg-heavy); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px); transition: opacity 0.9s var(--ease-apple-spring), visibility 0.9s; perspective: 1200px; }
 .active-overlay-state { opacity: 1; visibility: visible; }
-.auth-security-card { padding: var(--space-2xl) var(--space-xl); width: 92%; max-width: 420px; text-align: center; transform-style: preserve-3d; }
-.auth-glowing-icon { width: clamp(60px, 15vw, 80px); height: clamp(60px, 15vw, 80px); background: linear-gradient(135deg, #ffffff 0%, #fdfafb 100%); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto var(--space-lg); box-shadow: 0 20px 40px rgba(212,139,160,0.35), inset 0 -5px 15px rgba(0,0,0,0.03), inset 0 5px 15px rgba(255,255,255,1); animation: gentleLevitation 4s infinite alternate cubic-bezier(0.45, 0, 0.55, 1); }
-@keyframes gentleLevitation { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-15px) scale(1.02); } }
-.icon-secure-lock { width: 50%; height: 50%; color: var(--c-primary-600); filter: drop-shadow(0 4px 6px rgba(212,139,160,0.4)); }
-.auth-heading-title { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -1px; margin-bottom: var(--space-xs); color: var(--c-text-main); }
-.auth-heading-subtitle { font-size: var(--fs-sm); color: var(--c-text-muted); margin-bottom: var(--space-2xl); line-height: 1.7; }
+.auth-security-card { padding: var(--space-3xl) var(--space-xl); width: 92%; max-width: 440px; text-align: center; transform-style: preserve-3d; box-shadow: 0 50px 100px rgba(42, 31, 34, 0.15), inset 0 2px 5px rgba(255,255,255,1); }
+.auth-glowing-icon { width: clamp(60px, 15vw, 80px); height: clamp(60px, 15vw, 80px); background: linear-gradient(135deg, #ffffff 0%, #fdfafb 100%); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto var(--space-xl); box-shadow: 0 20px 40px rgba(212,139,160,0.35), inset 0 -5px 15px rgba(0,0,0,0.03), inset 0 5px 15px rgba(255,255,255,1); animation: gentleLevitation 4s infinite alternate cubic-bezier(0.45, 0, 0.55, 1); }
+@keyframes gentleLevitation { 0% { transform: translateY(0) scale(1); box-shadow: 0 20px 40px rgba(212,139,160,0.35), inset 0 -5px 15px rgba(0,0,0,0.03); } 100% { transform: translateY(-15px) scale(1.02); box-shadow: 0 35px 50px rgba(212,139,160,0.25), inset 0 -5px 15px rgba(0,0,0,0.03); } }
+.icon-secure-lock { width: 38px; height: 38px; color: var(--c-primary-600); filter: drop-shadow(0 4px 6px rgba(212,139,160,0.4)); }
+.auth-heading-title { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -1px; margin-bottom: var(--space-sm); color: var(--c-text-main); text-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.auth-heading-subtitle { font-size: var(--fs-sm); color: var(--c-text-muted); margin-bottom: var(--space-3xl); line-height: 1.7; padding: 0 var(--space-md); }
 
-.pin-encryption-matrix { display: flex; justify-content: center; gap: var(--space-md); margin-bottom: var(--space-3xl); }
-.pin-encryption-node { width: clamp(14px, 4vw, 20px); height: clamp(14px, 4vw, 20px); border-radius: 50%; background: var(--c-bg-alt); border: 2px solid transparent; box-shadow: inset 3px 3px 6px rgba(0,0,0,0.08), inset -3px -3px 6px rgba(255,255,255,0.9); transition: all 0.35s var(--ease-bouncy); }
-.pin-encryption-node.node-filled { background: var(--c-text-main); box-shadow: 0 8px 20px rgba(42,31,34,0.4); transform: scale(1.2) translateY(-4px); border-color: var(--c-text-main); }
+.pin-encryption-matrix { display: flex; justify-content: center; gap: var(--space-lg); margin-bottom: var(--space-4xl); }
+.pin-encryption-node { width: 20px; height: 20px; border-radius: 50%; background: var(--c-bg-alt); border: 2px solid transparent; box-shadow: inset 3px 3px 6px rgba(0,0,0,0.08), inset -3px -3px 6px rgba(255,255,255,0.9); transition: all 0.35s var(--ease-bouncy); }
+.pin-encryption-node.node-filled { background: var(--c-text-main); box-shadow: 0 8px 20px rgba(42,31,34,0.4), inset 0 2px 4px rgba(255,255,255,0.4); transform: scale(1.2) translateY(-4px); border-color: var(--c-text-main); }
 .pin-encryption-node.node-error { background: var(--c-error); border-color: var(--c-error); box-shadow: 0 8px 20px rgba(255, 77, 79, 0.5); }
-.matrix-shake-error { animation: brutalAuthShake 0.6s var(--ease-apple); }
-@keyframes brutalAuthShake { 0%, 100% { transform: translateX(0); } 15% { transform: translateX(-20px); } 30% { transform: translateX(20px); } 45% { transform: translateX(-15px); } 60% { transform: translateX(15px); } 75% { transform: translateX(-10px); } }
+.matrix-shake-error { animation: brutalAuthShake 0.6s var(--ease-apple-spring); }
+@keyframes brutalAuthShake { 0%, 100% { transform: translateX(0) rotate(0); } 15% { transform: translateX(-20px) rotate(-2deg); } 30% { transform: translateX(20px) rotate(2deg); } 45% { transform: translateX(-15px) rotate(-1.5deg); } 60% { transform: translateX(15px) rotate(1.5deg); } 75% { transform: translateX(-10px) rotate(-1deg); } }
 
-/* NEUMORPHIC KEYPAD WITH CLAMP FOR FLUID MOBILE SIZING */
-.neumorphic-haptic-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 4vw, 24px); justify-items: center; padding: 0 var(--space-xs); }
-.n-keypad-btn { width: clamp(64px, 18vw, 84px); height: clamp(64px, 18vw, 84px); border-radius: 50%; background: var(--c-bg-base); border: none; outline: none; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: var(--neumorph-up); transition: all 0.25s var(--ease-expo); position: relative; z-index: 1; }
+.neumorphic-haptic-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 4vw, 32px) clamp(16px, 4vw, 32px); justify-items: center; padding: 0 var(--space-sm); }
+.n-keypad-btn { width: clamp(64px, 18vw, 84px); height: clamp(64px, 18vw, 84px); border-radius: 50%; background: var(--c-bg-base); border: none; outline: none; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: var(--neumorph-up); transition: all 0.25s var(--ease-smooth-out); position: relative; z-index: 1; }
 .n-keypad-btn::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%); opacity: 0.5; pointer-events: none; }
-.n-keypad-btn span { font-size: var(--fs-2xl); font-weight: 600; color: var(--c-text-main); transition: transform 0.15s var(--ease-apple), color 0.15s; pointer-events: none; z-index: 2; }
+.n-keypad-btn span { font-size: var(--fs-3xl); font-weight: 600; color: var(--c-text-main); transition: transform 0.15s var(--ease-apple-spring), color 0.15s; pointer-events: none; z-index: 2; }
 .n-keypad-btn:active { box-shadow: var(--neumorph-down); background: var(--c-bg-alt); }
 .n-keypad-btn:active span { transform: scale(0.85); color: var(--c-primary-600); }
-.action-keypad span { font-size: var(--fs-lg); font-weight: 800; color: var(--c-primary-700); }
+.action-keypad span { font-size: var(--fs-xl); font-weight: 800; color: var(--c-primary-700); }
 .action-keypad.del-btn span { font-size: var(--fs-3xl); }
 
 /* ==========================================================================
-   [7] HEARTBEAT + ORBITAL BLOOM TRANSITION (STELLAR EKG)
+   [8] QUANTUM BLOOM LOADING SEQUENCE (STELLAR EKG)
    ========================================================================== */
-.loading-central-core { display: flex; flex-direction: column; align-items: center; gap: var(--space-2xl); width: 100%; max-width: 500px; padding: var(--space-xl); }
+.loading-central-core { display: flex; flex-direction: column; align-items: center; gap: var(--space-3xl); width: 100%; max-width: 500px; padding: var(--space-xl); }
 .quantum-orbital-bloom { position: relative; width: 180px; height: 180px; display: flex; justify-content: center; align-items: center; filter: drop-shadow(0 20px 40px rgba(212,139,160,0.3)); }
 .orbital-bloom-svg { width: 100%; height: 100%; animation: cosmicRotation 12s linear infinite; }
-.orbit-track-outer, .orbit-track-inner { fill: none; stroke: rgba(212,139,160,0.15); stroke-width: 2; }
+.orbit-track-outer, .orbit-track-inner { fill: none; stroke: rgba(212,139,160,0.15); stroke-width: 2.5; }
 .orbit-fill-outer { fill: none; stroke: var(--c-primary-300); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 628; stroke-dashoffset: 628; animation: orbitalFillAnim 3s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
 .orbit-fill-inner { fill: none; stroke: var(--c-primary-700); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 471; stroke-dashoffset: 471; animation: orbitalFillAnim 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate-reverse; }
 @keyframes cosmicRotation { 100% { transform: rotate(360deg); } }
 @keyframes orbitalFillAnim { 0% { stroke-dashoffset: 100%; } 100% { stroke-dashoffset: 0; } }
 
-.loading-percentage-text { position: absolute; font-size: var(--fs-3xl); font-weight: 800; color: var(--c-text-main); font-family: 'JetBrains Mono', monospace; text-shadow: 0 4px 15px rgba(255,255,255,1); z-index: 2; }
+.loading-percentage-text { position: absolute; font-size: var(--fs-4xl); font-weight: 800; color: var(--c-text-main); font-family: 'JetBrains Mono', monospace; text-shadow: 0 4px 15px rgba(255,255,255,1); z-index: 2; }
 .loading-typography-group { text-align: center; width: 100%; }
 .loading-status-text { font-size: var(--fs-sm); color: var(--c-text-muted); font-style: italic; margin-bottom: var(--space-md); min-height: 28px; font-weight: 500; }
-
-/* ANIMASI EKG JANTUNG */
-.heartbeat-loader-line { width: 100%; max-width: 240px; height: 40px; margin: 0 auto var(--space-md); overflow: visible; }
+.heartbeat-loader-line { width: 100%; max-width: 240px; height: 40px; margin: 0 auto var(--space-lg); overflow: visible; }
 .ekg-path { stroke-dasharray: 400; stroke-dashoffset: 400; animation: ekgPulseLine 2s linear infinite; filter: drop-shadow(0 2px 5px rgba(212,139,160,0.5)); }
 @keyframes ekgPulseLine { 0% { stroke-dashoffset: 400; } 50%, 100% { stroke-dashoffset: 0; } }
-
-.loading-progress-bar-bg { width: 100%; max-width: 320px; height: 6px; background: rgba(0,0,0,0.04); border-radius: var(--radius-full); overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.08); margin: 0 auto; position: relative; }
-.loading-progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-primary-300), var(--c-primary-600)); border-radius: var(--radius-full); transition: width 0.3s var(--ease-expo); position: relative; }
+.loading-progress-bar-bg { width: 100%; max-width: 320px; height: 8px; background: rgba(0,0,0,0.04); border-radius: var(--radius-full); overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.08); margin: 0 auto; position: relative; }
+.loading-progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-primary-300), var(--c-primary-600)); border-radius: var(--radius-full); transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1); position: relative; }
+.loading-progress-bar-fill::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent); animation: loadSweep 1.5s infinite linear; }
+@keyframes loadSweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
 /* ==========================================================================
-   [8] MASSIVE CONTINUOUS SCROLL ENGINE (100% ANTI-OVERLAP SPACING)
+   [9] MASSIVE CONTINUOUS SCROLL ENGINE (100% ANTI-OVERLAP SPACING)
    ========================================================================== */
 #massive-scroll-engine {
     width: 100%;
     /* MASSIVE PADDING BOTTOM AGAR DOCK NAV TIDAK PERNAH MENUTUPI KONTEN */
-    padding-bottom: clamp(250px, 30vh, 450px); 
+    padding-bottom: clamp(300px, 40vh, 550px); 
     display: flex;
     flex-direction: column;
     gap: var(--spacing-section-y);
     overflow-x: hidden;
 }
+
 .massive-section {
     min-height: 100vh;
-    padding: clamp(140px, 15vh, 200px) var(--space-lg) 80px; /* Padding atas lebih besar dari HUD */
+    /* PADDING ATAS DIBUAT SUPER LEGA BIAR TEKS GAK NABRAK JAM! (SOLUSI GAMBAR 1) */
+    padding: var(--spacing-section-y) clamp(16px, 4vw, 32px) 80px; 
     position: relative;
     display: flex;
     flex-direction: column;
@@ -257,20 +274,30 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 .content-bound-large { width: 100%; max-width: 960px; margin: 0 auto; }
 .content-bound-medium { width: 100%; max-width: 680px; margin: 0 auto; }
 
-/* Universal Scroll Reveal */
-.reveal-up-anim { opacity: 0; transform: translateY(80px) scale(0.98); transition: opacity 1.4s var(--ease-apple), transform 1.4s var(--ease-apple); will-change: opacity, transform; }
+/* Universal Scroll Reveal Animation Engine */
+.reveal-up-anim { opacity: 0; transform: translateY(80px) scale(0.98); transition: opacity 1.4s var(--ease-apple-spring), transform 1.4s var(--ease-apple-spring); will-change: opacity, transform; }
 .reveal-up-anim.has-revealed { opacity: 1; transform: translateY(0) scale(1); }
 .delay-100 { transition-delay: 0.1s; } .delay-200 { transition-delay: 0.2s; } .delay-300 { transition-delay: 0.3s; }
 
 /* ==========================================================================
-   [9] SECTION 1: HERO GYRO 3D & SAFE ART MATRIX (NO OVERLAP)
+   [10] SECTION 1: HERO GYRO 3D & ULTRA MASSIVE SVG ART
    ========================================================================== */
-.hero-chassis-content { display: flex; flex-direction: column; align-items: center; width: 100%; z-index: 10; position: relative; margin-bottom: var(--space-xl); }
+.hero-chassis-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    z-index: 10;
+    position: relative;
+    margin-bottom: var(--space-xl);
+}
 .premium-date-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--c-text-inverse); color: var(--c-primary-600); padding: 12px 32px; border-radius: var(--radius-full); font-size: var(--fs-xs); font-weight: 800; letter-spacing: 4px; text-transform: uppercase; margin-bottom: var(--space-2xl); box-shadow: 0 15px 35px rgba(212,139,160,0.15), inset 0 0 0 1px rgba(212,139,160,0.1); }
 .hero-mega-title { font-size: var(--fs-mega); font-weight: 800; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: var(--space-xl); color: var(--c-text-main); text-shadow: 0 20px 60px rgba(42,31,34,0.1); }
 .gradient-text-shimmer { background: linear-gradient(135deg, var(--c-primary-700) 0%, var(--c-primary-400) 50%, var(--c-primary-700) 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientShine 4s linear infinite; }
 @keyframes gradientShine { to { background-position: 200% center; } }
-.hero-mega-subtitle { font-size: var(--fs-xl); line-height: 1.8; color: var(--c-text-muted); font-weight: 500; max-width: 680px; margin: 0 auto; }
+.hero-desc-wrapper { width: 100%; max-width: 640px; margin: 0 auto; }
+.hero-mega-subtitle { font-size: var(--fs-xl); line-height: 1.8; color: var(--c-text-muted); font-weight: 500; }
 
 /* SAFE ART MATRIX - MEMASTIKAN GAMBAR SVG BERADA DI BAWAH TEKS DAN TIDAK MENUMPUK */
 .hero-art-layer { position: relative; width: 100%; max-width: clamp(280px, 80vw, 500px); height: clamp(250px, 60vw, 400px); margin: 0 auto; transform-style: preserve-3d; z-index: 5; pointer-events: none; }
@@ -284,15 +311,15 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 .float-heavy-anim { animation: complexFloatHeavy 8s infinite alternate cubic-bezier(0.45, 0, 0.55, 1); }
 .float-medium-anim { animation: complexFloatMedium 7s infinite alternate-reverse cubic-bezier(0.45, 0, 0.55, 1); }
 .float-light-anim { animation: complexFloatLight 9s infinite alternate cubic-bezier(0.45, 0, 0.55, 1); }
-@keyframes complexFloatHeavy { 0% { transform: translateY(0) translateZ(50px) rotate(0deg); } 100% { transform: translateY(-30px) translateZ(50px) rotate(2deg); } }
-@keyframes complexFloatMedium { 0% { transform: translateY(0) translateZ(80px) rotate(0deg); } 100% { transform: translateY(-20px) translateZ(80px) rotate(-3deg); } }
-@keyframes complexFloatLight { 0% { transform: translateY(0) translateZ(110px) rotate(0deg); } 100% { transform: translateY(-25px) translateZ(110px) rotate(4deg); } }
+@keyframes complexFloatHeavy { 0% { transform: translateY(0) translateZ(50px); } 100% { transform: translateY(-30px) translateZ(50px); } }
+@keyframes complexFloatMedium { 0% { transform: translateY(0) translateZ(80px); } 100% { transform: translateY(-20px) translateZ(80px); } }
+@keyframes complexFloatLight { 0% { transform: translateY(0) translateZ(110px); } 100% { transform: translateY(-25px) translateZ(110px); } }
 
 .candle-fire-flicker-anim { animation: organicFlicker 0.4s infinite alternate; transform-origin: 50% 100%; filter: drop-shadow(0 0 25px rgba(255,215,0,0.9)); }
 @keyframes organicFlicker { 0% { transform: scale(0.8) rotate(-4deg); opacity: 0.8; } 100% { transform: scale(1.15) rotate(4deg); opacity: 1; } }
 
 /* ==========================================================================
-   [10] SECTION 2: ROMANTIC LETTERS (FIX JUDUL KEPOTONG & SURAT SEMPIT)
+   [11] SECTION 2: ROMANTIC LETTERS (FIX ANTI-KEPOTONG & PADDING SEMPIT)
    ========================================================================== */
 .section-title-wrap { text-align: center; margin-bottom: var(--space-4xl); width: 100%; }
 .massive-section-title { font-size: var(--fs-4xl); font-weight: 800; letter-spacing: -1.5px; margin-bottom: var(--space-md); color: var(--c-text-main); }
@@ -301,14 +328,14 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 .romantic-poetry-grid-system { display: grid; grid-template-columns: 1fr; gap: var(--space-4xl); width: 100%; }
 @media (min-width: 1024px) {
     .romantic-poetry-grid-system { grid-template-columns: repeat(2, 1fr); align-items: start; gap: var(--space-4xl); }
-    .poetry-card-module:nth-child(even) { margin-top: 100px; /* Offset masonry */ }
+    .poetry-card-module:nth-child(even) { margin-top: 100px; }
     .poetry-grand-highlight-card { grid-column: 1 / -1; margin-top: var(--space-3xl); }
 }
 
-/* FIX PADDING SURAT AGAR TIDAK SEMPIT DI HP */
-.poetry-card-module { padding: clamp(32px, 5vw, 64px) clamp(24px, 4vw, 48px); display: flex; flex-direction: column; gap: var(--space-xl); position: relative; z-index: 2; }
+/* FIX PADDING SURAT AGAR TIDAK SEMPIT DI HP (SOLUSI GAMBAR 5) */
+.poetry-card-module { padding: clamp(32px, 6vw, 64px) clamp(24px, 5vw, 48px); display: flex; flex-direction: column; gap: var(--space-xl); position: relative; z-index: 2; height: auto; }
 
-/* FIX JUDUL BAB KEPOTONG: Ganti max-content jadi block dengan word-wrap */
+/* FIX JUDUL BAB KEPOTONG: Ganti max-content jadi block dengan word-wrap (SOLUSI GAMBAR 2,3,4) */
 .poetry-chapter-title { 
     font-size: var(--fs-2xl); font-weight: 800; color: var(--c-primary-700); 
     margin-bottom: var(--space-xs); display: block; position: relative; 
@@ -319,23 +346,34 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 .poetry-content-body p { font-size: var(--fs-md); line-height: 2.1; color: var(--c-text-main); font-weight: 500; text-align: justify; font-family: 'Plus Jakarta Sans', sans-serif !important; }
 
 /* THE GRAND CONCLUSION CARD */
-.poetry-grand-highlight-card { background: var(--c-text-main); color: var(--c-text-inverse); text-align: center; padding: clamp(48px, 8vw, 96px) clamp(24px, 5vw, 64px); border-radius: var(--radius-3xl); box-shadow: var(--shadow-heavy); position: relative; overflow: hidden; }
-.glow-rotating-aura-fx { position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: conic-gradient(from 0deg, transparent 0deg, rgba(212,139,160,0.1) 90deg, rgba(212,139,160,0.3) 180deg, rgba(212,139,160,0.1) 270deg, transparent 360deg); animation: rotateAura 15s linear infinite; pointer-events: none; z-index: 0; }
+.poetry-grand-highlight-card { background: var(--c-text-main); color: var(--c-text-inverse); text-align: center; padding: clamp(48px, 8vw, 96px) clamp(24px, 5vw, 64px); border-radius: var(--radius-3xl); box-shadow: var(--shadow-heavy); position: relative; overflow: hidden; height: auto; }
+.glow-rotating-aura-fx { position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: conic-gradient(from 0deg, transparent 0deg, rgba(212,139,160,0.15) 90deg, rgba(212,139,160,0.3) 180deg, rgba(212,139,160,0.15) 270deg, transparent 360deg); animation: rotateAura 15s linear infinite; pointer-events: none; z-index: 0; }
 @keyframes rotateAura { 100% { transform: rotate(360deg); } }
-.highlight-neon-title { font-size: var(--fs-4xl); font-weight: 800; color: var(--c-primary-400); margin-bottom: var(--space-xl); text-shadow: 0 0 50px rgba(212,139,160,0.8); position: relative; z-index: 2; word-wrap: break-word; }
+/* FIX FONT BAB VII YANG JELEK DI ANDROID (GAMBAR 3) */
+.highlight-neon-title { font-size: var(--fs-4xl); font-weight: 800; color: var(--c-primary-400); margin-bottom: var(--space-xl); text-shadow: 0 0 50px rgba(212,139,160,0.8); position: relative; z-index: 2; word-wrap: break-word; font-family: 'Plus Jakarta Sans', sans-serif !important; }
 .highlight-paragraph-text { color: rgba(255,255,255,0.95); font-size: var(--fs-xl); line-height: 2.1; position: relative; z-index: 2; max-width: 900px; margin: 0 auto; font-family: 'Plus Jakarta Sans', sans-serif !important; }
 
 /* ==========================================================================
-   [11] NEW FEATURE: HEARTBEAT SYNC
+   [12] SECTION 3: SINKRONISASI JANTUNG (FIX SENTUH & TAHAN BUG)
    ========================================================================== */
 .heartbeat-header { margin-bottom: var(--space-3xl); text-align: center; }
 .text-gradient-pulse { font-size: var(--fs-4xl); font-weight: 800; margin-bottom: var(--space-md); background: linear-gradient(135deg, var(--c-error), var(--c-primary-700)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulseGrad 2s infinite alternate; }
 @keyframes pulseGrad { 0% { filter: brightness(1); } 100% { filter: brightness(1.5) drop-shadow(0 0 10px rgba(255,77,79,0.5)); } }
-.fingerprint-interaction-zone { width: clamp(120px, 30vw, 180px); height: clamp(120px, 30vw, 180px); border-radius: 50%; background: var(--color-glass-bg-medium); border: 2px solid var(--glass-border-light); box-shadow: var(--shadow-soft-premium); display: flex; justify-content: center; align-items: center; margin: 0 auto; position: relative; cursor: pointer; transition: 0.3s; user-select: none; -webkit-user-select: none; }
-.fingerprint-svg { width: 50%; height: 50%; color: var(--c-primary-600); position: relative; z-index: 5; transition: 0.3s; }
-.hold-instruction-text { position: absolute; bottom: -40px; font-size: var(--fs-sm); font-weight: 700; color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+/* FIX: MENGGUNAKAN TOUCH-ACTION NONE AGAR BROWSER TIDAK SCROLL SAAT DITAHAN */
+.fingerprint-interaction-zone { 
+    width: clamp(120px, 30vw, 180px); height: clamp(120px, 30vw, 180px); border-radius: 50%; 
+    background: var(--glass-bg-medium); border: 2px solid var(--glass-border-light); box-shadow: var(--shadow-soft-premium); 
+    display: flex; justify-content: center; align-items: center; margin: 0 auto; position: relative; 
+    cursor: pointer; transition: 0.3s; 
+    /* Mencegah scroll dan text selection di mobile */
+    touch-action: none; 
+    -webkit-user-select: none; user-select: none; outline: none; -webkit-tap-highlight-color: transparent;
+}
+.fingerprint-svg { width: 50%; height: 50%; color: var(--c-primary-600); position: relative; z-index: 5; transition: 0.3s; pointer-events: none; }
+.hold-instruction-text { position: absolute; bottom: -40px; font-size: var(--fs-sm); font-weight: 700; color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 2px; pointer-events: none; }
 .ripple-pulse-rings { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 0 rgba(212,139,160,0.5); z-index: 1; pointer-events: none; }
-/* Interaction State */
+
 .fingerprint-interaction-zone:active { transform: scale(0.95); background: var(--c-primary-100); }
 .fingerprint-interaction-zone:active .fingerprint-svg { color: var(--c-error); filter: drop-shadow(0 0 10px rgba(255,77,79,0.5)); }
 .fingerprint-interaction-zone:active .ripple-pulse-rings { animation: heartbeatPulse 1s infinite; }
@@ -344,7 +382,7 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 .heartbeat-secret-message { margin-top: var(--space-4xl); font-size: var(--fs-xl); font-weight: 800; font-style: italic; color: var(--c-error); text-shadow: 0 5px 15px rgba(255,77,79,0.3); max-width: 600px; line-height: 1.6; transition: opacity 1s, transform 1s var(--ease-bouncy); }
 
 /* ==========================================================================
-   [12] SECTION 3: MASONRY GALLERY (DOUBLE TAP TO LOVE)
+   [13] SECTION 4: MASONRY GALLERY
    ========================================================================== */
 .brutal-masonry-architecture { column-count: 1; column-gap: var(--space-xl); width: 100%; }
 @media (min-width: 768px) { .brutal-masonry-architecture { column-count: 2; } }
@@ -354,7 +392,7 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 .masonry-media-box:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 30px 60px rgba(212,139,160,0.25); }
 .media-inner-bound { width: 100%; border-radius: calc(var(--radius-2xl) - 8px); overflow: hidden; position: relative; background: var(--c-bg-alt); }
 .media-inner-bound::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.7); border-radius: inherit; pointer-events: none; z-index: 2; }
-.media-inner-bound img, .media-inner-bound video { width: 100%; height: auto; display: block; object-fit: cover; transition: transform 1s var(--ease-apple), filter 0.5s; }
+.media-inner-bound img, .media-inner-bound video { width: 100%; height: auto; display: block; object-fit: cover; transition: transform 1s var(--ease-apple-spring), filter 0.5s; }
 .masonry-media-box:hover .media-inner-bound img, .masonry-media-box:hover .media-inner-bound video { transform: scale(1.1); filter: brightness(1.05) contrast(1.1); }
 
 .love-popup-fx-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 100px; height: 100px; z-index: 5; pointer-events: none; opacity: 0; display: flex; justify-content: center; align-items: center; }
@@ -363,40 +401,44 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 @keyframes popLove { 0% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; } 30% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); opacity: 1; } 50%, 80% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; } }
 
 /* ==========================================================================
-   [13] SECTION 4: WISH CONSOLE (SAFE BUTTON FIX)
+   [14] SECTION 5: WISH CONSOLE (FIX FONT TOMBOL PUTIH & TEXTAREA)
    ========================================================================== */
 .wish-transmission-console { width: 100%; padding: var(--space-5xl) var(--space-2xl); text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--space-2xl); transition: opacity 0.8s, transform 0.8s; }
 .console-star-levitator { width: clamp(80px, 20vw, 120px); height: clamp(80px, 20vw, 120px); filter: drop-shadow(0 30px 50px rgba(255,215,0,0.5)); animation: gentleLevitation 5s infinite alternate ease-in-out; }
 .aesthetic-textarea-wrapper { width: 100%; margin-top: var(--space-lg); position: relative; z-index: 2; }
-/* PENTING! FONT DI KUNCI MATI KE PLUS JAKARTA SANS */
+
+/* FIX FONT TEXTAREA DIKUNCI MATI KE PLUS JAKARTA SANS (SOLUSI GAMBAR 4) */
 #wish-textarea-node { 
     width: 100%; height: clamp(180px, 35vh, 260px); padding: var(--space-xl); border-radius: var(--radius-2xl); 
     border: 2px solid rgba(255,255,255,0.9); background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); 
-    font-size: var(--fs-lg); line-height: 1.8; resize: none; outline: none; transition: all 0.4s var(--ease-apple); 
+    font-size: var(--fs-lg); line-height: 1.8; resize: none; outline: none; transition: all 0.4s var(--ease-apple-spring); 
     color: var(--c-text-main); font-family: 'Plus Jakarta Sans', sans-serif !important; 
     box-shadow: inset 0 5px 20px rgba(0,0,0,0.04), 0 10px 30px rgba(212,139,160,0.1); 
 }
 #wish-textarea-node:focus { background: #fff; box-shadow: 0 30px 80px rgba(212,139,160,0.3), inset 0 2px 10px rgba(0,0,0,0.02); border-color: var(--c-primary-500); transform: translateY(-5px); }
+.focus-breathing-ring { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: var(--radius-2xl); border: 2px solid var(--c-primary-400); opacity: 0; pointer-events: none; transition: opacity 0.4s; transform: scale(1.02); }
+#wish-textarea-node:focus + .focus-breathing-ring { opacity: 1; animation: breatheRing 2s infinite alternate; }
 
-/* FIX BUTTON PUTIH GOOEY HILANG: Pakai Solid Dark Button yang Elegan! */
-.mega-execution-button { 
+/* FIX TOMBOL HARAPAN JADI ELEGAN, BUKAN PUTIH JELEK LAGI! */
+.btn-ultra-premium { 
     width: 100%; max-width: 400px; padding: clamp(20px, 4vw, 28px); border-radius: var(--radius-full); 
     border: none; background: var(--c-text-main); color: var(--c-text-inverse); 
     font-size: var(--fs-lg); font-weight: 800; letter-spacing: 2px; cursor: pointer; 
     transition: 0.3s var(--ease-bouncy); box-shadow: var(--shadow-heavy); 
-    position: relative; z-index: 5; margin-top: var(--space-md);
+    position: relative; z-index: 9999 !important; pointer-events: auto !important; 
+    font-family: 'Plus Jakarta Sans', sans-serif !important; /* MENGHINDARI FONT ANEH */
 }
-.mega-execution-button:active { transform: scale(0.92); box-shadow: 0 10px 20px rgba(42,31,34,0.2); }
+.btn-ultra-premium:active { transform: scale(0.92); box-shadow: 0 10px 20px rgba(42,31,34,0.2); }
 
 .absolute-center-overlay-local { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: var(--space-3xl); text-align: center; background: rgba(253, 250, 251, 0.4); backdrop-filter: blur(20px); border-radius: var(--radius-3xl); z-index: 10; }
 .wish-typography-glitch-result { font-size: var(--fs-4xl); font-weight: 800; font-style: italic; line-height: 1.6; text-shadow: 0 20px 60px rgba(255,255,255,1), 0 0 30px rgba(212,139,160,0.6); color: var(--c-text-main); opacity: 1; transition: opacity 2s ease-in-out; z-index: 2; }
 .meteor-projectile-entity { width: 200px; height: 200px; margin-top: 80px; filter: drop-shadow(0 0 80px #FFD700); opacity: 0; transform: translateY(300px) scale(0) rotate(-45deg); position: relative; }
 .meteor-dust-tail { position: absolute; top: 50%; left: 50%; width: 8px; height: 400px; background: linear-gradient(to top, rgba(255,215,0,0), rgba(255,215,0,1)); transform: translateX(-50%); border-radius: 4px; z-index: -1; }
 .meteor-shoot-trigger { animation: brutalMeteorStrike 4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes brutalMeteorStrike { 0% { transform: translateY(300px) scale(0) rotate(0deg); opacity: 0; } 20% { transform: translateY(0) scale(1.5) rotate(45deg); opacity: 1; } 80% { transform: translateY(-50vh) scale(1.2) rotate(45deg); opacity: 1; } 100% { transform: translateY(-120vh) scale(0) rotate(45deg); opacity: 0; } }
+@keyframes brutalMeteorStrike { 0%{transform:translateY(300px) scale(0) rotate(0deg); opacity:0;} 20%{transform:translateY(0) scale(1.5) rotate(45deg); opacity:1;} 80%{transform:translateY(-50vh) scale(1.2) rotate(45deg); opacity:1;} 100%{transform:translateY(-120vh) scale(0) rotate(45deg); opacity:0;} }
 
 /* ==========================================================================
-   [16] SECTION 5: FINAL SECRET GIFT (SUPER Z-INDEX FIX)
+   [16] SECTION 6: FINAL SECRET GIFT (Z-INDEX & TOMBOL KADO FIX!)
    ========================================================================== */
 .section-padding-bottom-extreme { padding-bottom: clamp(200px, 30vh, 350px); } 
 .relative-stack-engine { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 600px; width: 100%; }
@@ -425,34 +467,43 @@ a, button, textarea { font-family: inherit; color: inherit; outline: none; }
 #reward-payload-container { width: 100%; padding: var(--space-4xl); display: flex; flex-direction: column; gap: var(--space-4xl); position: absolute; transition: 1s var(--ease-bouncy); z-index: 20; box-shadow: 0 60px 120px rgba(42,31,34,0.3), inset 0 0 0 2px rgba(255,255,255,1); }
 .payload-media-frame { width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-3xl); overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.25); border: 4px solid #fff; background: #000; }
 .payload-img-content { width: 100%; height: 100%; object-fit: cover; opacity: 0.95; }
-.glass-shine-sweep-fx { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.7), transparent); transform: skewX(-25deg); animation: premiumSweepShine 5s infinite 2s; pointer-events: none; }
+.glass-shine-sweep-fx { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent); transform: skewX(-25deg); animation: premiumSweepShine 5s infinite 2s; pointer-events: none; }
 @keyframes premiumSweepShine { 0%, 60% { left: -100%; } 100% { left: 200%; } }
 
 .payload-data-content { text-align: center; }
-.payload-heading-h3 { font-size: var(--fs-4xl); font-weight: 900; color: var(--c-primary-800); margin-bottom: var(--space-lg); text-shadow: 0 5px 20px rgba(212,139,160,0.4); }
+.payload-heading-h3 { font-size: var(--fs-4xl); font-weight: 900; color: var(--c-primary-800); margin-bottom: var(--space-lg); text-shadow: 0 5px 20px rgba(212,139,160,0.4); font-family: 'Plus Jakarta Sans', sans-serif !important; }
 .payload-description-p { font-size: var(--fs-lg); line-height: 2; font-weight: 600; color: var(--c-text-main); margin-bottom: var(--space-3xl); font-family: 'Plus Jakarta Sans', sans-serif !important; }
-.mega-wa-button { background: #25D366; display: flex; justify-content: center; align-items: center; gap: var(--space-md); padding: 24px; border-radius: var(--radius-full); color: #fff; font-size: var(--fs-xl); font-weight: 800; box-shadow: 0 25px 60px rgba(37,211,102,0.45), inset 0 2px 4px rgba(255,255,255,0.5); transition: 0.3s var(--ease-bouncy); text-decoration: none; position: relative; z-index: 9999 !important; pointer-events: auto !important; }
+.mega-wa-button { background: #25D366; display: flex; justify-content: center; align-items: center; gap: var(--space-md); padding: 24px; border-radius: var(--radius-full); color: #fff; font-size: var(--fs-xl); font-weight: 800; box-shadow: 0 25px 60px rgba(37,211,102,0.45), inset 0 2px 4px rgba(255,255,255,0.5); transition: 0.3s var(--ease-bouncy); text-decoration: none; position: relative; z-index: 9999 !important; pointer-events: auto !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
 .mega-wa-button:active { transform: scale(0.95); box-shadow: 0 10px 20px rgba(37,211,102,0.3); }
 .icon-whatsapp-svg { width: 36px; height: 36px; fill: #fff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
 /* ==========================================================================
    [17] APPLE-STYLE FLOATING DOCK NAVIGATION
    ========================================================================== */
-.apple-dock-navigation { position: fixed; bottom: clamp(16px, 4vw, 32px); left: 0; width: 100%; display: flex; justify-content: center; z-index: 9999; padding: 0 var(--space-md); transition: opacity 0.8s, transform 0.8s var(--ease-bouncy); pointer-events: none; }
+.apple-dock-navigation { position: fixed; bottom: clamp(16px, 4vw, 32px); left: 0; width: 100%; display: flex; justify-content: center; z-index: var(--z-index-dock); padding: 0 var(--space-md); transition: opacity 0.8s, transform 0.8s var(--ease-bouncy); pointer-events: none; }
 .dock-capsule-wrapper { display: flex; justify-content: space-between; padding: 12px; width: 100%; max-width: 520px; border-radius: var(--radius-full); pointer-events: auto; box-shadow: 0 30px 60px rgba(42,31,34,0.2), inset 0 2px 5px rgba(255,255,255,0.8); }
-.dock-item-btn { width: clamp(56px, 15vw, 76px); height: clamp(56px, 15vw, 76px); display: flex; justify-content: center; align-items: center; border-radius: 50%; color: var(--c-text-muted); transition: 0.4s var(--ease-apple); text-decoration: none; position: relative; }
-.dock-item-btn svg { width: clamp(24px, 6vw, 32px); height: clamp(24px, 6vw, 32px); transition: 0.4s; }
+.dock-item-btn { width: clamp(56px, 15vw, 76px); height: clamp(56px, 15vw, 76px); display: flex; justify-content: center; align-items: center; border-radius: 50%; color: var(--c-text-muted); transition: 0.4s var(--ease-apple-spring); text-decoration: none; position: relative; }
+.dock-item-btn svg { width: clamp(24px, 6vw, 32px); height: clamp(24px, 6vw, 32px); transition: 0.4s var(--ease-apple-spring); }
 .dock-tooltip { position: absolute; top: -50px; background: var(--c-text-main); color: #fff; padding: 8px 16px; border-radius: 12px; font-size: 13px; font-weight: 800; opacity: 0; transform: translateY(10px); transition: 0.3s var(--ease-bouncy); pointer-events: none; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 .dock-item-btn:hover .dock-tooltip { opacity: 1; transform: translateY(0); }
-.dock-item-btn:hover { background: rgba(255,255,255,0.5); color: var(--c-primary-600); }
+.dock-item-btn:hover { background: rgba(255,255,255,0.4); color: var(--c-primary-600); }
 .dock-item-btn.active-dock-link { background: #fff; color: var(--c-primary-500); box-shadow: 0 15px 35px rgba(212,139,160,0.2); }
 .dock-item-btn.active-dock-link svg { transform: scale(1.3); }
 
 /* ==========================================================================
-   [18] SECRET KONAMI CODE OVERLAY (MATRIX)
+   [18] RESPONSIVE MEGA FIXES (MOBILE-FIRST SAFEGUARDS)
    ========================================================================== */
-#secret-konami-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: opacity 1s; padding: var(--space-lg); }
-#matrix-rain-canvas { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0.4; }
-.secret-text-box { position: relative; z-index: 2; text-align: center; color: #00ff41; font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 10px #00ff41; }
-.secret-text-box h2 { font-size: var(--fs-4xl); margin-bottom: var(--space-md); }
-.secret-text-box p { font-size: var(--fs-xl); max-width: 800px; margin: 0 auto; line-height: 1.8; }
+@media (max-width: 768px) {
+    .poetry-card-module { padding: var(--space-2xl) var(--space-lg); }
+    .poetry-grand-highlight-card { padding: var(--space-2xl) var(--space-lg); }
+    .hero-mega-title { font-size: var(--fs-4xl); }
+    .mega-section { padding-top: 140px; padding-bottom: 80px; } /* MENCEGAH NABRAK HUD (GAMBAR 1) */
+    .dynamic-island-header { top: 12px; width: 94%; }
+    .telemetry-time-module { display: none; } /* Sembunyikan jam di mobile agar hemat tempat */
+}
+
+@media (max-width: 480px) {
+    .auth-security-card { padding: var(--space-2xl) var(--space-md); }
+    .n-keypad-btn { width: 68px; height: 68px; }
+    .n-keypad-btn span { font-size: var(--fs-2xl); }
+}
