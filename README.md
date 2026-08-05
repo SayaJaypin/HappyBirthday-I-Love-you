@@ -1,44 +1,20 @@
-# Zahra's Special Day - Romantic Premium Website
+# Zahra's Premium Birthday Space 
 
-Website ulang tahun romantis premium dengan desain gaya Apple dan Pinterest, dioptimasi penuh untuk perangkat mobile (Android) dengan sentuhan *glassmorphism*, animasi 60FPS yang mulus, dan fitur interaktif.
+Pembaruan BRUTAL untuk pengalaman website ulang tahun paling romantis, smooth, dan interaktif.
 
-## Fitur
-1. **PIN Protection Screen**: Menggunakan kode `090812` dengan animasi keypad realistis.
-2. **Apple-style UI/UX**: Glassmorphism, shadow lembut, border radius konsisten, blur overlay.
-3. **Responsive Mobile-First**: Sempurna ditampilkan di layar 9:16.
-4. **Music Player**: Floating player (Play/Pause, Mute, Progress).
-5. **Realtime Clocks**: WIB, WITA, WIT selalu ter-update setiap detik.
-6. **3D CSS Cake**: Animasi 3D murni menggunakan CSS, ringan dan aesthetic.
-7. **Canvas Fireworks & Particle Decor**: Floating SVG tanpa menggunakan emoji.
-8. **Make A Wish**: Animasi interaktif merubah teks doa menjadi bintang yang terbang ke langit.
-9. **Secret Box Finale**: Animasi garis SVG membentuk hati (LOVE), membuka Secret Box menuju WhatsApp.
-10. **PWA Ready**: Mendukung manifest dan bisa diakses offline (Service Worker).
+## Fitur Baru (Brutal Update)
+1. **Scrolling Experience**: Navigasi sekarang mendukung scroll mulus dari atas ke bawah. Menu navigasi di bawah otomatis mendeteksi posisi layar.
+2. **Brutal 3D CSS Cake**: Kue ulang tahun digambar murni menggunakan layer CSS 3D (`transform-style: preserve-3d`), berputar secara otomatis dengan lilin yang menyala.
+3. **Kucing & Kelinci Lucu (SVG)**: Ditambahkan ilustrasi Kucing yang mengintip dari balik kue, dan Kelinci lucu yang memeluk hati di halaman "Make A Wish", 100% menggunakan kode.
+4. **Brutal Glassmorphism & Shadows**: Efek bayangan lebih dalam, gradien teks Apple-style, dan glow animation.
+5. **Parallax Scrolling Effect**: Elemen bergerak dengan kecepatan berbeda saat di-scroll.
+6. **Optimasi Performa Canvas**: Kembang api yang lebih bercahaya tanpa frame drop.
 
-## Struktur Folder
-```text
-birthday-website/
-│
-├── index.html       (Struktur utama, Semantic HTML)
-├── style.css        (Semua desain, animasi, Apple/Pinterest style)
-├── script.js        (Logika SPA, musik, PIN, jam, efek interaktif)
-├── README.md        (Panduan lengkap)
-├── manifest.json    (Opsional: File konfigurasi PWA jika ingin diinstall)
-├── sw.js            (Opsional: Service Worker untuk offline support)
-│
-└── assets/
-    │
-    ├── images/
-    │   ├── photo1.jpg   (Rasio 9:16 disarankan)
-    │   ├── photo2.jpg
-    │   ├── photo3.jpg
-    │   ├── photo4.jpg
-    │   └── hadiah.jpg   (Rasio 16:9 disarankan)
-    │
-    ├── videos/
-    │   ├── video1.mp4   (Rasio 9:16, no sound)
-    │   ├── video2.mp4
-    │   ├── video3.mp4
-    │   └── video4.mp4
-    │
-    └── audio/
-        └── song.mp3     ("Merry Christmas, I Miss You")
+## Cara Menggunakan (Panduan Sama)
+- Edit `index.html` untuk mengubah teks ucapan.
+- Taruh gambar di `assets/images/photo1.jpg` s/d `photo4.jpg` (Rasio 9:16).
+- Taruh video di `assets/videos/video1.mp4` s/d `video4.mp4`.
+- Taruh lagu di `assets/audio/song.mp3`.
+- Taruh foto hadiah di `assets/images/hadiah.jpg` (Rasio 16:9).
+
+Kode ini dirancang sangat bersih dan modular sehingga sangat lancar dijalankan di browser mobile Android modern.
