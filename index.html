@@ -3,330 +3,556 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="description" content="A Massive Virtual Romance Experience for Zahra">
-    <title>Zahra's Universe | The Ultimate Masterpiece</title>
+    <meta name="description" content="Perayaan ulang tahun virtual eksklusif dan tak terhingga untuk Zahra.">
+    <meta name="author" content="Jay">
+    <meta name="theme-color" content="#fdfafb">
+    
+    <title>Zahra's Universe | A Masterpiece of Virtual Romance</title>
+    
+    <!-- Preload Resource -->
+    <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
-    <meta name="theme-color" content="#fcf8fa">
+    
+    <!-- PWA & Apple Mobile Web App Settings -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Zahra's Space">
 </head>
-<body class="system-locked">
+<body class="system-locked-state theme-soft-romance" data-scroll-speed="0">
 
     <!-- ======================================================================= -->
-    <!-- 0. MASSIVE SVG FILTER LIBRARY (INVISIBLE BUT POWERFUL)                  -->
+    <!-- [0] MASSIVE INLINE SVG FILTER & GRADIENT LIBRARY (INVISIBLE)            -->
+    <!-- Menggantikan gambar dengan filter matematika murni untuk performa 60FPS -->
     <!-- ======================================================================= -->
-    <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+    <svg style="width:0; height:0; position:absolute; z-index:-9999;" aria-hidden="true" focusable="false">
         <defs>
-            <filter id="gooey-effect">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="goo" />
-                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+            <!-- Gooey Effect untuk tombol Wish -->
+            <filter id="gooey-morph-fx">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10" result="gooey_math" />
+                <feComposite in="SourceGraphic" in2="gooey_math" operator="atop"/>
             </filter>
-            <filter id="premium-noise">
-                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
-                <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.05 0" />
+            
+            <!-- Cinematic Noise Texture -->
+            <filter id="premium-cinematic-noise">
+                <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch" result="noise_texture"/>
+                <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.04 0" in="noise_texture" result="colored_noise" />
+                <feBlend in="SourceGraphic" in2="colored_noise" mode="overlay" />
             </filter>
+
+            <!-- Claymorphism Heavy Glow Shadow -->
+            <filter id="clay-heavy-glow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#d48ba0" flood-opacity="0.4" result="shadow_1"/>
+                <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#d48ba0" flood-opacity="0.2" result="shadow_2"/>
+                <feMerge>
+                    <feMergeNode in="shadow_1"/>
+                    <feMergeNode in="shadow_2"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+
+            <!-- Gradient Libraries -->
+            <linearGradient id="grad-primary-soft" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f8cdd6"/>
+                <stop offset="100%" stop-color="#e6c8d3"/>
+            </linearGradient>
+            <linearGradient id="grad-gold-sparkle" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFDF00"/>
+                <stop offset="100%" stop-color="#D4AF37"/>
+            </linearGradient>
+            <linearGradient id="grad-heart-draw" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#d48ba0"/>
+                <stop offset="50%" stop-color="#e6c8d3"/>
+                <stop offset="100%" stop-color="#f8cdd6"/>
+            </linearGradient>
         </defs>
     </svg>
 
     <!-- ======================================================================= -->
-    <!-- 1. AMBIENT ENGINE: FLUID ORBS & PARTICLES                               -->
+    <!-- [1] AMBIENT ENGINE: KANVAS WAKTU & FLUIDA KEHIDUPAN                     -->
     <!-- ======================================================================= -->
-    <div class="ambient-fluid-bg">
-        <div class="fluid-orb orb-alpha"></div>
-        <div class="fluid-orb orb-beta"></div>
-        <div class="fluid-orb orb-gamma"></div>
-        <div class="fluid-orb orb-delta"></div>
-        <div class="fluid-orb orb-epsilon"></div>
+    <div class="ambient-fluid-container" aria-hidden="true">
+        <div class="fluid-orb orb-alpha" data-parallax-weight="0.1"></div>
+        <div class="fluid-orb orb-beta" data-parallax-weight="0.15"></div>
+        <div class="fluid-orb orb-gamma" data-parallax-weight="0.2"></div>
+        <div class="fluid-orb orb-delta" data-parallax-weight="0.08"></div>
+        <div class="fluid-orb orb-epsilon" data-parallax-weight="0.12"></div>
     </div>
-    <canvas id="stellar-particle-canvas"></canvas>
-    <div class="premium-grain-overlay"></div>
+    
+    <!-- Lapisan Kanvas Partikel (Bintang & Debu Kosmik) -->
+    <canvas id="stellar-constellation-canvas" class="background-canvas-layer"></canvas>
+    <canvas id="cosmic-dust-canvas" class="background-canvas-layer"></canvas>
+    <div class="cinematic-grain-overlay"></div>
 
     <!-- ======================================================================= -->
-    <!-- 2. DYNAMIC ISLAND HUD (PROGRESS, CLOCK, MUSIC)                          -->
+    <!-- [2] MAGNETIC CUSTOM CURSOR (INTERAKSI SENTUHAN VIRTUAL)                 -->
     <!-- ======================================================================= -->
-    <header class="dynamic-island-hud hidden-element" id="master-hud">
-        <div class="hud-glass-capsule glass-morphism-premium">
-            <div class="hud-clock-matrix">
-                <div class="time-block"><span class="t-val" id="tz-wib">00:00</span><span class="t-lbl">WIB</span></div>
+    <div id="cursor-magnetic-core" aria-hidden="true"></div>
+    <div id="cursor-magnetic-aura" aria-hidden="true"></div>
+
+    <!-- ======================================================================= -->
+    <!-- [3] DYNAMIC ISLAND (PANEL KONTROL WAKTU & MELODI)                       -->
+    <!-- ======================================================================= -->
+    <header class="dynamic-island-header hidden-state" id="master-hud-interface">
+        <div class="hud-glass-capsule premium-glassmorphism">
+            
+            <!-- Matrix Waktu Tiga Zona -->
+            <div class="telemetry-time-module" aria-label="Waktu Realtime Indonesia">
+                <div class="time-block">
+                    <span class="time-val" id="time-wib">00:00</span>
+                    <span class="time-lbl">WIB</span>
+                </div>
                 <div class="time-divider"></div>
-                <div class="time-block"><span class="t-val" id="tz-wita">00:00</span><span class="t-lbl">WITA</span></div>
+                <div class="time-block">
+                    <span class="time-val" id="time-wita">00:00</span>
+                    <span class="time-lbl">WITA</span>
+                </div>
                 <div class="time-divider"></div>
-                <div class="time-block"><span class="t-val" id="tz-wit">00:00</span><span class="t-lbl">WIT</span></div>
-            </div>
-            
-            <div class="hud-music-engine" id="music-controller">
-                <div class="visualizer-bars">
-                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-                </div>
-                <div class="music-toggle-btn">
-                    <svg viewBox="0 0 24 24" class="svg-play"><path d="M8 5v14l11-7z"/></svg>
-                    <svg viewBox="0 0 24 24" class="svg-pause hidden-element"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                <div class="time-block">
+                    <span class="time-val" id="time-wit">00:00</span>
+                    <span class="time-lbl">WIT</span>
                 </div>
             </div>
-        </div>
-        <div class="reading-progress-bar"><div class="reading-progress-fill" id="read-progress"></div></div>
-    </header>
-    <audio id="core-audio-bg" loop preload="auto" crossorigin="anonymous"><source src="assets/audio/song.mp3" type="audio/mpeg"></audio>
 
-    <!-- ======================================================================= -->
-    <!-- 3. NEUMORPHIC AUTHENTICATION LAYER                                      -->
-    <!-- ======================================================================= -->
-    <section id="auth-layer" class="fullscreen-overlay active-overlay">
-        <div class="auth-card glass-morphism-premium tilt-enabled">
-            <div class="auth-icon-glow">
-                <svg viewBox="0 0 24 24" class="icon-lock-secure"><path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6zM18 20H6V10h12v10z"/></svg>
+            <!-- Modul Indikator Daya Tahan Hati (Baterai) -->
+            <div class="hardware-status-module" aria-label="Status Perangkat" title="Kapasitas Daya Hatiku Untukmu">
+                <span class="ping-latency" id="network-ping">0ms</span>
+                <div class="battery-chassis">
+                    <div class="battery-fluid-core" id="battery-fluid-fill"></div>
+                    <div class="battery-terminal-tip"></div>
+                </div>
+                <span class="battery-percent-val" id="battery-percentage">100%</span>
             </div>
-            <h1 class="auth-title">Zahra's Space</h1>
-            <p class="auth-subtitle">Silakan masukkan tanggal istimewa kita (DDMMYY)</p>
-            
-            <div class="pin-visualizer">
-                <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-                <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-            </div>
-            
-            <div class="neumorphic-keypad">
-                <button class="n-key" data-key="1"><span>1</span></button>
-                <button class="n-key" data-key="2"><span>2</span></button>
-                <button class="n-key" data-key="3"><span>3</span></button>
-                <button class="n-key" data-key="4"><span>4</span></button>
-                <button class="n-key" data-key="5"><span>5</span></button>
-                <button class="n-key" data-key="6"><span>6</span></button>
-                <button class="n-key" data-key="7"><span>7</span></button>
-                <button class="n-key" data-key="8"><span>8</span></button>
-                <button class="n-key" data-key="9"><span>9</span></button>
-                <button class="n-key action-key" data-key="C"><span>C</span></button>
-                <button class="n-key" data-key="0"><span>0</span></button>
-                <button class="n-key action-key" data-key="DEL"><span>&larr;</span></button>
-            </div>
-        </div>
-    </section>
 
-    <!-- ======================================================================= -->
-    <!-- 4. ORBITAL BLOOM LOADING SEQUENCE                                       -->
-    <!-- ======================================================================= -->
-    <section id="loader-layer" class="fullscreen-overlay hidden-element">
-        <div class="loader-core">
-            <div class="orbital-system">
-                <div class="orbit-ring orbit-1"></div>
-                <div class="orbit-ring orbit-2"></div>
-                <div class="orbit-ring orbit-3"></div>
-                <div class="orbit-center">
-                    <svg viewBox="0 0 24 24" class="bloom-star-icon"><path fill="#d48ba0" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <!-- Modul Harmoni (Kontrol Musik & Visualizer) -->
+            <div class="audio-harmony-module magnetic-hover-target" id="music-playback-controller" role="button" aria-label="Mulai atau Jeda Musik">
+                <canvas id="frequency-visualizer-bars" width="64" height="20" aria-label="Audio Visualizer"></canvas>
+                <div class="audio-toggle-icon">
+                    <svg viewBox="0 0 24 24" class="svg-icon-play" aria-hidden="true">
+                        <path fill="currentColor" d="M8 5.14v14l11-7-11-7z"/>
+                    </svg>
+                    <svg viewBox="0 0 24 24" class="svg-icon-pause hidden-state" aria-hidden="true">
+                        <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
                 </div>
             </div>
-            <div class="loader-text-group">
-                <h3 class="loader-percent" id="load-percent">0%</h3>
-                <p class="loader-status" id="load-status">Menginisialisasi memori semesta...</p>
-                <div class="loader-progress-bar-wrap"><div class="loader-progress-bar-fill" id="load-bar-fill"></div></div>
-            </div>
+            
         </div>
-    </section>
-
-    <!-- ======================================================================= -->
-    <!-- 5. MAIN CONTINUOUS SCROLL EXPERIENCE (MASSIVE ENGINE)                   -->
-    <!-- ======================================================================= -->
-    <main id="main-scroll-engine" class="hidden-element">
         
-        <!-- SECTION 1: HERO (3D PARALLAX & MASSIVE SVG) -->
-        <section id="sec-hero" class="mega-section flex-center">
-            <div class="hero-wrapper parallax-layer" data-speed="0.12">
-                <div class="hero-badge reveal-anim">09 Agustus</div>
-                <h1 class="hero-title reveal-anim delay-1">Happy Birthday,<br><span class="highlight-name">Zahra.</span></h1>
-                <p class="hero-desc reveal-anim delay-2">Dipersembahkan oleh Jay. Walaupun layar memisahkan kita, semoga kehangatan ini nyata memeluk hatimu.</p>
-                
-                <div class="hero-art-engine reveal-anim delay-3">
-                    <div class="art-element art-cake floating-1">
-                        <svg viewBox="0 0 200 200" class="ultra-svg">
-                            <defs>
-                                <filter id="glow-heavy"><feDropShadow dx="0" dy="15" stdDeviation="15" flood-color="#d48ba0" flood-opacity="0.4"/></filter>
-                                <linearGradient id="cake-body" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fff5f7"/><stop offset="100%" stop-color="#f8cdd6"/></linearGradient>
-                            </defs>
-                            <path d="M20,130 C20,165 180,165 180,130 L180,80 C180,115 20,115 20,80 Z" fill="url(#cake-body)" filter="url(#glow-heavy)"/>
-                            <ellipse cx="100" cy="80" rx="80" ry="30" fill="#ffffff" filter="url(#glow-heavy)"/>
-                            <path d="M20,80 C35,110 45,90 60,115 C75,85 85,110 100,95 C115,115 125,90 140,115 C155,90 165,110 180,80 Z" fill="#ffffff"/>
-                            <rect x="92" y="30" width="16" height="45" rx="8" fill="#ffb3c6"/>
-                            <path d="M100,5 C110,20 100,30 100,30 C100,30 90,20 100,5 Z" fill="#FFD700" class="candle-flame-massive"/>
-                        </svg>
-                    </div>
-                    <div class="art-element art-cat floating-2">
-                        <svg viewBox="0 0 100 100" class="ultra-svg">
-                            <path d="M15,85 C15,40 50,40 85,40 C85,85 15,85 15,85 Z" fill="#ffffff" filter="url(#glow-heavy)"/>
-                            <path d="M25,45 L20,10 L45,35 M75,45 L80,10 L55,35" fill="none" stroke="#ffffff" stroke-width="10" stroke-linejoin="round"/>
-                            <circle cx="40" cy="65" r="4" fill="#3a2b2e"/><circle cx="60" cy="65" r="4" fill="#3a2b2e"/>
-                            <path d="M47,75 Q50,78 53,75" fill="none" stroke="#d48ba0" stroke-width="2.5" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div class="art-element art-rabbit floating-3">
-                        <svg viewBox="0 0 100 100" class="ultra-svg">
-                            <path d="M20,85 C20,45 50,45 80,45 C80,85 20,85 20,85 Z" fill="#fff9fa" filter="url(#glow-heavy)"/>
-                            <path d="M30,50 C25,5 45,5 50,25 M70,50 C75,5 55,5 50,25" fill="none" stroke="#fff9fa" stroke-width="10" stroke-linecap="round"/>
-                            <circle cx="42" cy="68" r="3.5" fill="#3a2b2e"/><circle cx="58" cy="68" r="3.5" fill="#3a2b2e"/>
-                            <path d="M48,76 Q50,79 52,76" fill="none" stroke="#d48ba0" stroke-width="2.5" stroke-linecap="round"/>
-                        </svg>
-                    </div>
+        <!-- Cincin Progres Perjalanan Membaca -->
+        <div class="reading-progress-track">
+            <div class="reading-progress-fill" id="reading-progress-bar"></div>
+        </div>
+    </header>
+    
+    <!-- Mesin Audio Tak Terlihat -->
+    <audio id="core-audio-engine" loop preload="auto" crossorigin="anonymous">
+        <source src="assets/audio/song.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ======================================================================= -->
+    <!-- [4] NEUMORPHIC AUTHENTICATION SCREEN (GERBANG PERTEMUAN VIRTUAL)        -->
+    <!-- ======================================================================= -->
+    <section id="authentication-layer" class="fullscreen-absolute-overlay active-overlay-state">
+        <div class="auth-security-card premium-glassmorphism tilt-physics-target">
+            
+            <div class="auth-glowing-icon float-soft-anim">
+                <svg viewBox="0 0 24 24" class="icon-secure-lock" aria-hidden="true">
+                    <path fill="currentColor" d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6zM18 20H6V10h12v10z"/>
+                </svg>
+            </div>
+            
+            <h1 class="auth-heading-title">Ruang Eksklusif Zahra</h1>
+            <p class="auth-heading-subtitle">Semesta mendeteksi kehadiranmu. Silakan masukkan tanggal istimewa kita (DDMMYY) untuk membuka ruang memori ini.</p>
+            
+            <!-- Indikator Enkripsi Titik -->
+            <div class="pin-encryption-matrix" id="pin-indicator-matrix">
+                <div class="pin-encryption-node"></div>
+                <div class="pin-encryption-node"></div>
+                <div class="pin-encryption-node"></div>
+                <div class="pin-encryption-node"></div>
+                <div class="pin-encryption-node"></div>
+                <div class="pin-encryption-node"></div>
+            </div>
+            
+            <!-- Neumorphic Haptic Keypad -->
+            <div class="neumorphic-haptic-keypad">
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="1"><span>1</span></button>
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="2"><span>2</span></button>
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="3"><span>3</span></button>
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="4"><span>4</span></button>
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="5"><span>5</span></button>
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="6"><span>6</span></button>
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="7"><span>7</span></button>
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="8"><span>8</span></button>
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="9"><span>9</span></button>
+                <button class="n-keypad-btn action-keypad haptic-feedback-trigger clear-btn" data-pin-key="C"><span>C</span></button>
+                <button class="n-keypad-btn haptic-feedback-trigger" data-pin-key="0"><span>0</span></button>
+                <button class="n-keypad-btn action-keypad haptic-feedback-trigger del-btn" data-pin-key="DEL"><span>&larr;</span></button>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- [5] ORBITAL BLOOM TRANSITION (PENYUSUNAN MEMORI)                        -->
+    <!-- ======================================================================= -->
+    <section id="loading-transition-layer" class="fullscreen-absolute-overlay hidden-state">
+        <div class="loading-central-core">
+            
+            <div class="quantum-orbital-bloom">
+                <!-- Kompleksitas SVG Orbital Bunga -->
+                <svg viewBox="0 0 240 240" class="orbital-bloom-svg">
+                    <!-- Outer Orbit -->
+                    <circle cx="120" cy="120" r="110" class="orbit-track-outer"/>
+                    <circle cx="120" cy="120" r="110" class="orbit-fill-outer"/>
+                    <!-- Middle Orbit -->
+                    <circle cx="120" cy="120" r="85" class="orbit-track-middle"/>
+                    <circle cx="120" cy="120" r="85" class="orbit-fill-middle"/>
+                    <!-- Inner Orbit -->
+                    <circle cx="120" cy="120" r="60" class="orbit-track-inner"/>
+                    <circle cx="120" cy="120" r="60" class="orbit-fill-inner"/>
+                    <!-- Center Star Core -->
+                    <path d="M120,40 C135,100 180,100 180,120 C180,140 135,140 120,200 C105,140 60,140 60,120 C60,100 105,100 120,40 Z" class="orbit-star-core"/>
+                </svg>
+                <div class="loading-percentage-text" id="loading-percentage-val">0%</div>
+            </div>
+            
+            <div class="loading-typography-group">
+                <p class="loading-status-text typewriter-effect" id="loading-status-msg">Menyusun piksel kenangan indah kita...</p>
+                <div class="loading-progress-bar-bg">
+                    <div class="loading-progress-bar-fill" id="loading-progress-bar-fill"></div>
                 </div>
             </div>
-        </section>
+            
+        </div>
+    </section>
 
-        <!-- SECTION 2: 5 CHAPTERS OF MASSIVE ROMANTIC LETTERS -->
-        <section id="sec-letters" class="mega-section">
-            <div class="content-bound-large">
-                <div class="section-title-wrap reveal-anim">
-                    <h2 class="title-main">Lembaran Hati</h2>
-                    <p class="title-sub">Ratusan kata yang kutulis perlahan, mewakili jutaan doa yang tak sempat terucap, didedikasikan sepenuhnya untukmu.</p>
+    <!-- ======================================================================= -->
+    <!-- [6] MAIN CONTINUOUS SCROLL ENGINE (100% ANTI-OVERLAP SPACING)           -->
+    <!-- ======================================================================= -->
+    <main id="massive-scroll-engine" class="hidden-state">
+        
+        <!-- MODULE 1: HERO GYRO 3D & ULTRA MASSIVE SVG ART -->
+        <section id="module-hero-intro" class="massive-section align-items-center">
+            <div class="gyroscope-physics-wrapper" id="gyro-master-wrapper">
+                
+                <div class="hero-chassis-content premium-glassmorphism tilt-physics-target">
+                    <div class="premium-date-badge">09 Agustus</div>
+                    <h1 class="hero-mega-title split-text-animation-trigger">Happy Birthday,<br><span class="gradient-text-shimmer">Zahra.</span></h1>
+                    <p class="hero-mega-subtitle reveal-up-anim delay-200">Dipersembahkan oleh Jay. Walaupun layar memisahkan kita, semoga kehangatan ruang virtual ini merengkuh hatimu dengan sangat nyata.</p>
                 </div>
                 
-                <div class="romantic-text-grid">
-                    
-                    <!-- BAB I -->
-                    <div class="poetry-card glass-morphism-premium reveal-anim parallax-layer" data-speed="0.02">
-                        <h3 class="poetry-chapter">Bab I: Cahaya di Balik Layar</h3>
-                        <p>Selamat ulang tahun, Zahra. Hari ini adalah hari istimewa di mana semesta tersenyum merayakan keberadaanmu. Sebuah jiwa yang begitu indah akhirnya terlahir untuk mewarnai dunia.</p>
-                        <p>Terima kasih telah hadir dalam hidupku. Meski kita hanya bertatap lewat piksel, kode, dan jaringan nirkabel, namun kehangatanmu berhasil merengkuh hatiku dengan begitu nyata dan tulus.</p>
-                        <p>Jarak seringkali menjadi narasi yang menakutkan bagi banyak orang, namun bersamamu, jarak hanyalah ruang kosong yang mengajarkan kita arti dari kesabaran dan ketulusan tanpa batas.</p>
-                        <p>Setiap pesan yang kau ketikkan adalah mantra ajaib. Ia mampu mengubah hari-hariku yang paling kelabu dan melelahkan menjadi penuh warna pastel yang sangat menenangkan.</p>
-                        <p>Waktu yang kita lalui bersama, sekecil apa pun itu, baik hanya sekadar bertukar emoji atau sapaan singkat, adalah aset berharga yang selalu kusimpan rapi di dalam laci memori kepalaku.</p>
-                    </div>
-
-                    <!-- BAB II -->
-                    <div class="poetry-card glass-morphism-premium reveal-anim parallax-layer" data-speed="0.04">
-                        <h3 class="poetry-chapter">Bab II: Frekuensi yang Sama</h3>
-                        <p>Cerita keseharianmu, tawamu, dan bahkan keluh kesahmu adalah melodi favorit yang selalu berhasil menenangkan bisingnya duniaku. Jangan pernah ragu untuk menceritakan apa pun kepadaku.</p>
-                        <p>Suaramu di seberang sana adalah rumah tempatku kembali pulang setelah seharian bertarung dengan realitas yang menguras energi. Mendengarnya adalah sebuah pengobatan jiwa bagiku.</p>
-                        <p>Aku bersyukur bahwa di antara miliaran manusia, algoritma takdir mengizinkanku untuk mengenal keindahan pikiran dan kelembutan hatimu. Sungguh sebuah hak istimewa.</p>
-                        <p>Layar ini mungkin hanyalah kaca dingin, namun ia selalu sukses memantulkan senyum manismu yang menjadi alasan utamaku untuk ikut berbahagia di sudut kota yang lain.</p>
-                        <p>Aku mungkin tidak bisa berdiri di depan pintumu membawa kue dan kejutan hari ini, tapi doaku akan selalu melintasi langit untuk memastikan kamu selalu terjaga dan terlindungi.</p>
-                    </div>
-
-                    <!-- BAB III -->
-                    <div class="poetry-card glass-morphism-premium reveal-anim parallax-layer" data-speed="0.06">
-                        <h3 class="poetry-chapter">Bab III: Doa Tanpa Jeda</h3>
-                        <p>Semoga di usiamu yang baru ini, setiap langkah yang kau ambil selalu diiringi oleh kebahagiaan sejati, keberuntungan, dan kedamaian hati yang tak berkesudahan.</p>
-                        <p>Tetaplah menjadi Zahra yang bercahaya. Kebaikan hatimu terlalu berharga untuk diredupkan oleh masalah, kesedihan, atau orang-orang yang tidak memahami nilaimu.</p>
-                        <p>Aku sangat mengagumi ketangguhanmu. Kau selalu memiliki cara magis untuk bangkit, menghapus air mata, dan kembali tersenyum, mengalahkan segala rintangan yang menghadang di depanmu.</p>
-                        <p>Jangan pernah merasa sendirian. Walaupun ragaku jauh, tapi telingaku, bahuku, dan hatiku akan selalu bersedia menampung segala hal yang ingin kau curahkan kapan pun kamu membutuhkannya.</p>
-                        <p>Terima kasih atas segala pengertian, kompromi, dan kesabaran luar biasa yang selalu kau berikan kepadaku. Memahami kekuranganku bukanlah hal mudah, dan kau melakukannya dengan indah.</p>
-                    </div>
-
-                    <!-- BAB IV -->
-                    <div class="poetry-card glass-morphism-premium reveal-anim parallax-layer" data-speed="0.08">
-                        <h3 class="poetry-chapter">Bab IV: Melampaui Dimensi</h3>
-                        <p>Setiap pagi, melihat notifikasi darimu adalah cara paling sempurna untuk memulai hari. Kau adalah pembawa kabar baik yang secara konsisten kunantikan tanpa pernah bosan.</p>
-                        <p>Aku mendoakan agar semua harapan, mimpi, dan cita-cita yang kau simpan dalam diam, perlahan dikabulkan oleh semesta di waktu yang paling tepat dan paling indah untukmu.</p>
-                        <p>Meskipun kita hanya bertukar kabar melalui perangkat ini, rasanya seperti kita sedang duduk berdampingan menatap senja yang sama, menikmati angin yang sama, di satu tempat yang damai.</p>
-                        <p>Jarak ini tidak akan pernah mengikis apa yang sedang kita usahakan. Ia justru menjadi saksi bisu betapa kuatnya ikatan emosional kita yang menolak untuk menyerah pada keadaan.</p>
-                        <p>Kehadiranmu membuktikan bahwa kedekatan emosi jauh melampaui batas fisik dan geografis. Kau hadir begitu utuh, begitu jelas, dan begitu berharga di dalam pikiranku setiap harinya.</p>
-                    </div>
-
-                    <!-- BAB V (HIGHLIGHT) -->
-                    <div class="poetry-highlight-card reveal-anim parallax-layer" data-speed="0.1">
-                        <div class="highlight-glow-fx"></div>
-                        <h3 class="highlight-title">Bab V: Sebuah Simpul Cerita</h3>
-                        <p>Bahagiamu adalah resonansi bahagiaku. Jika ada awan mendung yang menghampirimu, aku berharap bisa segera meniupnya pergi dan menggantinya dengan pelangi tawamu. Aku akan selalu ada di sini, di setiap ketukan pada layarmu, di setiap baris notifikasiku, merayakan keberadaanmu setiap hari. Terima kasih telah lahir ke dunia dan hadir dalam hidupku, Zahra. Jarak ini tidak akan pernah memudarkan indahnya namamu di benakku.</p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 3: MASONRY GALLERY (EXCLUSIVE VISUALS) -->
-        <section id="sec-gallery" class="mega-section">
-            <div class="content-bound-large">
-                <div class="section-title-wrap reveal-anim">
-                    <h2 class="title-main">Galeri Ruang Waktu</h2>
-                    <p class="title-sub">Rangkaian piksel yang membekukan memori indah kita, ditata secara eksklusif agar kau bisa melihat senyummu tanpa halangan.</p>
+                <!-- BRUTAL COMPLEX SVG ART (NO EMOJIS, PURE MATH PATHS) -->
+                <!-- Setiap elemen memiliki tingkat kedalaman 3D Z-Axis yang berbeda -->
+                <div class="hero-art-layer art-cake-3d float-heavy-anim">
+                    <svg viewBox="0 0 400 400" class="ultra-precision-vector">
+                        <path d="M60,280 C60,340 340,340 340,280 L340,160 C340,220 60,220 60,160 Z" fill="url(#grad-primary-soft)" filter="url(#clay-heavy-glow)"/>
+                        <ellipse cx="200" cy="160" rx="140" ry="50" fill="#ffffff" filter="url(#clay-heavy-glow)"/>
+                        <!-- Drip Cream -->
+                        <path d="M60,160 C80,210 100,180 120,220 C140,160 160,210 180,180 C200,220 220,160 240,210 C260,180 280,210 300,160 C320,200 340,160 340,160 Z" fill="#ffffff"/>
+                        <!-- Strawberry Top -->
+                        <path d="M190,130 C190,150 210,150 210,130 C210,110 190,110 190,130 Z" fill="#ff4d4f" filter="url(#clay-heavy-glow)"/>
+                        <!-- Candles -->
+                        <rect x="188" y="60" width="24" height="80" rx="12" fill="#ffb3c6" filter="url(#clay-heavy-glow)"/>
+                        <path d="M200,15 C215,40 200,60 200,60 C200,60 185,40 200,15 Z" fill="url(#grad-gold-sparkle)" class="candle-fire-flicker-anim"/>
+                    </svg>
                 </div>
                 
-                <div class="masonry-gallery-engine">
-                    <div class="gallery-item glass-morphism-premium reveal-anim"><div class="item-inner"><img src="assets/images/photo1.jpg" alt="Memori 1" loading="lazy"></div></div>
-                    <div class="gallery-item glass-morphism-premium reveal-anim delay-1"><div class="item-inner"><video src="assets/videos/video1.mp4" autoplay loop muted playsinline></video></div></div>
-                    <div class="gallery-item glass-morphism-premium reveal-anim delay-2"><div class="item-inner"><img src="assets/images/photo2.jpg" alt="Memori 2" loading="lazy"></div></div>
-                    <div class="gallery-item glass-morphism-premium reveal-anim"><div class="item-inner"><video src="assets/videos/video2.mp4" autoplay loop muted playsinline></video></div></div>
-                    <div class="gallery-item glass-morphism-premium reveal-anim delay-1"><div class="item-inner"><img src="assets/images/photo3.jpg" alt="Memori 3" loading="lazy"></div></div>
-                    <div class="gallery-item glass-morphism-premium reveal-anim delay-2"><div class="item-inner"><video src="assets/videos/video3.mp4" autoplay loop muted playsinline></video></div></div>
-                    <div class="gallery-item glass-morphism-premium reveal-anim"><div class="item-inner"><img src="assets/images/photo4.jpg" alt="Memori 4" loading="lazy"></div></div>
-                    <div class="gallery-item glass-morphism-premium reveal-anim delay-1"><div class="item-inner"><video src="assets/videos/video4.mp4" autoplay loop muted playsinline></video></div></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: WISH (UPGRADED BRUTAL CONSOLE) -->
-        <section id="sec-wish" class="mega-section flex-center">
-            <div class="content-bound-medium">
-                <div class="wish-console glass-morphism-premium reveal-anim" id="wish-interface">
-                    <div class="console-icon">
-                        <svg viewBox="0 0 24 24"><path fill="#FFD700" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    </div>
-                    <h2 class="title-main">Terbangkan Harapan</h2>
-                    <p class="title-sub">Ketikkan satu doa dan harapan terindahmu di tahun ini, biarkan sistem semesta memproses dan membawanya mengangkasa.</p>
-                    
-                    <div class="aesthetic-input-box">
-                        <textarea id="wish-text-input" placeholder="Tulis harapan manismu di sini... (Kotak ini siap menerima doamu)"></textarea>
-                        <div class="focus-glow-ring"></div>
-                    </div>
-                    <button id="cmd-send-wish" class="mega-button ripple-effect">
-                        <span class="btn-text">Terbangkan ke Semesta</span>
-                    </button>
-                </div>
-
-                <div id="wish-magic-scene" class="hidden-element absolute-center">
-                    <div class="wish-result-typography" id="wish-result-text"></div>
-                    <div class="shooting-star-vfx" id="star-vfx-element">
-                        <svg viewBox="0 0 24 24"><path fill="#FFD700" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <div class="star-trail"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5: GIFT (PHYSICS ENGINE & SVG ANIMATION) -->
-        <section id="sec-gift" class="mega-section flex-center gift-section-pb">
-            <div class="content-bound-medium relative-stack">
-                
-                <!-- Background Draw -->
-                <div id="heart-draw-bg" class="reveal-anim">
-                    <svg viewBox="0 0 100 100" class="bg-heart-svg">
-                        <defs>
-                            <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d48ba0"/><stop offset="100%" stop-color="#f8cdd6"/></linearGradient>
-                        </defs>
-                        <path id="svg-heart-line" d="M50,85 C25,65 10,45 10,28 C10,15 22,5 35,5 C43,5 50,12 50,12 C50,12 57,5 65,5 C78,5 90,15 90,28 C90,45 75,65 50,85 Z" fill="none" stroke="url(#heartGrad)" stroke-width="2"/>
+                <div class="hero-art-layer art-cat-3d float-medium-anim">
+                    <svg viewBox="0 0 200 200" class="ultra-precision-vector">
+                        <!-- Cat Body -->
+                        <path d="M40,170 C40,90 160,90 160,170 C160,170 40,170 40,170 Z" fill="#ffffff" filter="url(#clay-heavy-glow)"/>
+                        <!-- Cat Ears -->
+                        <path d="M50,105 L45,30 L85,75 M150,105 L155,30 L115,75" fill="none" stroke="#ffffff" stroke-width="16" stroke-linejoin="round" filter="url(#clay-heavy-glow)"/>
+                        <!-- Cat Eyes -->
+                        <circle cx="80" cy="130" r="7" fill="#2a1f22"/>
+                        <circle cx="120" cy="130" r="7" fill="#2a1f22"/>
+                        <!-- Cat Nose/Mouth -->
+                        <path d="M95,145 Q100,150 105,145" fill="none" stroke="#d48ba0" stroke-width="5" stroke-linecap="round"/>
+                        <!-- Whiskers -->
+                        <path d="M40,135 L60,140 M40,145 L60,145 M160,135 L140,140 M160,145 L140,145" fill="none" stroke="#e6c8d3" stroke-width="3" stroke-linecap="round"/>
                     </svg>
                 </div>
 
-                <!-- Precision Gift Box with JS Confetti Canvas behind it -->
-                <canvas id="confetti-canvas" class="hidden-element"></canvas>
+                <div class="hero-art-layer art-rabbit-3d float-light-anim">
+                    <svg viewBox="0 0 200 200" class="ultra-precision-vector">
+                        <!-- Rabbit Body -->
+                        <path d="M45,170 C45,100 155,100 155,170 C155,170 45,170 45,170 Z" fill="#fff9fa" filter="url(#clay-heavy-glow)"/>
+                        <!-- Rabbit Ears -->
+                        <path d="M60,110 C50,20 90,20 95,60 M140,110 C150,20 110,20 105,60" fill="none" stroke="#fff9fa" stroke-width="16" stroke-linecap="round" filter="url(#clay-heavy-glow)"/>
+                        <path d="M65,105 C60,40 85,40 90,70 M135,105 C140,40 115,40 110,70" fill="none" stroke="#ffb3c6" stroke-width="8" stroke-linecap="round"/>
+                        <!-- Rabbit Eyes -->
+                        <circle cx="85" cy="140" r="6" fill="#2a1f22"/>
+                        <circle cx="115" cy="140" r="6" fill="#2a1f22"/>
+                        <!-- Rabbit Nose -->
+                        <path d="M96,150 Q100,155 104,150" fill="none" stroke="#d48ba0" stroke-width="5" stroke-linecap="round"/>
+                    </svg>
+                </div>
                 
-                <div id="gift-box-interactive" class="hidden-element">
-                    <div class="box-illustration" id="the-gift-box">
-                        <svg viewBox="0 0 150 150" class="gift-svg">
-                            <filter id="box-shadow"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#d48ba0" flood-opacity="0.4"/></filter>
-                            <!-- Box Body -->
-                            <rect x="35" y="75" width="80" height="60" rx="4" fill="#f8cdd6" stroke="#d48ba0" stroke-width="3" filter="url(#box-shadow)"/>
-                            <!-- Ribbon Body -->
-                            <rect x="68" y="75" width="14" height="60" fill="#d48ba0"/>
-                            <!-- Box Lid (Will animate via JS class) -->
-                            <g class="box-lid" id="box-lid-anim">
-                                <rect x="30" y="55" width="90" height="20" rx="4" fill="#e6c8d3" stroke="#d48ba0" stroke-width="3" filter="url(#box-shadow)"/>
-                                <rect x="68" y="55" width="14" height="20" fill="#d48ba0"/>
-                                <path d="M75,55 C50,30 40,55 75,55 Z" fill="none" stroke="#d48ba0" stroke-width="4" stroke-linecap="round"/>
-                                <path d="M75,55 C100,30 110,55 75,55 Z" fill="none" stroke="#d48ba0" stroke-width="4" stroke-linecap="round"/>
+            </div>
+        </section>
+
+        <!-- MODULE 2: 50+ MASSIVE ROMANTIC SENTENCES (5 CHAPTERS OF SASTRA) -->
+        <section id="module-letters-romance" class="massive-section">
+            <div class="content-bound-massive">
+                
+                <div class="section-title-wrap reveal-up-anim">
+                    <h2 class="massive-section-title">Rekaman Jiwa</h2>
+                    <p class="massive-section-subtitle">Kumpulan kata yang kutulis perlahan, mewakili jutaan doa yang tak sempat terucap, didedikasikan sepenuhnya untukmu.</p>
+                </div>
+                
+                <!-- GRID SURAT DENGAN SPACING SUPER LEGA -->
+                <div class="romantic-poetry-grid-system">
+                    
+                    <!-- BAB I: FAJAR PENGEJAWANTAHAN (Kalimat 1-10) -->
+                    <article class="poetry-card-module premium-glassmorphism reveal-up-anim parallax-layer" data-parallax-speed="0.02">
+                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab I: Fajar Pengejawantahan</h3></header>
+                        <div class="poetry-content-body">
+                            <p>1. Selamat ulang tahun, Zahra. Hari ini adalah sebuah manifestasi keindahan, di mana semesta tersenyum merayakan keberadaanmu. Sebuah jiwa yang begitu menenangkan akhirnya terlahir untuk mewarnai dunia.</p>
+                            <p>2. Terima kasih telah hadir dan memilih untuk menetap. Meskipun kita hanya bertatap lewat deretan piksel di layar, lewat pesan suara, dan jaringan nirkabel, namun kehangatan yang kau berikan berhasil merengkuh hatiku dengan sangat nyata.</p>
+                            <p>3. Sungguh, raga kita mungkin tidak berada di koordinat bujur dan lintang yang sama, tapi percayalah bahwa setiap rasa peduli yang kuberikan adalah murni dan nyata adanya tanpa rekayasa.</p>
+                            <p>4. Jarak seringkali menjadi narasi yang menakutkan bagi kebanyakan orang. Namun bersamamu, jarak hanyalah ruang kosong yang mengajarkan kita arti dari kesabaran tingkat tinggi dan ketulusan yang tak memiliki ujung.</p>
+                            <p>5. Setiap pesan teks yang kau ketikkan memiliki sihirnya tersendiri. Kau mampu mengubah hari-hariku yang paling kelabu, paling bising, dan paling melelahkan menjadi penuh warna pastel yang sangat menenangkan pikiranku.</p>
+                            <p>6. Waktu yang kita lalui bersama, sekecil apa pun itu, baik hanya sekadar bertukar emoji atau sapaan singkat di pagi hari, adalah aset berharga yang selalu kusimpan rapi di dalam laci memori kepalaku.</p>
+                            <p>7. Cerita tentang keseharianmu, tawamu yang renyah, dan bahkan keluh kesahmu saat kau lelah, adalah harmoni melodi favorit yang selalu ingin kudengarkan sebelum aku memejamkan mata di malam hari.</p>
+                            <p>8. Suaramu di seberang telepon adalah rumah tempatku kembali pulang. Mendengarnya adalah sebuah pengobatan jiwa bagiku setelah seharian bertarung dengan realitas yang seringkali tak bersahabat.</p>
+                            <p>9. Aku bersyukur bahwa di antara miliaran manusia yang berjalan di bumi, algoritma semesta mengizinkanku untuk mengenal dan mengagumi keindahan pikiran serta kelembutan hatimu.</p>
+                            <p>10. Layar ini hanyalah selembar kaca yang dingin, namun secara magis, ia selalu sukses memantulkan senyum manismu yang menjadi alasan utamaku untuk ikut tersenyum di sudut kota yang berbeda.</p>
+                        </div>
+                    </article>
+
+                    <!-- BAB II: RESONANSI NIRKABEL (Kalimat 11-20) -->
+                    <article class="poetry-card-module premium-glassmorphism reveal-up-anim parallax-layer" data-parallax-speed="0.04">
+                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab II: Resonansi Nirkabel</h3></header>
+                        <div class="poetry-content-body">
+                            <p>11. Aku mungkin tidak bisa berdiri di depan pintumu membawa kue, menyalakan lilin, dan memberimu kejutan hari ini. Tapi doaku akan selalu melintasi langit untuk menjagamu di sana.</p>
+                            <p>12. Semoga di usiamu yang baru ini, kebahagiaan sejati, tawa yang tak terputus, dan kedamaian hati senantiasa mengelilingi setiap langkah dan keputusan yang kau ambil.</p>
+                            <p>13. Tetaplah menjadi Zahra yang bercahaya. Cahaya kebaikanmu terlalu indah, terlalu murni untuk diredupkan oleh masalah apa pun atau oleh siapa pun yang tak mengerti nilaimu.</p>
+                            <p>14. Aku sangat mengagumi ketangguhan mentalmu. Kamu selalu bisa menemukan cara yang anggun untuk bangkit dari kesedihan, menghapus air mata, dan kembali tersenyum.</p>
+                            <p>15. Jangan pernah merasa bahwa kau harus menghadapi dunia ini sendirian. Meskipun jarak membentang, dukunganku dan telingaku akan selalu *online* kapan pun kamu butuh tempat bersandar.</p>
+                            <p>16. Semoga kesehatan raga dan ketenangan batin selalu memelukmu erat, sama seperti bagaimana kata-kata penenang darimu selalu memeluk pikiranku yang sedang kalut dan resah.</p>
+                            <p>17. Terima kasih tanpa batas atas segala pengertian, kompromi, dan kesabaran yang selalu kau berikan. Memahami kekuranganku bukanlah hal mudah, dan kau melakukannya dengan indah.</p>
+                            <p>18. Setiap pagi, melihat notifikasi pop-up namamu di layarku adalah cara terbaik untuk meretas kesedihan. Kamu adalah pembawa kabar baik yang selalu kutunggu kehadirannya.</p>
+                            <p>19. Aku mendoakan dengan sungguh-sungguh agar semua harapan yang kau simpan dalam diam, semua mimpi yang kau ukir, satu per satu dikabulkan oleh semesta di waktu yang paling tepat.</p>
+                            <p>20. Meskipun kita hanya duduk di kamar masing-class, bertukar kabar melalui layar genggam, rasanya tetap magis. Seperti kita sedang duduk berdampingan menatap senja yang persis sama.</p>
+                        </div>
+                    </article>
+
+                    <!-- BAB III: ARSITEKTUR JARAK (Kalimat 21-30) -->
+                    <article class="poetry-card-module premium-glassmorphism reveal-up-anim parallax-layer" data-parallax-speed="0.06">
+                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab III: Arsitektur Jarak</h3></header>
+                        <div class="poetry-content-body">
+                            <p>21. Jarak fisik ini sesungguhnya tidak akan pernah mampu mengikis ikatan yang sedang kita bangun. Ia justru bertindak sebagai fondasi yang membuat segalanya menjadi lebih bermakna.</p>
+                            <p>22. Kamu adalah bukti hidup bahwa kedekatan emosional dapat melampaui batasan fisik. Kehadiranmu sangat terasa di sini, menyusup masuk melalui setiap pesan yang kau kirimkan.</p>
+                            <p>23. Kebahagiaanmu adalah barometer kebahagiaanku. Jika ada hal yang mengganggu senyummu, aku berharap memiliki kekuatan untuk segera menggantinya dengan derai tawa.</p>
+                            <p>24. Teruslah mengejar apa pun yang membuat hatimu berdebar bahagia, kejar ambisimu. Aku akan selalu duduk di barisan paling depan sebagai pendukung terbesarmu dari kejauhan.</p>
+                            <p>25. Kamu pantas mendapatkan segala keistimewaan dan kebaikan yang ditawarkan oleh dunia ini, karena kamu sendiri adalah wujud nyata dari kebaikan itu sendiri.</p>
+                            <p>26. Waktu akan terus bergulir, usia akan terus bertambah seiring pergantian kalender, namun kekagumanku pada keindahan pikiranmu tidak akan pernah mengenal kata usang.</p>
+                            <p>27. Percakapan larut malam kita, ditemani secangkir sunyi dan layar yang menyala, adalah tempat persembunyian yang paling nyaman dari segala kepenatan rutinitasku.</p>
+                            <p>28. Semoga kita selalu bisa memegang janji untuk saling menjaga, saling mendengarkan tanpa menghakimi, dan saling menguatkan, meski hanya bersenjatakan kata-kata dari sebuah layar.</p>
+                            <p>29. Kamu memiliki ruang eksklusif yang sangat spesial dan tak akan pernah bisa digantikan oleh siapa pun di hatiku. Sebuah ruang yang dipenuhi dengan rasa hormat dan kasih sayang yang murni.</p>
+                            <p>30. Selamat merayakan hari kelahiranmu ke dunia ini, Zahra cintaku. Semoga lembaran baru di usiamu yang sekarang ini ditulis sepenuhnya dengan tinta emas kebahagiaan.</p>
+                        </div>
+                    </article>
+
+                    <!-- BAB IV: SUAKA PIKIRAN (Kalimat 31-40) -->
+                    <article class="poetry-card-module premium-glassmorphism reveal-up-anim parallax-layer" data-parallax-speed="0.08">
+                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab IV: Suaka Pikiran</h3></header>
+                        <div class="poetry-content-body">
+                            <p>31. Kehadiran virtualmu senantiasa membawa warna pastel yang lembut ke dalam hidupku yang terkadang terasa monokrom dan membosankan.</p>
+                            <p>32. Aku berjanji untuk selalu menjadi pendengar setiamu. Kapan pun duniamu terasa terlalu berat untuk dipikul sendirian, serahkan sebagian bebannya pada pundakku melalui ceritamu.</p>
+                            <p>33. Semoga sedihmu selalu berumur pendek, cepat berlalu seperti angin, dan lekas tergantikan oleh senyum manismu yang memabukkan itu kembali.</p>
+                            <p>34. Jarak ini sesungguhnya hanyalah ilusi optik yang memisahkan raga, karena jauh di alam bawah sadar, pikiran dan resonansi kita selalu selaras bersenandung.</p>
+                            <p>35. Kamu adalah definisi mutlak dari sebuah mahakarya keindahan yang tak tersentuh oleh tangan, namun getaran positifnya sangat terasa mendamaikan dada.</p>
+                            <p>36. Terima kasih sudah memilih untuk menurunkan dinding pertahananmu dan berani menjadi dirimu sendiri yang luar biasa, rapuh, dan jujur di hadapanku.</p>
+                            <p>37. Aku sangat menghargai setiap detik waktu berharga yang kau investasikan untuk mengetik pesan panjang, merangkai cerita, dan berbagi kehidupan denganku.</p>
+                            <p>38. Tetaplah melangkah ke depan menyusuri jalan takdirmu dengan penuh percaya diri. Jangan pernah ragu, karena jaring pengamanku selalu siap menangkapmu dari sini.</p>
+                            <p>39. Semoga cahaya kebaikan semesta selalu bersinar terang, bertindak sebagai kompas yang menuntun setiap keputusan, pilihan, dan langkah kakimu ke depannya.</p>
+                            <p>40. Kamu membuat ruang virtual yang dulunya kosong dan hampa ini terasa sangat hangat, hidup, dan nyaman layaknya sebuah rumah tempatku berpulang.</p>
+                        </div>
+                    </article>
+
+                    <!-- BAB V: KONSTELASI HARAPAN (Kalimat 41-50) -->
+                    <article class="poetry-card-module premium-glassmorphism reveal-up-anim parallax-layer" data-parallax-speed="0.1">
+                        <header class="poetry-header"><h3 class="poetry-chapter-title">Bab V: Konstelasi Harapan</h3></header>
+                        <div class="poetry-content-body">
+                            <p>41. Setiap pesan pop-up darimu adalah kado kecil tak terduga yang selalu sukses membuka hariku dengan sebuah keindahan yang sederhana namun bermakna dalam.</p>
+                            <p>42. Aku akan selalu ada di sini. Di setiap ketukan jarimu pada kaca layar ponselmu, dan di setiap sapuan gulir berandamu, aku merayakan keberadaanmu.</p>
+                            <p>43. Semoga fondasi hubungan jarak jauh kita ini perlahan berevolusi menjadi benteng yang semakin kuat dan tak mudah tergoyahkan oleh ujian badai apa pun.</p>
+                            <p>44. Biarkan rasi bintang-bintang di langit malam ini mengambil alih tugas lisanku untuk menyampaikan betapa besarnya rasa syukur dan sayangku padamu.</p>
+                            <p>45. Kehadiranmu telah mematahkan banyak teori logika. Kau membuktikan bahwa kedekatan koneksi jiwa seringkali jauh lebih berharga dari sekadar kedekatan secara fisik.</p>
+                            <p>46. Terima kasih untuk semua notifikasi manis, nada dering telepon, dan pesan suara yang telah menjadi lagu pengantar tidur yang mewarnai hari-hariku di tahun ini.</p>
+                            <p>47. Aku sangat mengagumi *blueprint* dan keaslian kepribadianmu. Jangan biarkan standar dunia mengubah siapa dirimu yang sebenarnya, karena kau sudah sempurna.</p>
+                            <p>48. Selamat bertambah usia, manusia favoritku. Teruslah tumbuh menjadi versi terbaik dari dirimu, mekar layaknya bunga yang paling indah di taman semesta.</p>
+                            <p>49. Aku tidak menjanjikan bahwa semuanya akan selalu mudah, tetapi aku berjanji bahwa di setiap kesulitannya, aku akan tetap berada di jalur yang sama bersamamu.</p>
+                            <p>50. Jarak ini tidak akan pernah mampu memudarkan indahnya namamu di benakku. Selamat ulang tahun sekali lagi, cintaku. Aku sungguh merayakanmu di setiap inci dari ruang virtual ini.</p>
+                        </div>
+                    </article>
+
+                    <!-- HIGHLIGHT CARD (THE GRAND CONCLUSION) -->
+                    <div class="poetry-grand-highlight-card reveal-up-anim parallax-layer" data-parallax-speed="0.12">
+                        <div class="glow-rotating-aura-fx" aria-hidden="true"></div>
+                        <h3 class="highlight-neon-title">Sebuah Simpul Cerita Abadi</h3>
+                        <p class="highlight-paragraph-text">Tulisan ini mungkin panjang, namun ia tak akan pernah cukup untuk mendeskripsikan betapa berharganya dirimu. Terima kasih telah lahir ke dunia, dan terima kasih telah singgah ke dalam duniaku. Selamat merayakan eksistensimu, Zahra. Aku mencintaimu dalam bahasa yang melampaui segala kode, logika, dan batasan waktu.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 3: EXCLUSIVE MASONRY GALLERY (DOUBLE-TAP TO LOVE FEATURE) -->
+        <section id="module-visual-gallery" class="massive-section">
+            <div class="content-bound-massive">
+                
+                <div class="section-title-core reveal-up-anim">
+                    <h2 class="massive-section-title">Direktori Visual</h2>
+                    <p class="massive-section-subtitle">Sentuh dua kali (double-tap) pada foto untuk mengirimkan getaran cinta. Ruang ini didedikasikan tanpa ada satu pun teks yang menutupi pesonamu.</p>
+                </div>
+                
+                <div class="brutal-masonry-architecture" id="gallery-masonry-engine">
+                    <!-- JS Double-Tap Event Listeners will attach here -->
+                    <div class="masonry-media-box premium-glassmorphism reveal-up-anim double-tap-interactive-zone">
+                        <div class="media-inner-bound">
+                            <img src="assets/images/photo1.jpg" alt="Zahra Memori" loading="lazy">
+                            <div class="love-popup-fx-container"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                        </div>
+                    </div>
+                    
+                    <div class="masonry-media-box premium-glassmorphism reveal-up-anim delay-100">
+                        <div class="media-inner-bound"><video src="assets/videos/video1.mp4" autoplay loop muted playsinline></video></div>
+                    </div>
+                    
+                    <div class="masonry-media-box premium-glassmorphism reveal-up-anim delay-200 double-tap-interactive-zone">
+                        <div class="media-inner-bound">
+                            <img src="assets/images/photo2.jpg" alt="Zahra Memori" loading="lazy">
+                            <div class="love-popup-fx-container"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                        </div>
+                    </div>
+                    
+                    <div class="masonry-media-box premium-glassmorphism reveal-up-anim">
+                        <div class="media-inner-bound"><video src="assets/videos/video2.mp4" autoplay loop muted playsinline></video></div>
+                    </div>
+                    
+                    <div class="masonry-media-box premium-glassmorphism reveal-up-anim delay-100 double-tap-interactive-zone">
+                        <div class="media-inner-bound">
+                            <img src="assets/images/photo3.jpg" alt="Zahra Memori" loading="lazy">
+                            <div class="love-popup-fx-container"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                        </div>
+                    </div>
+                    
+                    <div class="masonry-media-box premium-glassmorphism reveal-up-anim delay-200">
+                        <div class="media-inner-bound"><video src="assets/videos/video3.mp4" autoplay loop muted playsinline></video></div>
+                    </div>
+                    
+                    <div class="masonry-media-box premium-glassmorphism reveal-up-anim double-tap-interactive-zone">
+                        <div class="media-inner-bound">
+                            <img src="assets/images/photo4.jpg" alt="Zahra Memori" loading="lazy">
+                            <div class="love-popup-fx-container"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                        </div>
+                    </div>
+                    
+                    <div class="masonry-media-box premium-glassmorphism reveal-up-anim delay-100">
+                        <div class="media-inner-bound"><video src="assets/videos/video4.mp4" autoplay loop muted playsinline></video></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- MODULE 4: GOOEY WISH CONSOLE (METEOR SHOWER FX) -->
+        <section id="module-wish-console" class="massive-section flex-center">
+            <div class="content-bound-large">
+                
+                <!-- Main Console UI -->
+                <div class="wish-transmission-console premium-glassmorphism reveal-up-anim" id="wish-console-ui">
+                    <div class="console-star-levitator">
+                        <svg viewBox="0 0 24 24"><path fill="url(#grad-gold-sparkle)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <h2 class="massive-section-title">Konsol Harapan</h2>
+                    <p class="massive-section-subtitle">Ketikkan satu doa terindahmu. Sistem akan mengenkripsinya dan menembakkannya langsung ke langit malam.</p>
+                    
+                    <div class="aesthetic-textarea-wrapper">
+                        <textarea id="wish-textarea-node" placeholder="Terminal semesta siap menerima ketikan harapanmu..."></textarea>
+                        <div class="focus-breathing-ring"></div>
+                    </div>
+                    
+                    <!-- GOOEY CSS FILTER BUTTON -->
+                    <div class="gooey-button-container">
+                        <button id="cmd-transmit-wish" class="gooey-execution-button haptic-feedback-trigger magnetic-hover-target">
+                            <span class="btn-typography">TRANSMISIKAN HARAPAN</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Magical Meteor Output Scene -->
+                <div id="wish-meteor-execution-scene" class="hidden-state absolute-center-overlay-local">
+                    <div class="wish-typography-glitch-result" id="wish-output-display"></div>
+                    <div class="meteor-projectile-entity" id="meteor-animated-entity">
+                        <svg viewBox="0 0 24 24"><path fill="url(#grad-gold-sparkle)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <div class="meteor-dust-tail"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- MODULE 5: FINAL SECRET GIFT (PRECISION SVG & CONFETTI ENGINE) -->
+        <section id="module-gift-decryption" class="massive-section flex-center section-padding-bottom-extreme">
+            <div class="content-bound-large relative-stack-engine">
+                
+                <!-- 1. Interactive SVG Path Drawing (Heart Line) -->
+                <div id="svg-heart-drawing-sequence" class="reveal-up-anim">
+                    <svg viewBox="0 0 100 100" class="heart-line-massive">
+                        <path id="core-heart-drawing-path" d="M50,85 C25,65 10,45 10,28 C10,15 22,5 35,5 C43,5 50,12 50,12 C50,12 57,5 65,5 C78,5 90,15 90,28 C90,45 75,65 50,85 Z" fill="none" stroke="url(#grad-heart-draw)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <!-- 2. Hidden JS Confetti Canvas (Activated on Button Click) -->
+                <canvas id="confetti-physics-canvas" class="hidden-state"></canvas>
+                
+                <!-- 3. The Precision 3D Gift Box -->
+                <div id="gift-box-interactive-module" class="hidden-state">
+                    <div class="box-illustration-wrapper" id="svg-gift-box-wrapper">
+                        <!-- Ultra Precision SVG Gift Box -->
+                        <svg viewBox="0 0 200 200" class="gift-vector-master">
+                            <filter id="boxDropHeavy"><feDropShadow dx="0" dy="15" stdDeviation="15" flood-color="#d48ba0" flood-opacity="0.5"/></filter>
+                            
+                            <!-- Base Box -->
+                            <rect x="50" y="100" width="100" height="80" rx="8" fill="#f8cdd6" stroke="#d48ba0" stroke-width="4" filter="url(#boxDropHeavy)" class="box-base-element"/>
+                            <!-- Vertical Ribbon -->
+                            <rect x="90" y="100" width="20" height="80" fill="#d48ba0" class="box-ribbon-element"/>
+                            
+                            <!-- Box Lid (The Part that will fly off in JS) -->
+                            <g class="box-lid-element" id="box-lid-animated-part">
+                                <rect x="40" y="70" width="120" height="30" rx="6" fill="#e6c8d3" stroke="#d48ba0" stroke-width="4" filter="url(#boxDropHeavy)"/>
+                                <rect x="90" y="70" width="20" height="30" fill="#d48ba0"/>
+                                <!-- Huge Bows -->
+                                <path d="M100,70 C60,20 40,70 100,70 Z" fill="none" stroke="#d48ba0" stroke-width="6" stroke-linecap="round"/>
+                                <path d="M100,70 C140,20 160,70 100,70 Z" fill="none" stroke="#d48ba0" stroke-width="6" stroke-linecap="round"/>
                             </g>
                         </svg>
                     </div>
-                    <button id="cmd-open-gift" class="mega-button ripple-effect mt-24">Buka Kotak Rahasia</button>
+                    <button id="cmd-execute-decryption" class="mega-execution-button ripple-effect haptic-feedback-trigger mt-24">Buka Kotak Rahasia</button>
                 </div>
 
-                <!-- Final Payload (Image + WhatsApp) -->
-                <div id="reward-payload" class="glass-morphism-premium hidden-element">
-                    <div class="reward-media-frame">
-                        <img src="assets/images/hadiah.jpg" alt="Hadiah Zahra" class="reward-img">
-                        <div class="shine-sweep"></div>
+                <!-- 4. The Final Reward Payload (Image & WhatsApp Integration) -->
+                <div id="reward-payload-container" class="premium-glassmorphism hidden-state">
+                    <div class="payload-media-frame">
+                        <img src="assets/images/hadiah.jpg" alt="Hadiah Spesial Zahra" class="payload-img-content">
+                        <!-- CSS Light Sweep Effect -->
+                        <div class="glass-shine-sweep-fx"></div>
                     </div>
-                    <div class="reward-text-content">
-                        <h3 class="reward-heading">Kejutan Kecil Untukmu</h3>
-                        <p class="reward-desc">HAYYIEE CINTAAA, ini hadiah buat kamu! hadiah ini mungkin kecil dan ngga seberapa, tapi aku bener bener merayakan sekali ulang tahun kamu. selamat bertambah umur yaa cintaa, YUKKK, ambil hadiah nyaa!</p>
-                        <a href="https://wa.me/6283815954022?text=AKU%20MAU%20SAYANGGG%20%3A3" target="_blank" class="mega-button wa-button ripple-effect">
-                            <svg viewBox="0 0 24 24" class="wa-icon"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                            Ambil Hadiah Di Sini
+                    <div class="payload-data-content">
+                        <h3 class="payload-heading-h3">DEKRIPSI BERHASIL</h3>
+                        <p class="payload-description-p">HAYYIEE CINTAAA, ini hadiah buat kamu! hadiah ini mungkin kecil dan ngga seberapa, tapi aku bener bener merayakan sekali ulang tahun kamu. selamat bertambah umur yaa cintaa, YUKKK, ambil hadiah nyaa!</p>
+                        
+                        <!-- Elegant WhatsApp Button with Complex SVG Icon -->
+                        <a href="https://wa.me/6283815954022?text=AKU%20MAU%20SAYANGGG%20%3A3" target="_blank" rel="noopener noreferrer" class="mega-wa-button ripple-effect haptic-feedback-trigger magnetic-hover-target">
+                            <svg viewBox="0 0 24 24" class="icon-whatsapp-svg" aria-hidden="true">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                            <span class="wa-btn-text">AMBIL HADIAH SEKARANG</span>
                         </a>
                     </div>
                 </div>
@@ -337,18 +563,43 @@
     </main>
 
     <!-- ======================================================================= -->
-    <!-- 6. DOCK NAVIGATION (FLOATING SHORTCUTS)                                 -->
+    <!-- [7] APPLE-STYLE FLOATING DOCK NAVIGATION (JUMP LINKS)                   -->
     <!-- ======================================================================= -->
-    <nav class="dock-navigation hidden-element" id="dock-bar">
-        <div class="dock-wrapper glass-morphism-premium">
-            <a href="#sec-hero" class="dock-btn active-dock"><svg viewBox="0 0 24 24"><path d="M12 3L4 9v12h5v-7h6v7h5V9z"/></svg></a>
-            <a href="#sec-letters" class="dock-btn"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/></svg></a>
-            <a href="#sec-gallery" class="dock-btn"><svg viewBox="0 0 24 24"><path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14h14v-2H4V6H2z"/></svg></a>
-            <a href="#sec-wish" class="dock-btn"><svg viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24z"/></svg></a>
-            <a href="#sec-gift" class="dock-btn"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/></svg></a>
+    <nav class="apple-dock-navigation hidden-state" id="master-dock-bar">
+        <div class="dock-capsule-wrapper premium-glassmorphism">
+            <a href="#module-hero-intro" class="dock-item-btn active-dock-link">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L4 9v12h5v-7h6v7h5V9z"/></svg>
+                <span class="dock-tooltip">Beranda</span>
+            </a>
+            <a href="#module-letters-romance" class="dock-item-btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12zM6 9h12v2H6zm0-3h12v2H6zm0 6h8v2H6z"/></svg>
+                <span class="dock-tooltip">Surat Hati</span>
+            </a>
+            <a href="#module-visual-gallery" class="dock-item-btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14h14v-2H4V6H2z"/></svg>
+                <span class="dock-tooltip">Memori</span>
+            </a>
+            <a href="#module-wish-console" class="dock-item-btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>
+                <span class="dock-tooltip">Harapan</span>
+            </a>
+            <a href="#module-gift-decryption" class="dock-item-btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+                <span class="dock-tooltip">Kado</span>
+            </a>
         </div>
     </nav>
 
+    <!-- SECRET EASTER EGG OVERLAY (ACTIVATED VIA KONAMI CODE IN JS) -->
+    <div id="secret-konami-overlay" class="hidden-state">
+        <div id="matrix-rain-canvas"></div>
+        <div class="secret-text-box">
+            <h2>SYSTEM OVERRIDE SUCCESSFUL</h2>
+            <p>I love you in every universe, in every timeline, and in every lines of code I write. - Jay</p>
+        </div>
+    </div>
+
+    <!-- Core Logic Engine -->
     <script src="script.js"></script>
 </body>
 </html>
