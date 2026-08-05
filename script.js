@@ -1,6 +1,6 @@
 /**
  * ==============================================================================
- * ZAHRA'S UNIVERSE - ULTIMATE CORE ENGINE V10.0.0 (MEGA BRUTAL EDITION)
+ * ZAHRA'S UNIVERSE - ULTIMATE CORE ENGINE V11.0 (ANTI-BUG MOBILE FIRST EDITION)
  * ARCHITECTURE: Object-Oriented, High-Performance, WebGL-ready Canvas, Web Audio
  * ==============================================================================
  */
@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
         distance: (x1, y1, x2, y2) => Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)),
         degreesToRads: (degrees) => (degrees * Math.PI) / 180,
         triggerHaptic: (pattern = [15]) => {
-            // Safe execution for devices that support vibration API
+            // Aman untuk perangkat yang mendukung API Getaran (Android)
             if ('vibrate' in navigator) {
-                try { navigator.vibrate(pattern); } catch(e) {}
+                try { navigator.vibrate(pattern); } catch(e) { console.warn("Haptic disabled"); }
             }
         }
     };
@@ -51,7 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         populateUniverse() {
             this.particles = [];
-            for (let i = 0; i < this.particleCount; i++) {
+            // Deteksi layar HP untuk optimasi partikel
+            const isMobile = window.innerWidth <= 768;
+            const optimizedCount = isMobile ? Math.floor(this.particleCount * 0.6) : this.particleCount;
+
+            for (let i = 0; i < optimizedCount; i++) {
                 this.particles.push({
                     x: Math.random() * this.canvas.width,
                     y: Math.random() * this.canvas.height,
@@ -85,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.ctx.fillStyle = `rgba(212, 139, 160, ${p.alpha})`;
                 this.ctx.fill();
 
-                // Draw Constellation Lines (Only for non-dust canvas)
+                // Draw Constellation Lines (Hanya untuk kanvas konstelasi)
                 if (!this.isDust) {
                     for (let j = i + 1; j < this.particles.length; j++) {
                         let p2 = this.particles[j];
@@ -93,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         if (dist < this.connectionDistance) {
                             this.ctx.beginPath();
-                            this.ctx.strokeStyle = `rgba(212, 139, 160, ${0.15 * (1 - dist / this.connectionDistance)})`;
+                            this.ctx.strokeStyle = `rgba(212, 139, 160, ${0.2 * (1 - dist / this.connectionDistance)})`;
                             this.ctx.lineWidth = 0.5;
                             this.ctx.moveTo(p.x, p.y);
                             this.ctx.lineTo(p2.x, p2.y);
@@ -106,12 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initialize the background layers
-    new StellarPhysicsEngine('stellar-constellation-canvas', 60, 150, false);
+    // Inisialisasi Latar Belakang Ganda
+    new StellarPhysicsEngine('stellar-constellation-canvas', 70, 140, false);
     new StellarPhysicsEngine('cosmic-dust-canvas', 120, 0, true);
 
     /** ========================================================================
-     * [3] MAGNETIC CURSOR (HOOKE'S LAW SPRING PHYSICS)
+     * [3] MAGNETIC CURSOR (HOOKE'S LAW SPRING PHYSICS) - MATI DI MOBILE
      * ======================================================================== */
     class MagneticCursor {
         constructor() {
@@ -133,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.target.y = e.clientY;
             });
 
-            // Magnetic Hover Detection on Buttons and Links
+            // Deteksi Magnetik pada Tombol
             const interactables = document.querySelectorAll('button, a, .magnetic-hover-target');
             interactables.forEach(el => {
                 el.addEventListener('mouseenter', () => document.body.classList.add('magnetic-hover-active'));
@@ -142,11 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         render() {
-            // Core uses fast linear interpolation
+            // Core menggunakan interpolasi linear cepat
             this.corePos.x = CoreUtils.lerp(this.corePos.x, this.target.x, 0.4);
             this.corePos.y = CoreUtils.lerp(this.corePos.y, this.target.y, 0.4);
             
-            // Aura uses spring physics (slower, bouncy)
+            // Aura menggunakan fisika pegas (spring) yang memantul
             this.auraPos.x = CoreUtils.lerp(this.auraPos.x, this.target.x, 0.15);
             this.auraPos.y = CoreUtils.lerp(this.auraPos.y, this.target.y, 0.15);
 
@@ -156,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(() => this.render());
         }
     }
-    // Only init if not on a touch device
+    // Cegah kursor kustom berjalan di HP layar sentuh
     if (window.matchMedia("(pointer: fine)").matches) {
         new MagneticCursor();
     }
@@ -166,9 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * ======================================================================== */
     const HardwareTelemetry = {
         initTime: () => {
-            const wibEl = document.getElementById('time-wib');
-            const witaEl = document.getElementById('time-wita');
-            const witEl = document.getElementById('time-wit');
+            const wibEl = document.getElementById('tz-wib');
+            const witaEl = document.getElementById('tz-wita');
+            const witEl = document.getElementById('tz-wit');
             
             setInterval(() => {
                 const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
@@ -254,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.isInitialized = true;
                 this.renderVisualizer();
             } catch (e) {
-                console.warn("Web Audio API not fully supported on this device/browser.", e);
+                console.warn("Web Audio API not fully supported. Fallback to basic player.", e);
             }
         }
 
@@ -277,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.audioEl.addEventListener('timeupdate', () => {
                 if (this.audioEl.duration && this.progressRing) {
                     const percent = (this.audioEl.currentTime / this.audioEl.duration) * 100;
+                    // Circle path length is approx 100
                     this.progressRing.setAttribute('stroke-dasharray', `${percent}, 100`);
                 }
             });
@@ -291,12 +296,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (playing) {
                 this.toggleBtn.classList.add('is-playing');
-                playIcon.classList.add('hidden-state');
-                pauseIcon.classList.remove('hidden-state');
+                if(playIcon) playIcon.classList.add('hidden-state');
+                if(pauseIcon) pauseIcon.classList.remove('hidden-state');
             } else {
                 this.toggleBtn.classList.remove('is-playing');
-                playIcon.classList.remove('hidden-state');
-                pauseIcon.classList.add('hidden-state');
+                if(playIcon) playIcon.classList.remove('hidden-state');
+                if(pauseIcon) pauseIcon.classList.add('hidden-state');
             }
         }
 
@@ -321,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 this.ctx.fillStyle = gradient;
                 this.ctx.fillRect(x, this.canvas.height - barHeight, barWidth, barHeight);
-                x += barWidth + 1;
+                x += barWidth + 1.5;
             }
             requestAnimationFrame(() => this.renderVisualizer());
         }
@@ -329,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const GlobalAudioEngine = new AdvancedAudioEngine();
 
     /** ========================================================================
-     * [6] NEUMORPHIC AUTHENTICATION (PIN PAD WITH HAPTIC)
+     * [6] NEUMORPHIC AUTHENTICATION (CRYPTOGRAPHIC DELAY SIMULATION)
      * ======================================================================== */
     class NeumorphicAuthenticator {
         constructor() {
@@ -343,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bindKeypad() {
             document.querySelectorAll('.n-keypad-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    CoreUtils.triggerHaptic([15]); 
+                    CoreUtils.triggerHaptic([15]); // Getaran tombol
                     
                     const key = btn.getAttribute('data-pin-key');
                     if (key === 'C') this.currentInput = "";
@@ -374,18 +379,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         validate() {
             if (this.currentInput === this.correctPin) {
-                // Success Sequence
+                // Berhasil
                 setTimeout(() => {
                     this.authLayer.style.opacity = '0';
                     setTimeout(() => {
                         this.authLayer.classList.remove('active-overlay-state');
                         this.authLayer.classList.add('hidden-state');
                         startQuantumBloomLoader();
-                    }, 900); // Wait for CSS transition
-                }, 300); // Cryptographic delay
+                    }, 900); // Sinkron dengan CSS transition
+                }, 400); // Simulasi delay verifikasi
             } else {
-                // Error Sequence
-                CoreUtils.triggerHaptic([30, 50, 30]); 
+                // Gagal (Error Shake)
+                CoreUtils.triggerHaptic([30, 50, 30]); // Getaran error
                 document.querySelector('.auth-security-card').classList.add('matrix-shake-error');
                 this.updateVisuals(true);
                 
@@ -419,14 +424,14 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         
         const loadingInterval = setInterval(() => {
-            let increment = CoreUtils.randomBetween(2, 8);
-            if (progress > 80) increment = CoreUtils.randomBetween(1, 3);
+            let increment = CoreUtils.randomBetween(3, 9);
+            if (progress > 85) increment = CoreUtils.randomBetween(1, 2); // Melambat di akhir
             
             progress += increment;
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(loadingInterval);
-                setTimeout(bootMassiveEngine, 500); 
+                setTimeout(bootMassiveEngine, 600); 
             }
             
             percentText.innerText = `${Math.floor(progress)}%`;
@@ -437,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (progress > 50 && progress <= 85) statusText.innerText = systemLogs[2];
             else if (progress > 85) statusText.innerText = systemLogs[3];
             
-        }, 120);
+        }, 150);
     }
 
     /** ========================================================================
@@ -452,21 +457,20 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('system-locked-state');
             document.body.classList.add('scroll-unlocked');
             
-            // Unhide main containers
+            // Unhide UI Utama
             document.getElementById('master-hud-interface').classList.remove('hidden-state');
             document.getElementById('massive-scroll-engine').classList.remove('hidden-state');
             document.getElementById('master-dock-bar').classList.remove('hidden-state');
             
-            // Initialize Subsystems
             initIntersectionObserver();
             initDeviceGyroscope();
             initDoubleTapToLove();
             
-            // Attempt auto-play
+            // Coba Auto Play Musik
             GlobalAudioEngine.initializeAudioContext();
             document.getElementById('core-audio-engine').play().then(() => {
                 GlobalAudioEngine.updateUIState(true);
-            }).catch((err) => console.log("User interaction required to play audio."));
+            }).catch((err) => console.log("User gesture required for audio"));
             
         }, 900);
     }
@@ -474,8 +478,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function initIntersectionObserver() {
         const observerOptions = {
             root: null,
-            threshold: 0.15,
-            rootMargin: "0px 0px -50px 0px"
+            threshold: 0.1,
+            rootMargin: "0px 0px -100px 0px"
         };
 
         const revealObserver = new IntersectionObserver((entries) => {
@@ -483,17 +487,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('has-revealed');
                     
-                    // Specific trigger for Final SVG Heart Drawing
+                    // Trigger Menggambar Hati SVG
                     if (entry.target.id === 'svg-heart-drawing-sequence' && !window.giftDecryptionSequenceStarted) {
                         window.giftDecryptionSequenceStarted = true;
                         entry.target.classList.add('heart-draw-triggered');
                         
-                        // Wait for SVG path to finish drawing (4s) before revealing the 3D Box
+                        // Menunggu SVG selesai digambar (4.5s) sebelum memunculkan kotak kado 3D
                         setTimeout(() => {
                             const boxTrigger = document.getElementById('gift-box-interactive-module');
                             boxTrigger.classList.remove('hidden-state');
                             setTimeout(() => boxTrigger.style.opacity = '1', 50);
-                        }, 4000); 
+                        }, 4500); 
                     }
                 }
             });
@@ -501,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelectorAll('.reveal-up-anim, .split-text-animation-trigger').forEach(el => revealObserver.observe(el));
         
-        // --- PARALLAX, SCROLL PROGRESS & DOCK NAV LOGIC ---
+        // --- PARALLAX & DOCK NAV LOGIC (60FPS SCROLL) ---
         const parallaxElements = document.querySelectorAll('.parallax-layer');
         const readProgressBar = document.getElementById('reading-progress-bar');
         const sections = document.querySelectorAll('.massive-section');
@@ -510,12 +514,12 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY || window.pageYOffset;
             
-            // Reading Progress
+            // 1. Reading Progress
             const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = (scrollY / scrollHeight) * 100;
-            if(readProgressBar) readProgressBar.style.width = `${scrollPercent}%`;
+            if (readProgressBar) readProgressBar.style.width = `${scrollPercent}%`;
 
-            // Parallax Matrix
+            // 2. High-Performance Parallax Matrix
             requestAnimationFrame(() => {
                 parallaxElements.forEach(el => {
                     const speed = parseFloat(el.getAttribute('data-parallax-speed'));
@@ -523,7 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // Dock Highlight
+            // 3. Apple Dock Highlight
             let currentSectionId = '';
             sections.forEach(sec => {
                 const secTop = sec.offsetTop;
@@ -539,15 +543,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-        }, { passive: true }); // 60FPS passive scroll
+        }, { passive: true }); // Passive flag mencegah scroll ngelag
 
-        // Smooth Scroll for Dock
+        // Smooth Anchor Scrolling
         dockBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 CoreUtils.triggerHaptic([15]);
                 const targetId = btn.getAttribute('href');
-                document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+                const targetEl = document.querySelector(targetId);
+                if(targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
             });
         });
     }
@@ -559,7 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const gyroWrapper = document.getElementById('gyro-master-wrapper');
         if (!gyroWrapper) return;
 
-        // Mobile Gyroscope
+        // Mobile Gyroscope Parallax
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', (e) => {
                 let beta = e.beta; 
@@ -568,8 +573,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (beta > 90) beta = 90; if (beta < -90) beta = -90;
                 if (gamma > 90) gamma = 90; if (gamma < -90) gamma = -90;
                 
-                const rotX = (beta / 90) * -15; 
-                const rotY = (gamma / 90) * 15;  
+                const rotX = (beta / 90) * -12; 
+                const rotY = (gamma / 90) * 12;  
                 
                 requestAnimationFrame(() => {
                     gyroWrapper.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
@@ -579,30 +584,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Desktop Mouse Fallback
         const heroSection = document.getElementById('module-hero-intro');
-        heroSection.addEventListener('mousemove', (e) => {
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            
-            const mouseX = e.clientX - centerX;
-            const mouseY = e.clientY - centerY;
-            
-            const rotX = (mouseY / centerY) * -10;
-            const rotY = (mouseX / centerX) * 10;
-            
-            requestAnimationFrame(() => {
-                gyroWrapper.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        if(heroSection) {
+            heroSection.addEventListener('mousemove', (e) => {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                const mouseX = e.clientX - centerX;
+                const mouseY = e.clientY - centerY;
+                
+                const rotX = (mouseY / centerY) * -8; 
+                const rotY = (mouseX / centerX) * 8;  
+                
+                requestAnimationFrame(() => {
+                    gyroWrapper.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+                });
             });
-        });
 
-        heroSection.addEventListener('mouseleave', () => {
-            requestAnimationFrame(() => {
-                gyroWrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            heroSection.addEventListener('mouseleave', () => {
+                requestAnimationFrame(() => {
+                    gyroWrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
+                });
             });
-        });
+        }
     }
 
     /** ========================================================================
-     * [10] INSTAGRAM-STYLE DOUBLE TAP TO LOVE
+     * [10] INSTAGRAM-STYLE DOUBLE TAP TO LOVE (CALCULATES EXACT XY COORDS)
      * ======================================================================== */
     function initDoubleTapToLove() {
         const galleryItems = document.querySelectorAll('.double-tap-interactive-zone');
@@ -614,26 +620,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 const currentTime = new Date().getTime();
                 const tapLength = currentTime - lastTapTime;
                 
-                if (tapLength < 300 && tapLength > 0) {
-                    // Double Tap!
+                if (tapLength < 350 && tapLength > 0) {
+                    // Terdeteksi klik dua kali!
                     e.preventDefault();
-                    CoreUtils.triggerHaptic([20, 30, 20]); 
+                    CoreUtils.triggerHaptic([20, 40, 20]); // Getaran detak jantung
                     
                     const rect = item.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
+                    // Akurasi koordinat X dan Y di dalam elemen
+                    let x = e.clientX - rect.left;
+                    let y = e.clientY - rect.top;
+                    
+                    // Fallback untuk sentuhan mobile
+                    if (e.touches && e.touches.length > 0) {
+                        x = e.touches[0].clientX - rect.left;
+                        y = e.touches[0].clientY - rect.top;
+                    }
                     
                     const loveFx = item.querySelector('.love-popup-fx-container');
+                    if(!loveFx) return;
                     
+                    // Posisi Hati presisi di tempat sentuhan
                     loveFx.style.left = `${x}px`;
                     loveFx.style.top = `${y}px`;
                     
-                    // Retrigger animation
+                    // Trigger ulang animasi
                     loveFx.classList.remove('love-anim-active');
-                    void loveFx.offsetWidth; // Reflow
+                    void loveFx.offsetWidth; 
                     loveFx.classList.add('love-anim-active');
                     
-                    lastTapTime = 0;
+                    lastTapTime = 0; 
                 } else {
                     lastTapTime = currentTime;
                 }
@@ -642,41 +657,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /** ========================================================================
-     * [11] WISH TRANSMITTER (GOOEY BUTTON & METEOR PROJECTILE)
+     * [11] WISH TRANSMITTER (GOOEY EXECUTION & METEOR PROJECTILE)
      * ======================================================================== */
-    document.getElementById('cmd-send-wish').addEventListener('click', () => {
+    document.getElementById('cmd-transmit-wish').addEventListener('click', () => {
         CoreUtils.triggerHaptic([40]);
         
-        const textArea = document.getElementById('wish-text-input');
+        const textArea = document.getElementById('wish-textarea-node');
         const textValue = textArea.value.trim();
         
         if (!textValue) {
+            // Getaran error jika input kosong
             textArea.style.transform = 'translateX(-10px)';
             setTimeout(() => textArea.style.transform = 'translateX(10px)', 100);
             setTimeout(() => textArea.style.transform = 'translateX(0)', 200);
             return;
         }
 
-        const consoleUI = document.getElementById('wish-interface');
-        const meteorScene = document.getElementById('wish-magic-scene');
-        const outputDisplay = document.getElementById('wish-result-text');
-        const meteorEntity = document.getElementById('star-vfx-element');
+        const consoleUI = document.getElementById('wish-console-ui');
+        const meteorScene = document.getElementById('wish-meteor-execution-scene');
+        const outputDisplay = document.getElementById('wish-output-display');
+        const meteorEntity = document.getElementById('meteor-animated-entity');
 
+        // Sembunyikan form
         consoleUI.style.opacity = '0';
         consoleUI.style.transform = 'scale(0.9)';
         
         setTimeout(() => {
-            consoleUI.classList.add('hidden-element');
-            meteorScene.classList.remove('hidden-element');
+            consoleUI.classList.add('hidden-state');
+            meteorScene.classList.remove('hidden-state');
             
             outputDisplay.innerText = `"${textValue}"`;
             
+            // Tunggu user membaca kalimatnya, lalu tembak meteor
             setTimeout(() => {
-                outputDisplay.style.opacity = '0';
+                outputDisplay.style.opacity = '0'; 
                 
                 setTimeout(() => {
-                    meteorEntity.classList.add('shoot-vfx-anim');
-                    CoreUtils.triggerHaptic([50, 50, 100]); // Meteor sound haptic
+                    meteorEntity.classList.add('meteor-shoot-trigger');
+                    CoreUtils.triggerHaptic([60, 60, 150]); // Getaran meteor jatuh
                 }, 1000);
                 
             }, 3500); 
@@ -685,12 +703,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /** ========================================================================
-     * [12] CONFETTI TORNADO PHYSICS ENGINE (3D GRAVITY & AIR DRAG)
+     * [12] CONFETTI TORNADO PHYSICS ENGINE (3D GRAVITY, DRAG & TILT)
      * ======================================================================== */
     class ConfettiTornadoEngine {
         constructor(canvasId) {
             this.canvas = document.getElementById(canvasId);
-            if(!this.canvas) return;
+            if (!this.canvas) return;
             this.ctx = this.canvas.getContext('2d');
             this.particles = [];
             this.colors = ['#d48ba0', '#f8cdd6', '#FFD700', '#ffffff', '#e6c8d3', '#a9677b'];
@@ -706,19 +724,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         detonate() {
             this.particles = [];
-            // Generate 300 particles for massive burst
+            // Buat 300 partikel untuk ledakan brutal
             for(let i=0; i<300; i++) {
                 this.particles.push({
                     x: this.canvas.width / 2,
-                    y: this.canvas.height / 2 + 120, // Start around the box
-                    vx: CoreUtils.randomBetween(-30, 30), 
-                    vy: CoreUtils.randomBetween(-40, -10), 
-                    size: CoreUtils.randomBetween(6, 14),
+                    y: this.canvas.height / 2 + 100, 
+                    vx: CoreUtils.randomBetween(-35, 35), // Sebaran sumbu X
+                    vy: CoreUtils.randomBetween(-45, -10), // Ledakan ke atas sumbu Y
+                    size: CoreUtils.randomBetween(6, 15),
                     color: this.colors[Math.floor(Math.random() * this.colors.length)],
                     rotation: CoreUtils.randomBetween(0, 360),
-                    rotationSpeed: CoreUtils.randomBetween(-15, 15),
+                    rotationSpeed: CoreUtils.randomBetween(-20, 20),
                     tilt: CoreUtils.randomBetween(0, 360),
-                    tiltSpeed: CoreUtils.randomBetween(-15, 15)
+                    tiltSpeed: CoreUtils.randomBetween(-20, 20)
                 });
             }
             if (this.animationId) cancelAnimationFrame(this.animationId);
@@ -730,17 +748,17 @@ document.addEventListener('DOMContentLoaded', () => {
             let activeParticles = false;
 
             this.particles.forEach(p => {
-                // Physics calculation
+                // Kalkulasi Fisika
                 p.x += p.vx;
                 p.y += p.vy;
-                p.vy += 0.9; // Gravity
-                p.vx *= 0.97; // Friction X
+                p.vy += 0.9; // Tarikan Gravitasi Bumi
+                p.vx *= 0.96; // Gesekan Angin (Air Drag)
                 
-                // Rotation & Tilt 3D illusion
+                // Ilusi 3D Rotasi
                 p.rotation += p.rotationSpeed;
                 p.tilt += p.tiltSpeed;
 
-                // Render if on screen
+                // Render hanya partikel yang belum jatuh melewati layar
                 if (p.y < this.canvas.height + 50) {
                     activeParticles = true;
                     
@@ -748,7 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.ctx.translate(p.x, p.y);
                     this.ctx.rotate(CoreUtils.degreesToRads(p.rotation));
                     
-                    // 3D flip illusion using scaleY
+                    // Ilusi putaran koin 3D dengan scaleY
                     const scaleY = Math.abs(Math.sin(CoreUtils.degreesToRads(p.tilt)));
                     this.ctx.scale(1, scaleY);
                     
@@ -762,54 +780,125 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.animationId = requestAnimationFrame(() => this.render());
             } else {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.particles = [];
+                this.particles = []; // Bersihkan memori
             }
         }
     }
 
     /** ========================================================================
-     * [13] FINAL GIFT DECRYPTION SEQUENCE (FIXED BUG)
+     * [13] FINAL GIFT DECRYPTION SEQUENCE (FIXED BUTTON CLICK BUG)
      * ======================================================================== */
     const ConfettiSystem = new ConfettiTornadoEngine('confetti-physics-canvas');
 
-    document.getElementById('cmd-execute-decryption').addEventListener('click', () => {
-        CoreUtils.triggerHaptic([50, 100, 150]); 
-        
-        const interactionModule = document.getElementById('gift-box-interactive-module');
-        const backgroundDraw = document.getElementById('heart-draw-engine');
-        const payloadContainer = document.getElementById('reward-payload-container');
-        const svgBoxWrapper = document.getElementById('svg-gift-box-wrapper');
+    const btnOpenGift = document.getElementById('cmd-execute-decryption');
+    if(btnOpenGift) {
+        btnOpenGift.addEventListener('click', (e) => {
+            // Hentikan propagasi event biar gak bentrok
+            e.stopPropagation();
+            
+            CoreUtils.triggerHaptic([60, 120, 180]); // Ledakan haptic
+            
+            const interactionModule = document.getElementById('gift-box-interactive-module');
+            const backgroundDraw = document.getElementById('heart-draw-engine');
+            const payloadContainer = document.getElementById('reward-payload-container');
+            const svgBoxWrapper = document.getElementById('svg-gift-box-wrapper');
 
-        // 1. Trigger CSS Animation Box Explode
-        svgBoxWrapper.classList.add('box-explode-anim');
-        
-        // 2. Detonate Canvas Confetti
-        document.getElementById('confetti-physics-canvas').classList.remove('hidden-state');
-        setTimeout(() => ConfettiSystem.detonate(), 200); // Slight delay for impact
+            // 1. Trigger CSS Animation Ledakan Kado 3D
+            if(svgBoxWrapper) svgBoxWrapper.classList.add('box-explode-anim');
+            
+            // 2. Eksekusi Kanvas Fisika Konfeti
+            const confettiCanvas = document.getElementById('confetti-physics-canvas');
+            if(confettiCanvas) {
+                confettiCanvas.classList.remove('hidden-state');
+                setTimeout(() => ConfettiSystem.detonate(), 200); 
+            }
 
-        // 3. Precise Timing to Swap UI safely without overlapping
-        setTimeout(() => {
-            // Fade out
-            interactionModule.style.opacity = '0';
-            backgroundDraw.style.opacity = '0';
-
+            // 3. Sinkronisasi Waktu Transisi UI (Mencegah Overlap)
             setTimeout(() => {
-                // Ensure completely hidden from DOM flow
-                interactionModule.classList.add('hidden-state');
-                backgroundDraw.classList.add('hidden-state');
-                
-                // Unhide the reward payload
-                payloadContainer.classList.remove('hidden-state');
-                
-                // Allow browser to register removal before fading in
+                // Pudar
+                if(interactionModule) interactionModule.style.opacity = '0';
+                if(backgroundDraw) backgroundDraw.style.opacity = '0';
+
                 setTimeout(() => {
-                    payloadContainer.style.opacity = '1';
-                    payloadContainer.style.transform = 'translateY(0) scale(1)';
-                }, 100);
+                    // Hilangkan sepenuhnya dari aliran DOM
+                    if(interactionModule) interactionModule.classList.add('hidden-state');
+                    if(backgroundDraw) backgroundDraw.classList.add('hidden-state');
+                    
+                    // Munculkan Hadiah Utama (Gambar & Tombol WhatsApp)
+                    if(payloadContainer) {
+                        payloadContainer.classList.remove('hidden-state');
+                        setTimeout(() => {
+                            payloadContainer.style.opacity = '1';
+                            payloadContainer.style.transform = 'translateY(0) scale(1)';
+                        }, 50);
+                    }
+                }, 900); // Sesuaikan durasi CSS Opacity Transition
 
-            }, 800); // Matches CSS transition duration
+            }, 1600); // Tunggu kado meledak dan terbang dulu
+        });
+    }
 
-        }, 1800); // Wait for box explode to finish and confetti to scatter
+    /** ========================================================================
+     * [14] SECRET KONAMI CODE (MATRIX EASTER EGG)
+     * ======================================================================== */
+    const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === konamiSequence[konamiIndex]) {
+            konamiIndex++;
+            if (konamiIndex === konamiSequence.length) {
+                activateMatrixEasterEgg();
+                konamiIndex = 0; 
+            }
+        } else {
+            konamiIndex = 0; 
+        }
     });
+
+    function activateMatrixEasterEgg() {
+        const overlay = document.getElementById('secret-konami-overlay');
+        if(!overlay) return;
+        
+        overlay.classList.remove('hidden-state');
+        CoreUtils.triggerHaptic([100, 50, 100, 50, 100]);
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        document.getElementById('matrix-rain-canvas').appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+        
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*ZAHRA'.split('');
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for(let x = 0; x < columns; x++) drops[x] = 1;
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#d48ba0'; // Matrix Warna Pink
+            ctx.font = fontSize + 'px monospace';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        const matrixIntv = setInterval(drawMatrix, 35);
+        
+        // Auto close
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            clearInterval(matrixIntv);
+            setTimeout(() => {
+                overlay.classList.add('hidden-state');
+                document.getElementById('matrix-rain-canvas').innerHTML = '';
+            }, 1000);
+        }, 12000);
+    }
 
 });
